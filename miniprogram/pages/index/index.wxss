@@ -1,0 +1,38 @@
+.section {
+  margin-bottom: 32rpx;
+}
+.promo-list {
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 16rpx 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+.promo-item {
+  font-size: 26rpx;
+  color: #444;
+  line-height: 40rpx;
+}
+.seasonal {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+.seasonal-image {
+  width: 160rpx;
+  height: 120rpx;
+  border-radius: 12rpx;
+  margin-right: 24rpx;
+}
+.seasonal-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+.seasonal-desc {
+  font-size: 26rpx;
+  color: #888;
+}

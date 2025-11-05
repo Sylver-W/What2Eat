@@ -1,0 +1,16 @@
+.title {
+  font-size: 36rpx;
+  font-weight: 600;
+  margin-bottom: 32rpx;
+}
+.field-group {
+  margin: 24rpx 0 48rpx;
+}
+.field-label {
+  font-size: 28rpx;
+  color: #666666;
+  margin-bottom: 16rpx;
+}
+.submit {
+  margin-top: 24rpx;
+}
