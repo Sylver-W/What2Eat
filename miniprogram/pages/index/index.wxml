@@ -1,0 +1,73 @@
+<view class="container">
+  <van-search value="{{keyword}}" placeholder="输入菜品或食堂" bind:change="onSearchChange" bind:search="onSearch" />
+
+  <view class="section">
+    <view class="section-title">优惠活动</view>
+    <view class="promo-list">
+      <view class="promo-item" wx:for="{{promos}}" wx:key="title">{{item.title}} - {{item.desc}}</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">时令推荐</view>
+    <view class="seasonal" wx:for="{{seasonal}}" wx:key="name" bindtap="goDish" data-id="{{item._id}}">
+      <image class="seasonal-image" src="{{item.image}}" mode="aspectFill"></image>
+      <view class="seasonal-info">
+        <view class="seasonal-name">{{item.name}}</view>
+        <view class="seasonal-desc">{{item.canteen}} · {{item.tags.join('、')}}</view>
+      </view>
+    </view>
+  </view>
+
+  <van-tabs active="{{activeTab}}" bind:change="onTabChange">
+    <van-tab title="推荐菜品">
+      <block wx:for="{{recommendList}}" wx:key="_id">
+        <van-card
+          num="{{item.price}} 元"
+          price="{{item.price}}"
+          desc="{{item.canteen}}"
+          thumb="{{item.image}}"
+          title="{{item.name}}"
+          bind:click="goDish"
+          data-id="{{item._id}}"
+        />
+      </block>
+    </van-tab>
+    <van-tab title="早餐">
+      <block wx:for="{{breakfastList}}" wx:key="_id">
+        <van-card
+          desc="{{item.canteen}}"
+          thumb="{{item.image}}"
+          title="{{item.name}}"
+          price="{{item.price}}"
+          bind:click="goDish"
+          data-id="{{item._id}}"
+        />
+      </block>
+    </van-tab>
+    <van-tab title="正餐">
+      <block wx:for="{{lunchList}}" wx:key="_id">
+        <van-card
+          desc="{{item.canteen}}"
+          thumb="{{item.image}}"
+          title="{{item.name}}"
+          price="{{item.price}}"
+          bind:click="goDish"
+          data-id="{{item._id}}"
+        />
+      </block>
+    </van-tab>
+    <van-tab title="新品推荐">
+      <block wx:for="{{newList}}" wx:key="_id">
+        <van-card
+          desc="{{item.canteen}}"
+          thumb="{{item.image}}"
+          title="{{item.name}}"
+          price="{{item.price}}"
+          bind:click="goDish"
+          data-id="{{item._id}}"
+        />
+      </block>
+    </van-tab>
+  </van-tabs>
+</view>

@@ -1,0 +1,58 @@
+<view class="profile-header">
+  <image class="avatar" src="{{userInfo.avatarUrl || defaultAvatar}}" mode="aspectFill"></image>
+  <view class="info">
+    <view class="name">{{userInfo.nickname || '未命名同学'}}</view>
+    <view class="role">身份：{{userInfo.role === 'admin' ? '管理员' : '普通用户'}}</view>
+  </view>
+  <van-button size="small" type="primary" bind:click="editProfile">编辑资料</van-button>
+</view>
+
+<van-tabs active="{{activeTab}}" bind:change="onTabChange">
+  <van-tab title="我的收藏">
+    <view wx:if="{{favorites.length === 0}}" class="empty">暂无收藏</view>
+    <block wx:for="{{favorites}}" wx:key="_id">
+      <van-card title="{{item.name}}" desc="{{item.canteen}}" thumb="{{item.image}}" price="{{item.price}}" />
+    </block>
+  </van-tab>
+  <van-tab title="我的打卡">
+    <view wx:if="{{checkins.length === 0}}" class="empty">暂无打卡记录</view>
+    <block wx:for="{{checkins}}" wx:key="time">
+      <view class="record">{{item.time}} - {{item.name}}</view>
+    </block>
+  </van-tab>
+  <van-tab title="我的评价">
+    <view wx:if="{{comments.length === 0}}" class="empty">暂无评价</view>
+    <block wx:for="{{comments}}" wx:key="_id">
+      <view class="comment">
+        <view class="comment-title">{{item.dishName}} · 评分 {{item.rating}}</view>
+        <view class="comment-content">{{item.content}}</view>
+      </view>
+    </block>
+  </van-tab>
+  <van-tab title="我的资料">
+    <view class="profile-form">
+      <view class="profile-row">昵称：{{userInfo.nickname}}</view>
+      <view class="profile-row">手机号：{{userInfo.phone || '未填写'}} </view>
+      <view class="profile-row">最近登录：{{lastLogin}}</view>
+    </view>
+  </van-tab>
+  <van-tab title="我发布的">
+    <view wx:if="{{myDishes.length === 0}}" class="empty">暂无发布</view>
+    <block wx:for="{{myDishes}}" wx:key="_id">
+      <van-card
+        title="{{item.name}}"
+        desc="状态：{{item.status}}"
+        thumb="{{item.image}}"
+        price="{{item.price}}"
+      >
+        <view slot="footer">
+          <van-button size="mini" type="danger" data-id="{{item._id}}" bind:click="deleteDish">删除</van-button>
+        </view>
+      </van-card>
+    </block>
+  </van-tab>
+</van-tabs>
+
+<view class="logout">
+  <van-button type="danger" block bind:click="logout">退出登录</van-button>
+</view>
