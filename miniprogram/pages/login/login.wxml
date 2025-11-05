@@ -1,0 +1,5 @@
+<view class="login-page">
+  <view class="logo">HUST 今天吃什么</view>
+  <view class="welcome">华中科大学子的智慧食堂助手</view>
+  <van-button type="primary" block bind:click="handleLogin">微信授权登录</van-button>
+</view>

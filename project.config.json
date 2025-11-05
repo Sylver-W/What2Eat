@@ -1,0 +1,61 @@
+{
+  "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "pluginRoot": "",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "preloadBackgroundData": false,
+    "minified": true,
+    "newFeature": true,
+    "coverView": true,
+    "autoAudits": false,
+    "showShadowRootInWxmlPanel": true,
+    "scopeDataCheck": false,
+    "uglifyFileName": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "ignoreDevUnusedFiles": false
+  },
+  "appid": "touristappid",
+  "projectname": "HUSTEat",
+  "compileType": "miniprogram",
+  "libVersion": "2.32.4",
+  "simulatorType": "wechat",
+  "simulatorPluginLibVersion": {},
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "登录页",
+          "pathName": "pages/login/login",
+          "query": "",
+          "launchMode": "default"
+        },
+        {
+          "name": "首页",
+          "pathName": "pages/index/index",
+          "query": "",
+          "launchMode": "default"
+        }
+      ]
+    },
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "qgame": {
+      "list": []
+    },
+    "wechatPlugin": {
+      "list": []
+    }
+  }
+}

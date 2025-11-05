@@ -1,0 +1,30 @@
+<view class="container">
+  <view class="title">完善校园资料</view>
+  <form bindsubmit="handleSubmit">
+    <van-field
+      label="昵称"
+      name="nickname"
+      value="{{form.nickname}}"
+      placeholder="请输入昵称"
+      required
+      bind:change="onFieldChange"
+      data-key="nickname"
+    />
+    <van-field
+      label="手机号"
+      name="phone"
+      value="{{form.phone}}"
+      placeholder="方便联系食堂反馈"
+      bind:change="onFieldChange"
+      data-key="phone"
+    />
+    <view class="field-group">
+      <view class="field-label">角色</view>
+      <van-radio-group value="{{form.role}}" bind:change="onRoleChange">
+        <van-radio name="user">普通用户</van-radio>
+        <van-radio name="admin">食堂管理员</van-radio>
+      </van-radio-group>
+    </view>
+    <van-button class="submit" round block type="primary" form-type="submit">提交注册</van-button>
+  </form>
+</view>

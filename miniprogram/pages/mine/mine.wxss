@@ -1,0 +1,58 @@
+.profile-header {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin: 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+.avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 60rpx;
+  margin-right: 24rpx;
+}
+.info {
+  flex: 1;
+}
+.name {
+  font-size: 34rpx;
+  font-weight: 600;
+}
+.role {
+  font-size: 26rpx;
+  color: #888;
+  margin-top: 8rpx;
+}
+.empty {
+  text-align: center;
+  color: #888;
+  padding: 48rpx 0;
+}
+.record,
+.comment {
+  padding: 24rpx;
+  margin: 24rpx;
+  background: #fff;
+  border-radius: 16rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+.comment-title {
+  font-size: 30rpx;
+  margin-bottom: 8rpx;
+}
+.comment-content {
+  color: #666;
+  font-size: 26rpx;
+}
+.profile-form {
+  padding: 24rpx;
+}
+.profile-row {
+  font-size: 28rpx;
+  margin-bottom: 16rpx;
+}
+.logout {
+  margin: 32rpx 24rpx 64rpx;
+}

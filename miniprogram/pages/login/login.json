@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "微信登录",
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index"
+  }
+}
