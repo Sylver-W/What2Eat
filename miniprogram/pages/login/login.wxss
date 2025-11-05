@@ -1,0 +1,21 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 64rpx;
+  background: linear-gradient(180deg, #e8f3ff, #ffffff);
+}
+.logo {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #0b58b5;
+  margin-bottom: 24rpx;
+}
+.welcome {
+  font-size: 28rpx;
+  color: #4f4f4f;
+  margin-bottom: 48rpx;
+  text-align: center;
+}

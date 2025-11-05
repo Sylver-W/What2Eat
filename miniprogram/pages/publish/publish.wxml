@@ -1,0 +1,57 @@
+<view class="container">
+  <form bindsubmit="handleSubmit">
+    <van-cell-group inset>
+      <van-field
+        label="菜品名称"
+        name="name"
+        value="{{form.name}}"
+        placeholder="请输入菜品名称"
+        required
+        bind:change="onFieldChange"
+        data-key="name"
+      />
+      <van-field
+        label="所属食堂"
+        name="canteen"
+        value="{{form.canteen}}"
+        placeholder="请输入食堂楼层"
+        required
+        bind:change="onFieldChange"
+        data-key="canteen"
+      />
+      <van-field
+        label="价格"
+        name="price"
+        value="{{form.price}}"
+        type="number"
+        placeholder="请输入价格"
+        required
+        bind:change="onFieldChange"
+        data-key="price"
+      />
+      <van-field
+        label="标签"
+        name="tags"
+        value="{{form.tags}}"
+        placeholder="例如：早餐,新品"
+        bind:change="onFieldChange"
+        data-key="tags"
+      />
+      <van-field
+        label="供应时段"
+        name="supplyTime"
+        value="{{form.supplyTime}}"
+        placeholder="例如：7:00-9:00"
+        bind:change="onFieldChange"
+        data-key="supplyTime"
+      />
+    </van-cell-group>
+
+    <view class="upload-block">
+      <view class="block-title">菜品图片</view>
+      <van-uploader file-list="{{fileList}}" max-count="1" bind:after-read="afterRead" bind:delete="onDelete" />
+    </view>
+
+    <van-button type="primary" block round loading="{{submitting}}" form-type="submit">提交审核</van-button>
+  </form>
+</view>

@@ -1,0 +1,42 @@
+{
+  "users": [
+    {
+      "_id": "user_admin_001",
+      "openid": "admin-openid",
+      "nickname": "食堂管理员",
+      "avatar": "https://example.com/admin.png",
+      "role": "admin",
+      "favorites": []
+    }
+  ],
+  "dishes": [
+    {
+      "_id": "dish_001",
+      "name": "紫菘热干面",
+      "canteen": "紫菘一楼",
+      "price": 6.5,
+      "tags": ["早餐", "推荐"],
+      "uploader": "admin-openid",
+      "status": "approved",
+      "image": "cloud://demo.hotdrynoodles.jpg"
+    }
+  ],
+  "comments": [
+    {
+      "_id": "comment_001",
+      "dish_id": "dish_001",
+      "user_id": "user_admin_001",
+      "content": "面条筋道，芝麻香浓。",
+      "rating": 5,
+      "create_time": "2024-04-01T08:00:00Z"
+    }
+  ],
+  "canteens": [
+    {
+      "_id": "canteen_001",
+      "name": "紫菘食堂",
+      "floor": "一楼",
+      "description": "早餐档口丰富，主打湖北特色小吃"
+    }
+  ]
+}

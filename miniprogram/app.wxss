@@ -1,0 +1,12 @@
+page {
+  background-color: #f7f8fa;
+  font-family: "PingFang SC", "Helvetica", sans-serif;
+}
+.container {
+  padding: 24rpx;
+}
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin: 32rpx 0 16rpx;
+}
