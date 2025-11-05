@@ -1,6 +1,6 @@
 <view class="container">
   <view class="title">完善校园资料</view>
-  <van-form bind:submit="handleSubmit">
+  <form bindsubmit="handleSubmit">
     <van-field
       label="昵称"
       name="nickname"
@@ -26,5 +26,5 @@
       </van-radio-group>
     </view>
     <van-button class="submit" round block type="primary" form-type="submit">提交注册</van-button>
-  </van-form>
+  </form>
 </view>

@@ -1,5 +1,5 @@
 <view class="container">
-  <van-form bind:submit="handleSubmit">
+  <form bindsubmit="handleSubmit">
     <van-cell-group inset>
       <van-field
         label="菜品名称"
@@ -53,5 +53,5 @@
     </view>
 
     <van-button type="primary" block round loading="{{submitting}}" form-type="submit">提交审核</van-button>
-  </van-form>
+  </form>
 </view>

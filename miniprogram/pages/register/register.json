@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "完善资料",
   "usingComponents": {
-    "van-form": "@vant/weapp/form/index",
     "van-field": "@vant/weapp/field/index",
     "van-button": "@vant/weapp/button/index",
     "van-radio": "@vant/weapp/radio/index",

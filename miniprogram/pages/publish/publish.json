@@ -1,7 +1,6 @@
 {
   "navigationBarTitleText": "发布菜品",
   "usingComponents": {
-    "van-form": "@vant/weapp/form/index",
     "van-field": "@vant/weapp/field/index",
     "van-cell-group": "@vant/weapp/cell-group/index",
     "van-button": "@vant/weapp/button/index",
