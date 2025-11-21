@@ -1,0 +1,38 @@
+{
+  "appid": "wx2b625e861318363b", 
+  "projectname": "HusterTodayEat",
+  "compileType": "miniprogram",
+  
+  "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
+
+  "cloudbaseRoot": "",
+  "setting": {
+    "enhance": true,
+    "es6": true,
+    "es7": true,
+    "minifyJS": false,
+    "minifyWXML": false,
+    "minifyWXSS": false,
+    "postcss": true,
+    "minify": false,
+    "checkInvalidKey": true,
+    "checkSiteMap": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+
+  "packOptions": {
+    "ignore": []
+  },
+
+  "condition": {},
+  "libVersion": "latest",
+  "editorSetting": {
+    "tabIndentMode": "space",
+    "tabSize": 2
+  }
+}
