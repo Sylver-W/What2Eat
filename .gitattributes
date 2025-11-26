@@ -1,21 +1,29 @@
-# 让 Git 自动统一换行符为 LF（最推荐）
+# 默认按文本处理，但不强制 LF
 * text=auto
 
-# 强制 LF（推荐给 js/json/wxml/wxss）
+# 强制 LF（前端与小程序常用）
 *.js     text eol=lf
+*.ts     text eol=lf
 *.json   text eol=lf
 *.wxml   text eol=lf
 *.wxss   text eol=lf
+*.vue    text eol=lf
+*.html   text eol=lf
+*.css    text eol=lf
+*.svg    text eol=lf
 *.md     text eol=lf
 *.yml    text eol=lf
 *.yaml   text eol=lf
 
-# 二进制文件不处理换行符
-*.png binary
-*.jpg binary
-*.jpeg binary
-*.gif binary
-*.mp3 binary
-*.mp4 binary
-*.apk binary
-*.zip binary
+# 不处理换行符的二进制文件
+*.png    binary
+*.jpg    binary
+*.jpeg   binary
+*.gif    binary
+*.webp   binary
+*.mp3    binary
+*.mp4    binary
+*.mov    binary
+*.wav    binary
+*.zip    binary
+*.apk    binary
