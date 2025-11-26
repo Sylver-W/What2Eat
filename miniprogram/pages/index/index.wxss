@@ -35,7 +35,7 @@
   left: 0;
   right: 0;
 
-  height: 1050rpx;  /* ←←← 固定高度 */
+  height: 850rpx;  /* ←←← 固定高度 */
   background: #f3f3f3;
   border-radius: 32rpx 32rpx 0 0;
   z-index: 10;
@@ -63,7 +63,7 @@
 .divider {
   width: 2rpx;
   background: #e5e5e5;
-  height: 80rpx;
+  height: 100rpx;
 }
 
 /* 简介卡片 */

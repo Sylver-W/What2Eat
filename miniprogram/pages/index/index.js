@@ -12,10 +12,19 @@ Page({
         name: "鱼香肉丝炒",
         price: 12.88,
         image: "/images/dish2.jpg"
+      },
+      {
+        id: 3,
+        name: "热干面",
+        price: 4.0,
+        image: "/images/dish3.jpg"
       }
-    ]
+    ],
+    active: 0,
   },
-
+  onChange(event) {
+    this.setData({ active: event.detail });
+  },
   goCanteenList() {
     wx.navigateTo({ url: '/pages/canteen/index' })
   },
