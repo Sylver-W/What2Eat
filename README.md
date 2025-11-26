@@ -1,39 +1,46 @@
 # HusterWhat2Eat
 
-#### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+依靠微信云开发实现的校园食堂评分推荐小程序，依赖vant组件库
 
-#### 软件架构
-软件架构说明
+## 使用说明
 
+1. 根目录中
 
-#### 安装教程
+   ```bash
+   npm init -y
+   ```
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+   此步骤会生成：
 
-#### 使用说明
+   ```
+   package.json
+   ```
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+2. 安装 Vant Weapp
 
-#### 参与贡献
+   使用 npm 安装 Vant Weapp：
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+   ```bash
+   npm install @vant/weapp -S --production
+   ```
 
+   安装完成后，目录中会生成：
 
-#### 特技
+   ```bash
+   /node_modules/@vant/weapp/
+   ```
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+3. 微信开发者工具构建 npm
+
+   由于微信小程序运行环境无法直接识别 `node_modules`，
+    需要在 微信开发者工具中执行 npm 构建：
+
+   菜单 → 工具 → 构建 npm
+
+   构建完成后，会生成：
+
+   ```
+   miniprogram/miniprogram_npm/@vant/weapp/
+   ```
+
+   该目录为小程序实际使用的依赖文件。
