@@ -5,6 +5,13 @@
   
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
+  "packNpmManually": true,
+  "packNpmRelationList": [
+    {
+      "packageJsonPath": "./package.json",
+      "miniprogramNpmDistDir" : "./miniprogram/"
+    }
+  ],
 
   "cloudbaseRoot": "",
   "setting": {
