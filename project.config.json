@@ -1,9 +1,14 @@
 {
+<<<<<<< HEAD
   "appid": "wxf001d0f48773fbcd",
+=======
+  "appid": "wx2b625e861318363b",
+>>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
   "projectname": "HusterTodayEat",
   "compileType": "miniprogram",
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
+<<<<<<< HEAD
 
   "cloudbaseRoot": "",
   "setting": {
@@ -15,6 +20,18 @@
       "miniprogramNpmDistDir": "./miniprogram/"
       }
     ],
+=======
+  "packNpmManually": true,
+  "packNpmRelationList": [
+    {
+      "packageJsonPath": "./package.json",
+      "miniprogramNpmDistDir": "./miniprogram/"
+    }
+  ],
+  "cloudbaseRoot": "",
+  "setting": {
+    "enhance": true,
+>>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
     "es6": true,
     "es7": true,
     "minifyJS": false,
@@ -33,6 +50,16 @@
     "minified": false,
     "uglifyFileName": false,
     "uploadWithSourceMap": true,
+<<<<<<< HEAD
+=======
+    "packNpmManually": true,
+    "packNpmRelationList": [
+      {
+        "packageJsonPath": "./package.json",
+        "miniprogramNpmDistDir": "./miniprogram/"
+      }
+    ],
+>>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
     "localPlugins": false,
     "disableUseStrict": false,
     "useCompilerPlugins": false,

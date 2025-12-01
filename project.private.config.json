@@ -1,6 +1,10 @@
 {
   "libVersion": "3.11.3",
+<<<<<<< HEAD
   "projectname": "huster-what2-eat-master",
+=======
+  "projectname": "huster-what2-eat",
+>>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
   "setting": {
     "urlCheck": true,
     "coverView": true,
