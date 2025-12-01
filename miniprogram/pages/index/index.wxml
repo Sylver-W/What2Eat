@@ -2,14 +2,14 @@
 
 <!-- 顶部大图 Banner -->
 <view class="banner">
-  <image class="banner-img" src="cloud://cloud1-9gqate3z0c742201.636c-cloud1-9gqate3z0c742201-1384647909/banner.jpg" mode="aspectFill"></image>
+  <image class="banner-img" src="/images/banner.jpg" mode="aspectFill"></image>
   <view class="banner-title">Huster今天吃什么？</view>
 </view>
 
 <view class="content-box">
   <!-- 两个入口按钮 --> 
   <view class="shortcut-card">
-    <view class="shortcut-item" bindtap="goDishSearch">
+    <view class="shortcut-item" bindtap="goCanteenList">
       <image class="shortcut-icon" src="/images/canteen.png"></image>
         <text>食堂列表</text>
     </view>

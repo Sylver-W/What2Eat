@@ -81,13 +81,8 @@ Page({
         url: '/pages/index/index'
       });
     } else if (name === 'user') {
-      // 这里先注释掉，等以后创建了用户页面再启用
-      // wx.navigateTo({
-      //   url: '/pages/user/user'
-      // });
-      wx.showToast({
-        title: '用户页面开发中',
-        icon: 'none'
+      wx.navigateTo({
+         url: '/pages/user/user'
       });
     }
     // 点击"首页"时，由于已在首页，可以不处理，或者你希望有些效果（比如刷新），可以在这里写。
