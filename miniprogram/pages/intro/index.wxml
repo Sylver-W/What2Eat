@@ -1,0 +1,72 @@
+<view class="canteen-container">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <van-icon name="arrow-left" class="back-icon" bindtap="goBack" />
+    <view class="nav-title">校园食堂介绍</view>
+  </view>
+
+  <!-- 食堂列表卡片 -->
+  <view class="canteen-list">
+    <!-- 第一食堂 -->
+    <view class="canteen-card">
+      <view class="canteen-name">第一食堂</view>
+      <view class="canteen-info">
+        <view class="info-item">
+          <van-icon name="location-o" class="info-icon" />
+          <text class="info-text">德阳校区南区办公楼右侧</text>
+        </view>
+        <view class="info-item">
+          <van-icon name="people-o" class="info-icon" />
+          <text class="info-text">可同时容纳 500 人就餐</text>
+        </view>
+        <view class="info-item">
+          <van-icon name="clock-o" class="info-icon" />
+          <text class="info-text">营业时间：6:30-21:00</text>
+        </view>
+        <view class="info-item">
+          <van-icon name="grid-o" class="info-icon" />
+          <text class="info-text">窗口设置：家常菜窗口、小炒窗口、凉菜窗口等</text>
+        </view>
+        <view class="info-item">
+          <van-icon name="star-o" class="info-icon" />
+          <text class="info-text">特色菜品：蚂蚁上树、鱼香肉丝等经典川菜</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 第二食堂 -->
+    <view class="canteen-card">
+      <view class="canteen-name">第二食堂</view>
+      <view class="canteen-info">
+        <view class="info-item">
+          <van-icon name="location-o" class="info-icon" />
+          <text class="info-text">德阳校区南区办公楼右侧</text>
+        </view>
+        <view class="info-item">
+          <van-icon name="people-o" class="info-icon" />
+          <text class="info-text">可同时容纳 500 人就餐</text>
+        </view>
+        <view class="info-item">
+          <van-icon name="clock-o" class="info-icon" />
+          <text class="info-text">营业时间：6:30-21:00</text>
+        </view>
+        <view class="info-item">
+          <van-icon name="grid-o" class="info-icon" />
+          <text class="info-text">窗口设置：家常菜窗口、小炒窗口、凉菜窗口等</text>
+        </view>
+        <view class="info-item">
+          <van-icon name="star-o" class="info-icon" />
+          <text class="info-text">特色菜品：蚂蚁上树、鱼香肉丝等经典川菜</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 引入 vant 组件 -->
+<van-icon name="arrow-left" />
+<van-icon name="location-o" />
+<van-icon name="people-o" />
+<van-icon name="clock-o" />
+<van-icon name="grid-o" />
+<van-icon name="star-o" />
