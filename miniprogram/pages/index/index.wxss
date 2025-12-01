@@ -1,0 +1,122 @@
+.container {
+  background-color: #f5f2f2;
+  padding-bottom: 100rpx;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Banner */
+.banner {
+  position: absolute;     /* 关键中的关键 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 450rpx;
+  z-index: 10;            /* 保证在内容上层 */
+}
+.banner-img {
+  width: 100%;
+  height: 100%;
+}
+.banner-title {
+  position: absolute;
+  bottom: 250rpx;
+  left: 40rpx;
+  color: white;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+/* 固定内容块 */
+.content-box {
+  position: absolute;
+  top: 430rpx;
+  left: 0;
+  right: 0;
+
+  height: 850rpx;  /* ←←← 固定高度 */
+  background: #f3f3f3;
+  border-radius: 32rpx 32rpx 0 0;
+  z-index: 10;
+  overflow: hidden; /* ←←← 禁止滚动 */
+}
+
+/* 快捷入口卡片 */
+.shortcut-card {
+  margin: 40rpx 30rpx 0;
+  background: #ffffff;
+  display: flex;
+  border-radius: 20rpx;
+  padding: 20rpx 0;
+}
+.shortcut-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.shortcut-icon {
+  width: 60rpx;
+  height: 60rpx;
+}
+.divider {
+  width: 2rpx;
+  background: #e5e5e5;
+  height: 100rpx;
+}
+
+/* 简介卡片 */
+.intro-card {
+  background: #ffffff;
+  margin: 30rpx;
+  padding: 20rpx;
+  border-radius: 20rpx;
+}
+.intro-title {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+.intro-text {
+  margin-top: 20rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+.intro-detail {
+  margin-top: 20rpx;
+  color: #3a7afe;
+  font-size: 26rpx;
+}
+
+/* 特色菜 */
+.section-title {
+  margin: 30rpx;
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+/* 横向滚动 */
+.dish-scroll {
+  white-space: nowrap;
+  padding-left: 30rpx;
+}
+.dish-card {
+  width: 300rpx;
+  display: inline-block;
+  margin-right: 20rpx;
+  background: white;
+  border-radius: 20rpx;
+}
+.dish-img {
+  width: 100%;
+  height: 200rpx;
+}
+.dish-name {
+  font-size: 28rpx;
+  margin: 16rpx;
+}
+.dish-price {
+  font-size: 24rpx;
+  margin: 0 16rpx 16rpx;
+  color: #666;
+}
