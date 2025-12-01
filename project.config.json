@@ -4,15 +4,14 @@
   "compileType": "miniprogram",
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
-
   "cloudbaseRoot": "",
   "setting": {
     "enhance": true,
     "packNpmManually": true,
     "packNpmRelationList": [
       {
-      "packageJsonPath": "./package.json",
-      "miniprogramNpmDistDir": "./miniprogram/"
+        "packageJsonPath": "./package.json",
+        "miniprogramNpmDistDir": "./miniprogram/"
       }
     ],
     "es6": true,
