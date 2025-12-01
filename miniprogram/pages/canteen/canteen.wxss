@@ -2,6 +2,7 @@
   background-color: #f7f8fa;
   min-height: 100vh;
   padding: 20rpx;
+  padding-bottom: 165rpx;
 }
 
 .search-box {

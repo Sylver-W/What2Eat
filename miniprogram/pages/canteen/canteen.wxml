@@ -10,7 +10,7 @@
 
   <!-- 食堂列表 -->
   <view class="canteen-list">
-    <block wx:for="{{canteens}}" wx:key="id">
+    <block wx:for="{{canteens}}" wx:key="canteenId">
       <view class="canteen-card" bindtap="goCanteenDetail" data-canteen="{{item}}">
         <image class="canteen-image" src="{{item.image}}" mode="aspectFill"></image>
         
@@ -38,7 +38,7 @@
           
           <view class="featured-dishes">
             <text class="dishes-label">特色: </text>
-            <text class="dishes-names">{{item.featuredDishes.join('、')}}</text>
+            <text class="dishes-names">{{item.featuredDisplay}}</text>
           </view>
         </view>
         
