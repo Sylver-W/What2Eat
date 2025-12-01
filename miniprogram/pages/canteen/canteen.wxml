@@ -47,3 +47,11 @@
     </block>
   </view>
 </view>
+<van-tabbar active="{{ active }}"
+  active-color="#101010"
+  inactive-color="#cccccc"
+  bind:change="onChange" >
+  <van-tabbar-item icon="home-o" name="home">首页</van-tabbar-item>
+  <van-tabbar-item icon="shop-o" name="canteen">食堂</van-tabbar-item>
+  <van-tabbar-item icon="user-o" name="user">我的</van-tabbar-item>
+</van-tabbar>
