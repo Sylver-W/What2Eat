@@ -1,18 +1,16 @@
 {
-  "appid": "wx2b625e861318363b", 
+  "appid": "wx2b625e861318363b",
   "projectname": "HusterTodayEat",
   "compileType": "miniprogram",
-  
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
   "packNpmManually": true,
   "packNpmRelationList": [
     {
       "packageJsonPath": "./package.json",
-      "miniprogramNpmDistDir" : "./miniprogram/"
+      "miniprogramNpmDistDir": "./miniprogram/"
     }
   ],
-
   "cloudbaseRoot": "",
   "setting": {
     "enhance": true,
@@ -31,11 +29,9 @@
       "outputPath": ""
     }
   },
-
   "packOptions": {
     "ignore": []
   },
-
   "condition": {},
   "libVersion": "latest",
   "editorSetting": {
