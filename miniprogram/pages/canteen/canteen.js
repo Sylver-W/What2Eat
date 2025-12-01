@@ -139,7 +139,7 @@ Page({
     console.log('切换到:', name);
 
     if (name === 'home') {
-      wx.switchTab({
+      wx.navigateTo({
         url: '/pages/index/index'
       });
     } else if (name === 'user') {
