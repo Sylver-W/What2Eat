@@ -1,3 +1,8 @@
 {
-  "usingComponents": {}
+  "usingComponents": {},
+  "navigationBarTitleText": "菜品查询",
+  "navigationBarBackgroundColor": "#ffffff", 
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#ffffff",
+  "enablePullDownRefresh": false
 }

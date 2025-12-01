@@ -1,1 +1,106 @@
 /* pages/search/index.wxss */
+
+/* 页面基础样式 */
+.page {
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 40rpx;
+  box-sizing: border-box;
+}
+
+/* 查询窗口容器 - 顶部居中，改为flex布局使搜索框和取消按钮并排 */
+.search-container {
+  width: 90%;
+  max-width: 700rpx;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+/* 搜索框  */
+.search-box {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 40rpx;
+  padding: 20rpx 32rpx;
+  border: 2rpx solid #e0e0e0;
+  transition: all 0.3s ease;
+  height: 40rpx;
+  box-shadow: none;
+  flex: 1; /* 占据剩余空间 */
+  position: relative; /* 为清除图标定位做准备 */
+}
+
+.search-box:focus-within {
+  transform: translateY(-2rpx);
+}
+
+.search-icon {
+  width: 36rpx;
+  height: 36rpx;
+  margin-right: 20rpx;
+  opacity: 0.6;
+}
+
+.search-input {
+  flex: 1;
+  font-size: 32rpx;
+  color: #333;
+  height: 48rpx;
+  line-height: 48rpx;
+  background: transparent;
+  padding-right: 40rpx; /* 为清除图标留出空间 */
+}
+
+.placeholder {
+  color: #999;
+  font-size: 30rpx;
+}
+
+/* 清除图标样式（一直显示） */
+.clear-icon {
+  position: absolute;
+  right: 20rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36rpx;
+  height: 36rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ddd;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+
+.clear-icon:active {
+  opacity: 1;
+  transform: translateY(-50%) scale(0.95);
+}
+
+.clear-img {
+  width: 20rpx;
+  height: 20rpx;
+}
+
+/* 取消按钮样式（宽度减小） */
+.cancel-btn {
+  font-size: 30rpx; /* 稍微减小字体 */
+  color: #333;
+  margin-left: 20rpx;
+  padding: 10rpx 12rpx; /* 减小左右padding以减小宽度 */
+  transition: all 0.3s ease;
+  opacity: 0.8;
+  border-radius: 8rpx;
+  min-width: 60rpx; /* 设置最小宽度 */
+  text-align: center;
+}
+
+.cancel-btn:active {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.05);
+}

@@ -1,2 +1,33 @@
 <!--pages/search/index.wxml-->
-<text>pages/search/index.wxml</text>
+<view class="page">
+  <!-- 唯一查询框 - 顶部居中 -->
+  <view class="search-container">
+    <view class="search-box">
+      <!-- 搜索图标 -->
+      <image src="/images/icon/search.png" class="search-icon"></image>
+      
+      <!-- 输入框 -->
+      <input 
+        class="search-input" 
+        placeholder="搜索" 
+        placeholder-class="placeholder"
+        bindinput="onInputChange"
+        bindconfirm="onSearch"
+        confirm-type="search"
+        value="{{query}}"
+        focus="{{autoFocus}}"
+      />
+      
+      <!-- 清除输入图标 -->
+      <view 
+        class="clear-icon" 
+        bindtap="onClearInput"
+      >
+        <image src="/images/icon/clear.png" class="clear-img"></image>
+      </view>
+    </view>
+    
+    <!-- 取消按钮 -->
+    <view class="cancel-btn" bindtap="onCancel">取消</view>
+  </view>
+</view>
