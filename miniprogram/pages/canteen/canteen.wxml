@@ -1,7 +1,5 @@
-<<<<<<< HEAD
 <!--pages/canteen/canteen.wxml-->
 <text>pages/canteen/canteen.wxml</text>
-=======
 <view class="canteen-page">
   <!-- 搜索框 -->
   <view class="search-box">
@@ -59,4 +57,3 @@
   <van-tabbar-item icon="shop-o" name="canteen">食堂</van-tabbar-item>
   <van-tabbar-item icon="user-o" name="user">我的</van-tabbar-item>
 </van-tabbar>
->>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855

@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 // pages/index/index.js
->>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
 Page({
   data: {
     dishes: [
@@ -24,14 +21,9 @@ Page({
         image: "/images/dish3.jpg"
       }
     ],
-<<<<<<< HEAD
-    active: 0,
-  },
-=======
     active: 'home',
   },
 
->>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
   onChange(event) {
     // 推荐：使用 event.detail 获取点击项的名称 (name)
     const name = event.detail; 
@@ -46,34 +38,15 @@ Page({
         url: '/pages/canteen/canteen'
       });
     } else if (name === 'user') {
-<<<<<<< HEAD
-       wx.navigateTo({
-         url: '/pages/user/user'
-       });
-      // wx.showToast({
-      //   title: '用户页面开发中',
-      //   icon: 'none'
-      // });
-=======
-      // 这里先注释掉，等以后创建了用户页面再启用
-      // wx.navigateTo({
-      //   url: '/pages/user/user'
-      // });
-      wx.showToast({
-        title: '用户页面开发中',
-        icon: 'none'
+      wx.navigateTo({
+        url: '/pages/user/user'
       });
->>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
     }
     // 点击"首页"时，由于已在首页，可以不处理，或者你希望有些效果（比如刷新），可以在这里写。
   },
 
   goCanteenList() {
-<<<<<<< HEAD
-    wx.navigateTo({ url: '/pages/canteen/index' })
-=======
     wx.navigateTo({ url: '/pages/canteen/canteen' })
->>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
   },
 
   goDishSearch() {
@@ -83,8 +56,4 @@ Page({
   goIntroDetail() {
     wx.navigateTo({ url: '/pages/intro/index' })
   }
-<<<<<<< HEAD
 })
-=======
-})
->>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855

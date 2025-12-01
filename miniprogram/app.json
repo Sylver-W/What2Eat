@@ -1,6 +1,5 @@
 {
   "pages": [
-<<<<<<< HEAD
     "pages/index/index",  
     "pages/canteen/canteen", 
     "pages/user/user", 
@@ -23,15 +22,5 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "Huster今天吃什么？",
     "navigationBarTextStyle": "black"
-=======
-    "pages/index/index",
-    "pages/login/login",
-    "pages/home/home",
-    "pages/canteen/canteen"
-  ],
-  "usingComponents": {
-    "van-tabbar": "@vant/weapp/tabbar/index",
-    "van-tabbar-item": "@vant/weapp/tabbar-item/index"
->>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
   }
 }

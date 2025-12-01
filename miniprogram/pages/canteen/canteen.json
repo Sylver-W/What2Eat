@@ -1,7 +1,4 @@
 {
-<<<<<<< HEAD
-  "usingComponents": {}
-=======
   "navigationBarTitleText": "校园食堂",
   "usingComponents": {
     "van-search": "@vant/weapp/search/index",
@@ -10,5 +7,4 @@
     "van-tabbar": "@vant/weapp/tabbar/index",
     "van-tabbar-item": "@vant/weapp/tabbar-item/index"
   }
->>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
 }

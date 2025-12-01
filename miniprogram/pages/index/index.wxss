@@ -8,20 +8,12 @@
 
 /* Banner */
 .banner {
-<<<<<<< HEAD
-  position: absolute;     /* 关键中的关键 */
-=======
   position: absolute;    
->>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
   top: 0;
   left: 0;
   width: 100%;
   height: 450rpx;
-<<<<<<< HEAD
-  z-index: 10;            /* 保证在内容上层 */
-=======
   z-index: 10;            
->>>>>>> 9089c94f1989c686ea88f12a8b8762c991a12855
 }
 .banner-img {
   width: 100%;
