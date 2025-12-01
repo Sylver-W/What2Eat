@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/login/login",
-    "pages/home/home"
+    "pages/home/home",
+    "pages/intro/index"
   ],
   "usingComponents": {
     "van-tabbar": "@vant/weapp/tabbar/index",
