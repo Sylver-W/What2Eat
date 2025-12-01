@@ -1,19 +1,19 @@
 {
-  "appid": "wx2b625e861318363b",
+  "appid": "wxf001d0f48773fbcd",
   "projectname": "HusterTodayEat",
   "compileType": "miniprogram",
   "miniprogramRoot": "miniprogram/",
   "cloudfunctionRoot": "cloudfunctions/",
-  "packNpmManually": true,
-  "packNpmRelationList": [
-    {
-      "packageJsonPath": "./package.json",
-      "miniprogramNpmDistDir": "./miniprogram/"
-    }
-  ],
   "cloudbaseRoot": "",
   "setting": {
     "enhance": true,
+    "packNpmManually": true,
+    "packNpmRelationList": [
+      {
+        "packageJsonPath": "./package.json",
+        "miniprogramNpmDistDir": "./miniprogram/"
+      }
+    ],
     "es6": true,
     "es7": true,
     "minifyJS": false,
@@ -27,15 +27,27 @@
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    }
+    },
+    "compileWorklet": false,
+    "minified": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true
   },
   "packOptions": {
-    "ignore": []
+    "ignore": [],
+    "include": []
   },
   "condition": {},
-  "libVersion": "latest",
+  "libVersion": "3.11.3",
   "editorSetting": {
     "tabIndentMode": "space",
     "tabSize": 2
-  }
+  },
+  "simulatorPluginLibVersion": {}
 }

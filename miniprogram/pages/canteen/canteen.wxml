@@ -1,0 +1,59 @@
+<!--pages/canteen/canteen.wxml-->
+<text>pages/canteen/canteen.wxml</text>
+<view class="canteen-page">
+  <!-- 搜索框 -->
+  <view class="search-box">
+    <van-search
+      value="{{ searchValue }}"
+      placeholder="搜索食堂或菜品"
+      bind:search="onSearch"
+    />
+  </view>
+
+  <!-- 食堂列表 -->
+  <view class="canteen-list">
+    <block wx:for="{{canteens}}" wx:key="id">
+      <view class="canteen-card" bindtap="goCanteenDetail" data-canteen="{{item}}">
+        <image class="canteen-image" src="{{item.image}}" mode="aspectFill"></image>
+        
+        <view class="canteen-info">
+          <view class="canteen-header">
+            <text class="canteen-name">{{item.name}}</text>
+            <view class="canteen-rating">
+              <van-rate value="{{item.rating}}" readonly size="12" />
+              <text class="rating-text">{{item.rating}}</text>
+            </view>
+          </view>
+          
+          <view class="canteen-meta">
+            <van-icon name="location-o" size="12" />
+            <text class="canteen-location">{{item.location}}</text>
+            <view class="canteen-status {{item.isOpen ? 'open' : 'closed'}}">
+              {{item.isOpen ? '营业中' : '已打烊'}}
+            </view>
+          </view>
+          
+          <view class="business-hours">
+            <van-icon name="clock-o" size="12" />
+            <text class="hours-text">{{item.businessHours}}</text>
+          </view>
+          
+          <view class="featured-dishes">
+            <text class="dishes-label">特色: </text>
+            <text class="dishes-names">{{item.featuredDishes.join('、')}}</text>
+          </view>
+        </view>
+        
+        <van-icon name="arrow" size="16" color="#969799" />
+      </view>
+    </block>
+  </view>
+</view>
+<van-tabbar active="{{ active }}"
+  active-color="#101010"
+  inactive-color="#cccccc"
+  bind:change="onChange" >
+  <van-tabbar-item icon="home-o" name="home">首页</van-tabbar-item>
+  <van-tabbar-item icon="shop-o" name="canteen">食堂</van-tabbar-item>
+  <van-tabbar-item icon="user-o" name="user">我的</van-tabbar-item>
+</van-tabbar>
