@@ -1,0 +1,11 @@
+<view class="container">
+  <view class="title">欢迎使用 Huster今天吃什么</view>
+
+  <button 
+    class="login-btn" 
+    type="primary" 
+    open-type="getUserInfo"
+    bindtap="onLogin">
+      微信一键登录
+  </button>
+</view>

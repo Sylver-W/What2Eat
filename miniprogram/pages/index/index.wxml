@@ -1,0 +1,57 @@
+<view class="container">
+
+<!-- 顶部大图 Banner -->
+<view class="banner">
+  <image class="banner-img" src="/images/banner.jpg" mode="aspectFill"></image>
+  <view class="banner-title">Huster今天吃什么？</view>
+</view>
+
+<view class="content-box">
+  <!-- 两个入口按钮 --> 
+  <view class="shortcut-card">
+    <view class="shortcut-item" bindtap="goCanteenList">
+      <image class="shortcut-icon" src="/images/canteen.png"></image>
+        <text>食堂列表</text>
+    </view>
+    <van-icon name="arrow" />
+  <view class="divider"></view>
+
+    <view class="shortcut-item" bindtap="goDishSearch">
+      <image class="shortcut-icon" src="/images/canteen.png"></image>
+        <text>菜品查询</text>
+    </view>
+    <van-icon name="arrow" />
+  </view>
+
+  <!-- 食堂介绍 -->
+  <view class="intro-card">
+    <view class="intro-title">校园食堂介绍</view>
+    <view class="intro-text">
+      第一食堂位于食堂服务区内办公楼对面，分为楼层及大厅，可同时容纳500人就餐...
+    </view>
+    <view class="intro-detail" bindtap="goIntroDetail">详情 ></view>
+  </view>
+
+  <!-- 特色菜品标题 -->
+  <view class="section-title">特色菜品</view>
+
+  <!-- 横向滚动区域 -->
+  <scroll-view class="dish-scroll" scroll-x="true">
+    <block wx:for="{{dishes}}" wx:key="id">
+      <view class="dish-card">
+        <image class="dish-img" src="{{item.image}}"></image>
+        <view class="dish-name">{{item.name}}</view>
+        <view class="dish-price">¥ {{item.price}}</view>
+      </view>
+    </block>
+  </scroll-view>
+</view>
+</view>
+<van-tabbar active="{{ active }}"
+  active-color="#101010"
+  inactive-color="#cccccc"
+  bind:change="onChange" >
+  <van-tabbar-item icon="home-o" name="home">首页</van-tabbar-item>
+  <van-tabbar-item icon="shop-o" name="canteen">食堂</van-tabbar-item>
+  <van-tabbar-item icon="user-o" name="user">我的</van-tabbar-item>
+</van-tabbar>

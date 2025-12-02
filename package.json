@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "@vant/weapp": "^1.11.7"
+  },
+  "name": "huster-what2-eat",
+  "version": "1.0.0",
+  "description": "依靠微信云开发实现的校园食堂评分推荐小程序，依赖vant组件库",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/sylverw/huster-what2-eat.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

@@ -1,0 +1,29 @@
+<view class="canteen-container">
+  <!-- 食堂列表卡片 -->
+  <view class="canteen-list">
+    <!-- 第一食堂 -->
+    <block wx:for="{{canteens}}" wx:key="canteenId">
+      <view class="canteen-card" data-canteen="{{item}}">
+        <view class="canteen-name">{{item.name}}</view>
+      <view class="canteen-info">
+        <view class="info-item">
+          <van-icon name="location-o" class="info-icon" />
+          <text class="info-text">{{item.location}}</text>
+        </view>
+        <view class="info-item">
+          <van-icon name="clock-o" class="info-icon" />
+          <text class="info-text">{{item.businessHours}}</text>
+        </view>
+        <view class="info-item">
+          <text class="info-text">{{item.description}}</text>
+        </view>
+        <view class="info-item">
+          <van-icon name="star-o" class="info-icon" />
+          <text class="info-text">{{item.featuredDisplay}}</text>
+        </view>
+      </view>
+    </view>
+    </block>
+  </view>
+</view>
+

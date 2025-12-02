@@ -1,0 +1,1 @@
+window.ENV = {"IS_FEAT_FLPAK4GB":true,"IS_FEAT_ABOARD":true,"IS_FEAT_SIGMA":true,"IS_LEGACY_V7":true,"BOMX_API_SDK_URL":"https://sdk.boardmix.cn/bmsdk","BOMX_API_CLIENT_ID":"IpfSMaEsOHWu7cg7","AIPPT_CLIENT_ID":"0ePnORDMD6KJSIIB","AIPPT_API_SDK_URL":"https://sdk.pptgo.cn/pptsdk","PIXSO_API_URL":"https://ps.modao.cc"}
