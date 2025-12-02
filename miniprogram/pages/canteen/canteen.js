@@ -63,7 +63,7 @@ Page({
   goCanteenDetail(e) {
     const canteen = e.currentTarget.dataset.canteen;
     wx.navigateTo({
-      url: `/pages/canteen-detail/canteen-detail?id=${canteen.id}&name=${canteen.name}`
+      url: `/pages/dish_list/dish_list?id=${canteen.id}&name=${canteen.name}`
     });
   },
 
