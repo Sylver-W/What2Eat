@@ -57,6 +57,7 @@
   font-size: 24rpx;
   color: #ff6b35;
   margin-left: 8rpx;
+  font-weight: bold;
 }
 
 .canteen-meta {
@@ -102,8 +103,16 @@
 .featured-dishes {
   font-size: 24rpx;
   color: #666;
+  margin-bottom: 4rpx;
 }
 
 .dishes-label {
   color: #999;
+}
+
+/* 新增：评分人数样式 */
+.rating-count {
+  font-size: 20rpx;
+  color: #999;
+  margin-top: 4rpx;
 }

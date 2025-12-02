@@ -5,40 +5,54 @@
       value="{{ searchValue }}"
       placeholder="搜索食堂"
       bind:search="onSearch"
+      bind:clear="onClear"
     />
   </view>
 
   <!-- 食堂列表 -->
   <view class="canteen-list">
-    <block wx:for="{{canteens}}" wx:key="canteenId">
-      <view class="canteen-card" bindtap="goCanteenDetail" data-canteen="{{item}}">
-        <image class="canteen-image" src="{{item.image}}" mode="aspectFill"></image>
+    <block wx:for="{{ canteens }}" wx:key="canteenId">
+      <view class="canteen-card" bindtap="goCanteenDetail" data-canteen="{{ item }}">
+        <image class="canteen-image" src="{{ item.image }}" mode="aspectFill"></image>
         
         <view class="canteen-info">
           <view class="canteen-header">
-            <text class="canteen-name">{{item.name}}</text>
+            <text class="canteen-name">{{ item.name }}</text>
             <view class="canteen-rating">
-              <van-rate value="{{item.rating}}" readonly size="12" />
-              <text class="rating-text">{{item.rating}}</text>
+              <!-- 可交互的打分组件 -->
+              <van-rate 
+                value="{{ item.userRating || item.rating }}" 
+                size="12" 
+                bind:change="onRateChange"
+                data-canteen-id="{{ item.canteenId }}"
+                data-index="{{ index }}"
+              />
+              <!-- 修复：移除 .toFixed(1) 调用 -->
+              <text class="rating-text">{{ item.displayRating }}</text>
             </view>
           </view>
           
           <view class="canteen-meta">
             <van-icon name="location-o" size="12" />
-            <text class="canteen-location">{{item.location}}</text>
-            <view class="canteen-status {{item.isOpen ? 'open' : 'closed'}}">
-              {{item.isOpen ? '营业中' : '已打烊'}}
+            <text class="canteen-location">{{ item.location }}</text>
+            <view class="canteen-status {{ item.isOpen ? 'open' : 'closed' }}">
+              {{ item.isOpen ? '营业中' : '已打烊' }}
             </view>
           </view>
           
           <view class="business-hours">
             <van-icon name="clock-o" size="12" />
-            <text class="hours-text">{{item.businessHours}}</text>
+            <text class="hours-text">{{ item.businessHours }}</text>
           </view>
           
           <view class="featured-dishes">
             <text class="dishes-label">特色: </text>
-            <text class="dishes-names">{{item.featuredDisplay}}</text>
+            <text class="dishes-names">{{ item.featuredDisplay }}</text>
+          </view>
+          
+          <!-- 添加评分人数显示 -->
+          <view class="rating-count" wx:if="{{ item.ratingCount > 0 }}">
+            已有{{ item.ratingCount }}人评分
           </view>
         </view>
         
@@ -47,10 +61,11 @@
     </block>
   </view>
 </view>
+
 <van-tabbar active="{{ active }}"
   active-color="#101010"
   inactive-color="#cccccc"
-  bind:change="onChange" >
+  bind:change="onChange">
   <van-tabbar-item icon="home-o" name="home">首页</van-tabbar-item>
   <van-tabbar-item icon="shop-o" name="canteen">食堂</van-tabbar-item>
   <van-tabbar-item icon="user-o" name="user">我的</van-tabbar-item>

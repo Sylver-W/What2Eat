@@ -1,0 +1,9 @@
+{
+  "name": "submitrating",
+  "version": "1.0.0",
+  "description": "食堂评分云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}
