@@ -9,7 +9,7 @@
       <!-- 输入框 -->
       <input 
         class="search-input" 
-        placeholder="搜索" 
+        placeholder="搜索菜品" 
         placeholder-class="placeholder"
         bindinput="onInputChange"
         bindconfirm="onSearch"
@@ -29,5 +29,75 @@
     
     <!-- 取消按钮 -->
     <view class="cancel-btn" bindtap="onCancel">取消</view>
+  </view>
+
+  <!-- 搜索结果区域 -->
+  <view class="search-results" wx:if="{{searchResults.length > 0}}">
+    <view class="results-count">共找到 {{searchResults.length}} 个结果</view>
+    
+    <view class="results-list">
+      <block wx:for="{{searchResults}}" wx:key="id">
+        <!-- 菜品卡片 -->
+        <view class="dish-card" bindtap="onDishTap" data-id="{{item.id}}">
+          <!-- 左侧图片 -->
+          <view class="dish-image-container">
+            <image 
+              class="dish-image" 
+              src="{{item.imageUrl || '/images/dish1.png'}}" 
+              mode="aspectFill"
+            ></image>
+          </view>
+          
+          <!-- 右侧内容 -->
+          <view class="dish-content">
+            <!-- 名称和标签 -->
+            <view class="dish-header">
+              <text class="dish-name">{{item.name}}</text>
+              <view class="meal-tags">
+                <block wx:if="{{item.tags.breakfast}}">
+                  <view class="meal-tag breakfast">早餐</view>
+                </block>
+                <block wx:if="{{item.tags.lunch}}">
+                  <view class="meal-tag lunch">午餐</view>
+                </block>
+                <block wx:if="{{item.tags.dinner}}">
+                  <view class="meal-tag dinner">晚餐</view>
+                </block>
+              </view>
+            </view>
+            
+            <!-- 菜品描述 -->
+            <view class="dish-description">{{item.description}}</view>
+            
+            <!-- 价格 -->
+            <view class="dish-price">¥{{item.price.toFixed(2)}}</view>
+            
+            <!-- 底部信息：地点 + 评分 -->
+            <view class="dish-footer">
+              <text class="location-text">{{item.location}}</text>
+              
+              <view class="rating">
+                <!-- 星级评分 -->
+                <view class="stars">
+                  <block wx:for="{{5}}" wx:key="index">
+                    <image 
+                      class="star-icon" 
+                      src="{{index < item.rating ? '/images/icon/star.png' : '/images/icon/star.png'}}"
+                    ></image>
+                  </block>
+                </view>
+                <text class="rating-text">{{item.rating.toFixed(1)}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 无结果提示 -->
+  <view class="no-results" wx:if="{{hasSearched && searchResults.length === 0}}">
+    <text class="no-results-text">未找到相关菜品</text>
+    <text class="no-results-hint">尝试其他关键词搜索</text>
   </view>
 </view>
