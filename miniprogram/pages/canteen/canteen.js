@@ -311,7 +311,7 @@ async submitRatingToCloud(canteenId, rating, index) {
   goCanteenDetail(e) {
     const canteen = e.currentTarget.dataset.canteen;
     wx.navigateTo({
-      url: `/pages/canteen-detail/canteen-detail?id=${canteen.canteenId}&name=${encodeURIComponent(canteen.name)}`
+      url: `/pages/dish_list/dish_list?id=${canteen.canteenId}&name=${canteen.name}`
     });
   },
 

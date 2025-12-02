@@ -1,0 +1,68 @@
+<view class="page">
+
+<!-- 搜索框 -->
+<view class="search-wrapper">
+  <van-search value="{{keyword}}" placeholder="请输入菜品名称" bind:change="onSearch" />
+</view>
+<!-- 顶部：食堂卡片 -->
+<view class="canteen-card">
+  <view class="c-title">{{canteenName}}</view>
+  <view class="c-item">
+    <van-icon name="clock-o" size="18px" />
+    <text class="c-text">{{businessHours}}</text>
+  </view>
+  <view class="c-item">
+    <van-icon name="location-o" size="18px" />
+    <text class="c-text">{{location}}</text>
+  </view>
+</view>
+
+<!-- 排序栏 -->
+<view class="sort-bar">
+  <view class="sort-item" data-type="priceAsc" bindtap="sortDishes">
+    价格升序
+  </view>
+  <view class="sort-item" data-type="priceDesc" bindtap="sortDishes">
+    价格降序
+  </view>
+  <view class="sort-item" data-type="ratingDesc" bindtap="sortDishes">
+    评分最高
+  </view>
+  <view class="sort-item" data-type="hotDesc" bindtap="sortDishes">
+    热度最高
+  </view>
+</view>
+
+<!-- 菜品列表 -->
+<view class="dish-list">
+  <block wx:for="{{dishes}}" wx:key="dishId">
+    <view class="dish-card" bindtap="goDishDetail" data-dish="{{item}}">
+      <image class="dish-img" src="{{item.images[0]}}" mode="aspectFill"></image>
+
+      <view class="dish-info">
+        <view class="dish-title-row">
+          <text class="dish-name">{{item.name}}</text>
+
+          <block wx:for="{{item.tags}}" wx:key="tag">
+            <van-tag type="primary" size="mini" class="tag">{{item}}</van-tag>
+          </block>
+        </view>
+
+        <text class="dish-desc">{{item.description}}</text>
+
+        <view class="dish-bottom">
+          <text class="price">￥ {{item.price}}</text>
+
+          <view class="rate-box">
+            <van-rate value="{{item.rating}}" size="16" readonly allow-half />
+            <text class="rate-count">({{item.ratingCount}})</text>
+          </view>
+        </view>
+
+        <!--<view wx:if="{{!item.isAvailable}}" class="soldout">已下架</view>-->
+      </view>
+    </view>
+  </block>
+</view>
+
+</view>
