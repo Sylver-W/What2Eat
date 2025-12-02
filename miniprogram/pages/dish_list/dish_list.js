@@ -1,3 +1,4 @@
+const db = wx.cloud.database();
 Page({
   data: {
     canteenId: null,
@@ -13,16 +14,14 @@ Page({
 
   onLoad(options) {
     // 食堂信息从上个页面传过来
+    const canteenId = Number(options.id);
     this.setData({
-      canteenId: Number(options.id),
-      canteenName: options.name || "食堂"
+      canteenId,
+      canteenName: options.name || ""
     });
 
-    // 示例：实际可从数据库中查食堂详情
-    const sampleCanteen = {
-      businessHours: "早中餐 7:00-10:00，午餐 11:00-14:00，晚餐 16:30-21:00",
-      location: "梅苑东区靠近宿舍 3 栋"
-    };
+    this.loadCanteenInfo(canteenId);
+    // this.loadDishes(canteenId);
 
     const sampleDishes = [
       {
@@ -72,10 +71,37 @@ Page({
     ];
 
     this.setData({
-      businessHours: sampleCanteen.businessHours,
-      location: sampleCanteen.location,
       dishes: sampleDishes
     });
+  },
+
+  loadCanteenInfo(canteenId) {
+    const that = this;
+    db.collection("canteens")
+      .where({ canteenId })
+      .get()
+      .then(res => {
+        if (!res.data.length) return;
+
+        const c = res.data[0];
+        that.setData({
+          canteenName: c.name,
+          businessHours: c.businessHours,
+          location: c.location
+        });
+      })
+      .catch(err => console.error(err));
+  },
+
+  loadDishes(canteenId) {
+    db.collection("dish")
+      .where({ canteenId })
+      .get()
+      .then(res => {
+        this.setData({
+          dishes: res.data
+        });
+      });
   },
 
   // 跳转详情
