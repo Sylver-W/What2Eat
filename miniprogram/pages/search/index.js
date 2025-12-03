@@ -1,6 +1,5 @@
 // pages/search/index.js
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -170,17 +169,7 @@ Page({
         hasMore: result.data.length === this.data.pageSize
       });
 
-      wx.hideLoading();
-
-      // 如果无结果，显示提示
-      if (searchResults.length === 0) {
-        wx.showToast({
-          title: '未找到相关菜品',
-          icon: 'none',
-          duration: 2000
-        });
-      }
-
+      wx.hideLoading();  
     } catch (error) {
       console.error('搜索失败:', error);
       wx.hideLoading();
@@ -218,9 +207,13 @@ Page({
    * 格式化菜品数据（根据新表结构）
    */
   formatDishData(dish) {
-    // 使用 image1 字段，如果没有则使用默认图片
-    const imageUrl = dish.image1 || '/images/default-dish.png';
-    
+    // 从 images 数组中取第一张图片，如果没有则使用默认图片
+    const imageUrl = (dish.images && dish.images.length > 0) 
+    ? dish.images[0] 
+    : '/images/dish1.jpg';
+    // 处理数据库中的 tags 数组字段
+    const tags = this.formatTagsFromDatabase(dish.tags);
+
     return {
       id: dish._id,
       dishId: dish.dishId || 0,
@@ -228,11 +221,50 @@ Page({
       description: dish.description || '暂无描述',
       price: dish.price || 0,
       location: dish.canteenName || '未知食堂',
-      rating: dish.rating || 0,
+      rating: dish.rating || 4.0,
       ratingCount: dish.ratingCount || 0,
       imageUrl: imageUrl,
-      canteenId: dish.canteenId || 0
+      canteenId: dish.canteenId || 0,
+      tags: tags
     };
+  },
+
+    /**
+   * 格式化数据库中的 tags 数组为前端需要的格式
+   * @param {Array} dbTags - 数据库中的标签数组，如 ['早餐', '午餐', '晚餐']
+   * @returns {Object} - 前端需要的标签对象格式
+   */
+  formatTagsFromDatabase(dbTags) {
+    // 如果数据库中没有 tags 字段或不是数组，返回空对象
+    if (!Array.isArray(dbTags)) {
+      return {
+        breakfast: false,
+        lunch: false,
+        dinner: false
+      };
+    }
+    
+    // 转换为前端需要的格式
+    const tags = {
+      breakfast: false,
+      lunch: false,
+      dinner: false
+    };
+    
+    // 遍历数据库标签，设置对应的属性为 true
+    dbTags.forEach(tag => {
+      const tagLower = tag.toLowerCase();
+      
+      if (tagLower.includes('早餐') || tagLower.includes('早饭')) {
+        tags.breakfast = true;
+      } else if (tagLower.includes('午餐') || tagLower.includes('午饭')) {
+        tags.lunch = true;
+      } else if (tagLower.includes('晚餐') || tagLower.includes('晚饭') || tagLower.includes('夜宵')) {
+        tags.dinner = true;
+      }
+    });
+    
+    return tags;
   },
 
   /**
@@ -288,18 +320,15 @@ Page({
     wx.stopPullDownRefresh();
   },
 
+
   /**
-   * 初始化云数据库（可选，可以在app.js中统一初始化）
+   * 点击添加菜品建议
    */
-  initCloud() {
-    if (!wx.cloud) {
-      console.error('请使用 2.2.3 或以上的基础库以使用云能力');
-    } else {
-      wx.cloud.init({
-        env: '你的云环境ID', // 这里需要替换为你的云环境ID
-        traceUser: true,
-      });
-    }
+  onAddSuggestion() {
+    // 跳转到添加菜品页面
+    wx.navigateTo({
+      url: '/pages/user/addDish/index'
+    });
   },
 
   /**

@@ -1,6 +1,6 @@
 <!--pages/search/index.wxml-->
 <view class="page">
-  <!-- 唯一查询框 - 顶部居中 -->
+  <!-- 查询框  -->
   <view class="search-container">
     <view class="search-box">
       <!-- 搜索图标 -->
@@ -43,7 +43,7 @@
           <view class="dish-image-container">
             <image 
               class="dish-image" 
-              src="{{item.imageUrl || '/images/dish1.png'}}" 
+              src="{{item.imageUrl}}" 
               mode="aspectFill"
             ></image>
           </view>
@@ -70,24 +70,26 @@
             <view class="dish-description">{{item.description}}</view>
             
             <!-- 价格 -->
-            <view class="dish-price">¥{{item.price.toFixed(2)}}</view>
+            <view class="dish-price">¥{{item.price}}</view>
             
             <!-- 底部信息：地点 + 评分 -->
             <view class="dish-footer">
               <text class="location-text">{{item.location}}</text>
               
               <view class="rating">
-                <!-- 星级评分 -->
-                <view class="stars">
-                  <block wx:for="{{5}}" wx:key="index">
-                    <image 
-                      class="star-icon" 
-                      src="{{index < item.rating ? '/images/icon/star.png' : '/images/icon/star.png'}}"
-                    ></image>
-                  </block>
-                </view>
-                <text class="rating-text">{{item.rating.toFixed(1)}}</text>
+                <!-- 使用 van-rate 组件 -->
+                <van-rate 
+                  value="{{item.rating}}" 
+                  readonly 
+                  size="12"
+                  color="#ffd700"  
+                  void-color="#eee" 
+                  void-icon="star"  
+                  icon="star"       
+                />
+                <text class="rating-text">{{item.rating}}</text>
               </view>
+
             </view>
           </view>
         </view>
@@ -99,5 +101,10 @@
   <view class="no-results" wx:if="{{hasSearched && searchResults.length === 0}}">
     <text class="no-results-text">未找到相关菜品</text>
     <text class="no-results-hint">尝试其他关键词搜索</text>
+  </view>
+
+  <!-- 添加菜品 -->
+  <view class="add-suggestion">
+    <text class="add-text" bindtap="onAddSuggestion">没找到？点击添加菜品补充建议</text>
   </view>
 </view>
