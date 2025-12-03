@@ -219,8 +219,11 @@ Page({
    */
   formatDishData(dish) {
     // 使用 image1 字段，如果没有则使用默认图片
-    const imageUrl = dish.image1 || '/images/default-dish.png';
-    
+    const imageUrl = dish.image1 || '/images/dish1.jpg';
+
+    // 处理数据库中的 tags 数组字段
+    const tags = this.formatTagsFromDatabase(dish.tags);
+
     return {
       id: dish._id,
       dishId: dish.dishId || 0,
@@ -228,11 +231,50 @@ Page({
       description: dish.description || '暂无描述',
       price: dish.price || 0,
       location: dish.canteenName || '未知食堂',
-      rating: dish.rating || 0,
+      rating: dish.rating || 4.0,
       ratingCount: dish.ratingCount || 0,
       imageUrl: imageUrl,
-      canteenId: dish.canteenId || 0
+      canteenId: dish.canteenId || 0,
+      tags: tags
     };
+  },
+
+    /**
+   * 格式化数据库中的 tags 数组为前端需要的格式
+   * @param {Array} dbTags - 数据库中的标签数组，如 ['早餐', '午餐', '晚餐']
+   * @returns {Object} - 前端需要的标签对象格式
+   */
+  formatTagsFromDatabase(dbTags) {
+    // 如果数据库中没有 tags 字段或不是数组，返回空对象
+    if (!Array.isArray(dbTags)) {
+      return {
+        breakfast: false,
+        lunch: false,
+        dinner: false
+      };
+    }
+    
+    // 转换为前端需要的格式
+    const tags = {
+      breakfast: false,
+      lunch: false,
+      dinner: false
+    };
+    
+    // 遍历数据库标签，设置对应的属性为 true
+    dbTags.forEach(tag => {
+      const tagLower = tag.toLowerCase();
+      
+      if (tagLower.includes('早餐') || tagLower.includes('早饭')) {
+        tags.breakfast = true;
+      } else if (tagLower.includes('午餐') || tagLower.includes('午饭')) {
+        tags.lunch = true;
+      } else if (tagLower.includes('晚餐') || tagLower.includes('晚饭') || tagLower.includes('夜宵')) {
+        tags.dinner = true;
+      }
+    });
+    
+    return tags;
   },
 
   /**
@@ -300,6 +342,16 @@ Page({
         traceUser: true,
       });
     }
+  },
+
+  /**
+   * 点击添加菜品建议
+   */
+  onAddSuggestion() {
+    // 跳转到添加菜品页面
+    wx.navigateTo({
+      url: '/pages/user/addDish/index'
+    });
   },
 
   /**
