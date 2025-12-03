@@ -192,7 +192,7 @@
   border-radius: 8rpx;
   font-size: 22rpx;
   font-weight: 300; 
-  border: 1rpx solid #7b7a7a; /* 添加灰色边框 */
+  border: 1rpx solid #7b7a7a; 
 }
 
 /* 菜品描述 */
@@ -270,7 +270,7 @@
   background-color: #f8f8f8;
   border-top: 1rpx solid #e0e0e0;
   width: 100%;
-  position: fixed;  /* 改为 fixed */
+  position: fixed;  
   bottom: 0;
   left: 0;
   z-index: 80;
@@ -296,6 +296,6 @@
   min-height: 100vh;
   background-color: #f8f9fa;
   padding-top: 40rpx;
-  padding-bottom: 110rpx;  /* 添加底部内边距，值为add-suggestion高度+一些间距 */
+  padding-bottom: 110rpx;  
   box-sizing: border-box;
 }

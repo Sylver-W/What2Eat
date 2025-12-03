@@ -1,6 +1,5 @@
 // pages/search/index.js
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -170,17 +169,7 @@ Page({
         hasMore: result.data.length === this.data.pageSize
       });
 
-      wx.hideLoading();
-
-      // 如果无结果，显示提示
-      if (searchResults.length === 0) {
-        wx.showToast({
-          title: '未找到相关菜品',
-          icon: 'none',
-          duration: 2000
-        });
-      }
-
+      wx.hideLoading();  
     } catch (error) {
       console.error('搜索失败:', error);
       wx.hideLoading();
@@ -218,9 +207,10 @@ Page({
    * 格式化菜品数据（根据新表结构）
    */
   formatDishData(dish) {
-    // 使用 image1 字段，如果没有则使用默认图片
-    const imageUrl = dish.image1 || '/images/dish1.jpg';
-
+    // 从 images 数组中取第一张图片，如果没有则使用默认图片
+    const imageUrl = (dish.images && dish.images.length > 0) 
+    ? dish.images[0] 
+    : '/images/dish1.jpg';
     // 处理数据库中的 tags 数组字段
     const tags = this.formatTagsFromDatabase(dish.tags);
 
@@ -330,19 +320,6 @@ Page({
     wx.stopPullDownRefresh();
   },
 
-  /**
-   * 初始化云数据库（可选，可以在app.js中统一初始化）
-   */
-  initCloud() {
-    if (!wx.cloud) {
-      console.error('请使用 2.2.3 或以上的基础库以使用云能力');
-    } else {
-      wx.cloud.init({
-        env: '你的云环境ID', // 这里需要替换为你的云环境ID
-        traceUser: true,
-      });
-    }
-  },
 
   /**
    * 点击添加菜品建议

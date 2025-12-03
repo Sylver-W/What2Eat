@@ -1,6 +1,6 @@
 <!--pages/search/index.wxml-->
 <view class="page">
-  <!-- 唯一查询框 - 顶部居中 -->
+  <!-- 查询框  -->
   <view class="search-container">
     <view class="search-box">
       <!-- 搜索图标 -->
@@ -89,7 +89,6 @@
                 />
                 <text class="rating-text">{{item.rating}}</text>
               </view>
-
 
             </view>
           </view>
