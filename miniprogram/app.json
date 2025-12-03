@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/canteen/canteen",
-    "pages/user/user",
+    "pages/index/index",  
+    "pages/canteen/canteen", 
+    "pages/user/user", 
     "pages/login/login",
     "pages/home/home",
     "pages/intro/index",

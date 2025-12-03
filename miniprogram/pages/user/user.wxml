@@ -1,46 +1,58 @@
 <view class="mine-container">
-  <!-- 顶部用户信息 -->
+  <!-- 【修改】顶部用户信息（使用官方推荐的头像昵称填写能力） -->
   <view class="user-info">
-    <image class="avatar" src="/images/avatar.jpg"></image>
+    <!-- 头像：使用 button 组件包裹，通过 chooseAvatar 事件获取 -->
+    <button class="avatar-button" hover-class="none" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <image class="avatar" src="{{userAvatar}}"></image>
+    </button>
+    
     <view class="user-text">
-      <view class="user-name">集锦园热干面</view>
-      <view class="user-phone">19729922849</view>
+      <!-- 昵称：使用 input 组件，通过 type="nickname" 唤起微信昵称键盘 -->
+      <input 
+        class="user-name-input {{userNickname ? '' : 'placeholder-input'}}" 
+        type="nickname" 
+        value="{{userNickname}}" 
+        placeholder="点击设置昵称"
+        bindblur="onNicknameInput"
+        placeholder-class="placeholder-class"
+      />
+      <view class="user-phone">{{userPhone}}</view>
     </view>
   </view>
 
-  <!-- 数据统计 -->
+  <!-- 数据统计（使用动态数据） -->
   <view class="stats">
-    <view class="stat-item">
-      <view class="stat-num">65</view>
+    <view class="stat-item" bindtap="goCollectDish">
+      <view class="stat-num">{{favouriteCount}}</view>
       <view class="stat-label">收藏菜品</view>
     </view>
-    <view class="stat-item">
-      <view class="stat-num">3</view>
+    <view class="stat-item" bindtap="goMyComment">
+      <view class="stat-num">{{commentCount}}</view>
       <view class="stat-label">我的评价</view>
     </view>
   </view>
 
-  <!-- 功能列表：绑定子页面跳转事件 -->
-    <view class="func-item" bindtap="goPersonalInfo">
-      <image class="func-icon" src="/images/icon/icon-user.png"></image>
-      <text class="func-text">个人资料</text>
-      <van-icon name="arrow" class="arrow" />
-    </view>
-    <view class="func-item" bindtap="goCollectDish">
-      <image class="func-icon" src="/images/icon/icon-star.png"></image>
-      <text class="func-text">收藏菜品</text>
-      <van-icon name="arrow" class="arrow" />
-    </view>
-    <view class="func-item" bindtap="goMyComment">
-      <image class="func-icon" src="/images/icon/icon-comment.png"></image>
-      <text class="func-text">我的评价</text>
-      <van-icon name="arrow" class="arrow" />
-    </view>
-    <view class="func-item" bindtap="goAddDish">
-      <image class="func-icon" src="/images/icon/icon-add.png"></image>
-      <text class="func-text">菜品补充</text>
-      <van-icon name="arrow" class="arrow" />
-    </view>
+  <!-- 功能列表（保持不变） -->
+  <view class="func-item" bindtap="goPersonalInfo">
+    <image class="func-icon" src="/images/icon/icon-user.png"></image>
+    <text class="func-text">个人资料</text>
+    <van-icon name="arrow" class="arrow" />
+  </view>
+  <view class="func-item" bindtap="goCollectDish">
+    <image class="func-icon" src="/images/icon/icon-star.png"></image>
+    <text class="func-text">收藏菜品</text>
+    <van-icon name="arrow" class="arrow" />
+  </view>
+  <view class="func-item" bindtap="goMyComment">
+    <image class="func-icon" src="/images/icon/icon-comment.png"></image>
+    <text class="func-text">我的评价</text>
+    <van-icon name="arrow" class="arrow" />
+  </view>
+  <view class="func-item" bindtap="goAddDish">
+    <image class="func-icon" src="/images/icon/icon-add.png"></image>
+    <text class="func-text">菜品补充</text>
+    <van-icon name="arrow" class="arrow" />
+  </view>
 </view>
 
 <van-tabbar active="{{ active }}"
