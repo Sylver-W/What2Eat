@@ -1,13 +1,4 @@
 <view class="add-dish-container">
-  <!-- 页面标题 -->
-  <view class="page-header">
-    <view class="page-header-inner">
-      <view class="back-btn" bindtap="goBack">
-        <van-icon name="arrow-left" size="20" color="#333" />
-      </view>
-      <text class="page-title">菜品补充</text>
-    </view>
-  </view>
 
   <!-- 表单区域 -->
   <scroll-view class="form-scroll" scroll-y>
