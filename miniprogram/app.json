@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/index/index",  
-    "pages/canteen/canteen", 
-    "pages/user/user", 
+    "pages/index/index",
+    "pages/canteen/canteen",
+    "pages/user/user",
     "pages/login/login",
     "pages/home/home",
     "pages/intro/index",
@@ -11,7 +11,8 @@
     "pages/user/collectDish/index",
     "pages/user/myComment/index",
     "pages/user/addDish/index",
-    "pages/dish_list/dish_list"
+    "pages/dish_list/dish_list",
+    "pages/dishDetail/index"
   ],
   "usingComponents": {
     "van-tabbar": "@vant/weapp/tabbar/index",

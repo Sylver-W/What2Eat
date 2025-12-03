@@ -270,9 +270,10 @@ async submitRatingToCloud(canteenId, rating, index) {
 
   onSearch(event) {
     const searchValue = event.detail;
-    console.log('搜索关键词:', searchValue);
+    console.log('搜索食堂名称:', searchValue);
     
     if (!searchValue || searchValue.trim() === '') {
+      // 清空搜索，显示所有食堂
       this.setData({
         searchValue: '',
         canteens: this.data.originalCanteens
@@ -283,13 +284,13 @@ async submitRatingToCloud(canteenId, rating, index) {
     }
     
     const keyword = searchValue.toLowerCase().trim();
+    
+    // 只在食堂名称中搜索
     const filteredCanteens = this.data.originalCanteens.filter(canteen => {
-      return (
-        (canteen.name && canteen.name.toLowerCase().includes(keyword)) ||
-        (canteen.location && canteen.location.toLowerCase().includes(keyword)) ||
-        (canteen.featuredDisplay && canteen.featuredDisplay.toLowerCase().includes(keyword))
-      );
+      return canteen.name && canteen.name.toLowerCase().includes(keyword);
     });
+    
+    console.log('搜索到食堂数量:', filteredCanteens.length);
     
     this.setData({
       searchValue: searchValue,

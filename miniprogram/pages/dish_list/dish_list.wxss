@@ -1,3 +1,4 @@
+/* 保持你原来的样式完全不变 */
 .page {
   background-color: #f7f8fa;
   min-height: 100vh;
@@ -65,6 +66,7 @@
   border-radius: 16rpx;
   padding: 20rpx;
   box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.05);
+  position: relative;
 }
 
 .dish-img {
@@ -83,6 +85,7 @@
 .dish-title-row {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .dish-name {
@@ -93,17 +96,20 @@
 
 .tag {
   margin-left: 10rpx;
+  margin-bottom: 5rpx;
 }
 
 .dish-desc {
   font-size: 26rpx;
   color: #666;
   margin: 10rpx 0 20rpx 0;
+  line-height: 1.4;
 }
 
 .dish-bottom {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .price {

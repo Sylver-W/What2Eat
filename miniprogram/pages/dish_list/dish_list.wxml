@@ -4,14 +4,15 @@
 <view class="search-wrapper">
   <van-search value="{{keyword}}" placeholder="请输入菜品名称" bind:change="onSearch" />
 </view>
+
 <!-- 顶部：食堂卡片 -->
 <view class="canteen-card">
   <view class="c-title">{{canteenName}}</view>
-  <view class="c-item">
+  <view class="c-item" wx:if="{{businessHours}}">
     <van-icon name="clock-o" size="18px" />
     <text class="c-text">{{businessHours}}</text>
   </view>
-  <view class="c-item">
+  <view class="c-item" wx:if="{{location}}">
     <van-icon name="location-o" size="18px" />
     <text class="c-text">{{location}}</text>
   </view>
@@ -35,9 +36,15 @@
 
 <!-- 菜品列表 -->
 <view class="dish-list">
-  <block wx:for="{{dishes}}" wx:key="dishId">
+  <block wx:for="{{dishes}}" wx:key="dishId" wx:for-index="index">
     <view class="dish-card" bindtap="goDishDetail" data-dish="{{item}}">
-      <image class="dish-img" src="{{item.images[0]}}" mode="aspectFill"></image>
+      <image 
+        class="dish-img" 
+        src="{{item.images[0]}}" 
+        mode="aspectFill"
+        binderror="onImageError"
+        data-index="{{index}}"
+      ></image>
 
       <view class="dish-info">
         <view class="dish-title-row">
@@ -51,7 +58,7 @@
         <text class="dish-desc">{{item.description}}</text>
 
         <view class="dish-bottom">
-          <text class="price">￥ {{item.price}}</text>
+          <text class="price">￥{{item.price}}</text>
 
           <view class="rate-box">
             <van-rate value="{{item.rating}}" size="16" readonly allow-half />
@@ -59,7 +66,7 @@
           </view>
         </view>
 
-        <!--<view wx:if="{{!item.isAvailable}}" class="soldout">已下架</view>-->
+        <view wx:if="{{!item.isAvailable}}" class="soldout">已下架</view>
       </view>
     </view>
   </block>

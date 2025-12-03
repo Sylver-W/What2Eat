@@ -1,0 +1,15 @@
+{
+  "name": "getCommentsImages",
+  "version": "1.0.0",
+  "description": "处理评论和菜品图片的云存储URL转换",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  },
+  "cloudfunctionRoot": true
+}

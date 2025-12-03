@@ -27,7 +27,7 @@
   <view class="intro-card">
     <view class="intro-title">校园食堂介绍</view>
     <view class="intro-text">
-      第一食堂位于食堂服务区内办公楼对面，分为楼层及大厅，可同时容纳500人就餐...
+      华中科技大学有超过30个食堂，不仅中西餐和地方菜齐全，部分食堂还开放至深夜，是名副其实的集学习、用餐于一体的“美食校园”。
     </view>
     <view class="intro-detail" bindtap="goIntroDetail">详情 ></view>
   </view>
