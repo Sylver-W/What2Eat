@@ -1,2 +1,190 @@
-<!--pages/user/addDish/index.wxml-->
-<text>pages/user/addDish/index.wxml</text>
+<view class="add-dish-container">
+
+  <!-- 表单区域 -->
+  <scroll-view class="form-scroll" scroll-y>
+    <view class="form-container">
+      <!-- 菜品名 -->
+      <view class="form-section">
+        <view class="section-header">
+          <text class="section-title">菜品名</text>
+          <text class="section-required">*</text>
+        </view>
+        <input 
+          class="form-input" 
+          placeholder="输入菜品名称" 
+          value="{{dishName}}"
+          bindinput="onDishNameInput"
+          placeholder-class="placeholder"
+          maxlength="20"
+        />
+        <view class="input-counter">{{dishName.length}}/20</view>
+      </view>
+
+      <!-- 所在食堂 -->
+      <view class="form-section">
+        <view class="section-header">
+          <text class="section-title">所在食堂</text>
+          <text class="section-required">*</text>
+        </view>
+        <picker 
+          range="{{canteenOptions}}" 
+          range-key="name"
+          value="{{canteenIndex}}" 
+          bindchange="onCanteenChange"
+        >
+          <view class="picker-input {{canteenIndex === -1 ? 'placeholder' : ''}}">
+            {{canteenIndex === -1 ? '请选择食堂' : canteenOptions[canteenIndex].name}}
+            <van-icon name="arrow" size="16" color="#ccc" />
+          </view>
+        </picker>
+      </view>
+
+      <!-- 价格 -->
+      <view class="form-section">
+        <view class="section-header">
+          <text class="section-title">价格</text>
+          <text class="section-required">*</text>
+        </view>
+        <view class="price-input-wrapper">
+          <text class="price-unit">￥</text>
+          <input 
+            class="form-input price-input" 
+            type="digit" 
+            placeholder="0.00" 
+            value="{{price}}"
+            bindinput="onPriceInput"
+            placeholder-class="placeholder"
+          />
+          <text class="price-text">元</text>
+        </view>
+      </view>
+
+      <!-- 菜品介绍 -->
+      <view class="form-section">
+        <view class="section-header">
+          <text class="section-title">菜品介绍</text>
+          <text class="section-required">*</text>
+        </view>
+        <textarea 
+          class="form-textarea" 
+          placeholder="分享一下您的用餐体验，描述菜品特点..."
+          value="{{description}}"
+          bindinput="onDescriptionInput"
+          placeholder-class="placeholder"
+          maxlength="200"
+          auto-height
+        />
+        <view class="textarea-counter">{{description.length}}/200</view>
+      </view>
+
+      <!-- 菜品标签 -->
+      <view class="form-section">
+        <view class="section-header">
+          <text class="section-title">菜品标签</text>
+          <text class="section-optional">（可选）</text>
+        </view>
+        <view class="section-hint">点击选择标签，最多可选6个</view>
+        
+        <!-- 标签网格 -->
+        <view class="tags-grid">
+          <block wx:for="{{availableTags}}" wx:key="*this">
+            <view 
+              class="tag-item {{selectedTags.includes(item) ? 'tag-selected' : ''}}"
+              data-tag="{{item}}"
+              bindtap="toggleTag"
+            >
+              <text class="tag-text">{{item}}</text>
+              <view class="tag-check" wx:if="{{selectedTags.includes(item)}}">
+                <van-icon name="success" size="14" color="#fff" />
+              </view>
+            </view>
+          </block>
+        </view>
+
+        <!-- 已选择标签 -->
+        <view class="selected-tags" wx:if="{{selectedTags.length > 0}}">
+          <text class="selected-label">已选标签：</text>
+          <view class="selected-tags-list">
+            <block wx:for="{{selectedTags}}" wx:key="*this">
+              <view class="selected-tag">
+                {{item}}
+                <view class="remove-tag" data-index="{{index}}" bindtap="removeSelectedTag">
+                  <van-icon name="clear" size="12" color="#fff" />
+                </view>
+              </view>
+            </block>
+          </view>
+          <text class="tags-count">已选 {{selectedTags.length}} 个</text>
+        </view>
+
+        <!-- 自定义标签 -->
+        <view class="custom-tag">
+          <view class="custom-tag-header">
+            <text class="custom-title">自定义标签</text>
+            <text class="custom-hint">（最多4个字）</text>
+          </view>
+          <view class="custom-input-wrapper">
+            <input 
+              class="custom-input" 
+              placeholder="输入自定义标签" 
+              value="{{customTagInput}}"
+              bindinput="onCustomTagInput"
+              placeholder-class="placeholder"
+              maxlength="4"
+            />
+            <button 
+              class="add-tag-btn {{!customTagInput.trim() ? 'disabled' : ''}}" 
+              bindtap="addCustomTag"
+            >
+              添加
+            </button>
+          </view>
+        </view>
+      </view>
+
+      <!-- 上传图片 -->
+      <view class="form-section">
+        <view class="section-header">
+          <text class="section-title">菜品图片</text>
+          <text class="section-optional">（可选）</text>
+        </view>
+        <view class="section-hint">最多上传3张图片，帮助管理员更好了解菜品</view>
+        
+        <view class="image-upload">
+          <block wx:for="{{images}}" wx:key="index">
+            <view class="image-item">
+              <image class="uploaded-image" src="{{item}}" mode="aspectFill"></image>
+              <view class="delete-image" data-index="{{index}}" bindtap="deleteImage">
+                <van-icon name="clear" size="16" color="#fff" />
+              </view>
+            </view>
+          </block>
+          
+          <view 
+            class="image-item add-image-btn" 
+            bindtap="chooseImage"
+            wx:if="{{images.length < 3}}"
+          >
+            <van-icon name="plus" size="32" color="#ccc" />
+            <text class="add-text">添加图片</text>
+            <text class="add-count">({{images.length}}/3)</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 提交按钮 -->
+      <view class="submit-section">
+        <button 
+          class="submit-btn {{!canSubmit || isSubmitting ? 'disabled' : ''}}" 
+          bindtap="onSubmit"
+        >
+          {{isSubmitting ? '提交中...' : '提交菜品补充建议'}}
+        </button>
+        <view class="submit-tips">
+          <van-icon name="info-o" size="14" color="#999" />
+          <text class="tips-text">提交后，管理员会审核您的建议，审核通过后将展示在菜品列表中</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

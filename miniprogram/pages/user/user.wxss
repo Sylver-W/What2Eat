@@ -1,75 +1,193 @@
-/* 页面容器：去掉底部 Tabbar 高度，适配全局 Tabbar */
+/* user.wxss - 完整修改版 */
+
+/* 页面容器 */
 .mine-container {
-  background-color: #f7f8f7;
-  min-height: calc(100vh - 100rpx); /* 预留底部全局 Tabbar 高度 */
-  padding: 30rpx;
+  min-height: 100vh;
+  background: #f8f8f8;
+  padding-bottom: 100rpx;
 }
 
-/* 用户信息 */
+/* 顶部用户信息区域 */
 .user-info {
   display: flex;
   align-items: center;
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 20rpx;
+  padding: 40rpx 30rpx;
+  background: white;
+  margin-bottom: 20rpx;
 }
+
+/* 头像按钮样式 */
+.avatar-button {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  line-height: 1 !important;
+  width: 120rpx !important;
+  height: 120rpx !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+}
+
+/* 去除按钮默认边框和点击效果 */
+.avatar-button::after {
+  border: none !important;
+  display: none !important;
+}
+
+/* 头像图片 */
 .avatar {
   width: 120rpx;
   height: 120rpx;
   border-radius: 50%;
-  margin-right: 20rpx;
-}
-.user-name {
-  font-size: 32rpx;
-  font-weight: bold;
-}
-.user-phone {
-  font-size: 26rpx;
-  color: #666;
-  margin-top: 10rpx;
+  display: block;
 }
 
-/* 数据统计 */
+/* 用户文本信息区域 */
+.user-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 30rpx;
+  flex: 1;
+}
+
+/* 昵称输入框区域 */
+.user-name-area {
+  margin-bottom: 10rpx;
+  width: 100%;
+}
+
+/* 昵称输入框 */
+.user-name-input {
+  font-size: 36rpx !important;
+  font-weight: bold !important;
+  color: #333 !important;
+  padding: 12rpx 16rpx !important;
+  margin: 0 !important;
+  height: auto !important;
+  line-height: 1.4 !important;
+  background: #f9f9f9 !important;
+  border: 2rpx solid #e0e0e0 !important;
+  border-radius: 12rpx !important;
+  width: 100% !important;
+  min-height: 60rpx !important;
+  box-sizing: border-box !important;
+}
+
+/* 输入框获取焦点时的样式 */
+.user-name-input:focus {
+  border-color: #07c160 !important;
+  background: white !important;
+  box-shadow: 0 0 10rpx rgba(7, 193, 96, 0.2) !important;
+}
+
+/* 未设置昵称时的占位符样式 */
+.placeholder-input {
+  color: #999 !important;
+  font-style: italic !important;
+  background: #f5f5f5 !important;
+}
+
+/* 占位符文本样式 */
+.placeholder-class {
+  color: #ccc !important;
+  font-size: 36rpx !important;
+}
+
+/* 手机号显示 */
+.user-phone {
+  font-size: 28rpx;
+  color: #666;
+  margin-top: 4rpx;
+}
+
+/* 数据统计区域 */
 .stats {
   display: flex;
-  justify-content: space-around;
-  background: #fff;
-  border-radius: 20rpx;
-  padding: 20rpx 0;
-  margin: 20rpx 0;
+  background: white;
+  padding: 30rpx 0;
+  margin-bottom: 20rpx;
+  border-top: 2rpx solid #f0f0f0;
+  border-bottom: 2rpx solid #f0f0f0;
 }
+
 .stat-item {
+  flex: 1;
   text-align: center;
+  padding: 20rpx 0;
+  border-right: 2rpx solid #f0f0f0;
 }
+
+.stat-item:last-child {
+  border-right: none;
+}
+
 .stat-num {
-  font-size: 36rpx;
+  font-size: 42rpx;
   font-weight: bold;
   color: #333;
+  margin-bottom: 10rpx;
 }
+
 .stat-label {
-  font-size: 24rpx;
-  color: #999;
-  margin-top: 10rpx;
+  font-size: 26rpx;
+  color: #666;
 }
 
 /* 功能列表 */
 .func-item {
-  background: #fff;
-  margin: 20rpx 0;
   display: flex;
   align-items: center;
-  padding: 40rpx 20rpx;
-  border-bottom: 1rpx solid #f5f5f5;
+  padding: 30rpx;
+  background: white;
+  margin-bottom: 2rpx;
+  position: relative;
 }
+
+.func-item:active {
+  background: #f9f9f9;
+}
+
 .func-icon {
-  width: 50rpx;
-  height: 50rpx;
+  width: 44rpx;
+  height: 44rpx;
   margin-right: 20rpx;
 }
+
 .func-text {
+  font-size: 32rpx;
+  color: #333;
   flex: 1;
-  font-size: 30rpx;
 }
+
 .arrow {
-  color: #cccccc; /* 与首页箭头颜色一致 */
+  color: #ccc;
+  font-size: 32rpx;
+}
+
+/* 底部导航栏区域 */
+.van-tabbar {
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 响应式调整 */
+@media (max-width: 375px) {
+  .user-info {
+    padding: 30rpx 20rpx;
+  }
+  
+  .avatar {
+    width: 100rpx;
+    height: 100rpx;
+  }
+  
+  .user-name-input {
+    font-size: 32rpx !important;
+    padding: 10rpx 14rpx !important;
+  }
+  
+  .func-item {
+    padding: 24rpx 20rpx;
+  }
 }

@@ -10,7 +10,8 @@
     "pages/user/personalInfo/index",
     "pages/user/collectDish/index",
     "pages/user/myComment/index",
-    "pages/user/addDish/index"
+    "pages/user/addDish/index",
+    "pages/dish_list/dish_list"
   ],
   "usingComponents": {
     "van-tabbar": "@vant/weapp/tabbar/index",
