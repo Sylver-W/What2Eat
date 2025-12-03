@@ -1,2 +1,93 @@
-<!--pages/user/myComment/index.wxml-->
-<text>pages/user/myComment/index.wxml</text>
+<view class="comment-container">
+  <!-- 评价列表 -->
+  <scroll-view 
+    class="comment-list-scroll" 
+    scroll-y 
+    enable-back-to-top
+    bindscrolltolower="loadMore"
+    refresher-enabled="{{true}}"
+    bindrefresherrefresh="onPullDownRefresh"
+    refresher-triggered="{{isRefreshing}}"
+  >
+    <view class="comment-list">
+      <block wx:for="{{commentList}}" wx:key="commentId">
+        <view class="comment-card">
+          <!-- 菜品和评分头部 -->
+          <view class="comment-header">
+            <view class="dish-info">
+              <text class="dish-name">{{item.dishName || '未知菜品'}}</text>
+              <text class="canteen-name">{{item.canteenName || '未知食堂'}}</text>
+            </view>
+            <view class="rating-section">
+              <view class="rating-stars">
+                <block wx:for="{{5}}" wx:key="index">
+                  <view class="star {{index < item.rating ? 'star-filled' : ''}}">
+                    <van-icon name="star" size="16" color="{{index < item.rating ? '#ffc107' : '#ddd'}}" />
+                  </view>
+                </block>
+              </view>
+              <text class="rating-text">{{item.rating}}分</text>
+            </view>
+          </view>
+
+          <!-- 评价内容 -->
+          <view class="comment-content-wrapper">
+            <text class="comment-content">{{item.content}}</text>
+            <!-- 评价图片 -->
+            <view class="comment-images" wx:if="{{item.images && item.images.length > 0}}">
+              <block wx:for="{{item.images}}" wx:key="index">
+                <image 
+                  class="comment-image" 
+                  src="{{item}}" 
+                  mode="aspectFill" 
+                  data-index="{{index}}" 
+                  data-images="{{item.images}}"
+                  bindtap="previewImage"
+                />
+              </block>
+            </view>
+          </view>
+
+          <!-- 底部信息 -->
+          <view class="comment-footer">
+            <view class="comment-meta">
+              <text class="comment-time">{{formatTime(item.createTime)}}</text>
+              <view class="like-count" wx:if="{{item.likeCount > 0}}">
+                <van-icon name="like-o" size="14" color="#ff4444" />
+                <text class="like-text">{{item.likeCount}}个赞</text>
+              </view>
+            </view>
+            
+            <view class="comment-actions">
+              <view class="action-btn edit-btn" data-id="{{item.commentId}}" bindtap="editComment">
+                <van-icon name="edit" size="16" color="#666" />
+                <text>编辑</text>
+              </view>
+              <view class="action-btn delete-btn" data-id="{{item.commentId}}" bindtap="deleteComment">
+                <van-icon name="delete" size="16" color="#ff4444" />
+                <text>删除</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{!hasMore && commentList.length > 0}}">
+      <text class="load-text">没有更多评价了</text>
+    </view>
+    <view class="load-more" wx:if="{{isLoadingMore}}">
+      <van-loading size="20px" type="spinner" color="#07c160" />
+      <text class="load-text">加载中...</text>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{commentList.length === 0 && !isLoading}}">
+      <image class="empty-icon" src="/images/icon/icon-empty-comment.png"></image>
+      <text class="empty-text">暂无评价记录</text>
+      <text class="empty-hint">去品尝菜品并分享你的感受吧</text>
+      <button class="empty-btn" bindtap="goToCanteen">去食堂看看</button>
+    </view>
+  </scroll-view>
+</view>

@@ -1,7 +1,6 @@
 {
-  "navigationBarTitleText": "个人信息",
+  "navigationBarTitleText": "个人资料",
   "usingComponents": {
     "van-icon": "@vant/weapp/icon/index"
-  },
-  "navigationStyle": "custom"
+  }
 }
