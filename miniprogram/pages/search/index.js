@@ -1,51 +1,31 @@
 // pages/search/index.js
 Page({
-  /**
-   * 页面的初始数据
-   */
   data: {
     query: '',
     autoFocus: true,
-    searchResults: [],  // 搜索结果列表
-    hasSearched: false, // 是否已进行搜索
-    isLoading: false,   // 是否正在加载
-    currentPage: 1,     // 当前页码
-    pageSize: 10,       // 每页显示数量
-    totalCount: 0,      // 总结果数
-    hasMore: true       // 是否还有更多数据
+    searchResults: [],
+    hasSearched: false,
+    isLoading: false,
+    currentPage: 1,
+    pageSize: 10,
+    totalCount: 0,
+    hasMore: true
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad(options) {
-    this.setData({
-      autoFocus: true
-    });
+    this.setData({ autoFocus: true })
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow() {
-    this.setData({
-      autoFocus: true
-    });
+    this.setData({ autoFocus: true })
   },
 
-  /**
-   * 输入内容变化
-   */
   onInputChange(e) {
-    const query = e.detail.value.trim();
     this.setData({
-      query: query
-    });
+      query: e.detail.value.trim()
+    })
   },
 
-  /**
-   * 清除输入内容
-   */
   onClearInput() {
     if (this.data.query) {
       this.setData({
@@ -56,13 +36,10 @@ Page({
         currentPage: 1,
         totalCount: 0,
         hasMore: true
-      });
+      })
     }
   },
 
-  /**
-   * 取消按钮点击事件
-   */
   onCancel() {
     this.setData({
       query: '',
@@ -71,151 +48,192 @@ Page({
       currentPage: 1,
       totalCount: 0,
       hasMore: true
-    });
-    
-    wx.hideKeyboard();
+    })
+    wx.hideKeyboard()
   },
 
-  /**
-   * 执行查询（回车键触发）
-   */
   onSearch() {
-    const query = this.data.query;
+    const query = this.data.query
     
-    // 如果查询内容为空，显示提示
     if (!query) {
       wx.showToast({
         title: '请输入菜品名称',
         icon: 'none',
         duration: 1500
-      });
-      return;
+      })
+      return
     }
 
-    // 重置分页数据
     this.setData({
       currentPage: 1,
       totalCount: 0,
       hasMore: true
-    });
+    })
 
-    // 执行搜索
-    this.searchDishesByName(query, 1);
+    this.searchDishesByName(query, 1)
   },
 
   /**
-   * 根据菜品名称搜索
+   * 搜索菜品（使用云函数方案）
    */
   async searchDishesByName(name, page = 1) {
-    // 显示加载状态
-    this.setData({
-      isLoading: true
-    });
-
-    // 显示加载提示
+    this.setData({ isLoading: true })
+    
     wx.showLoading({
       title: '搜索中...',
       mask: true
-    });
+    })
 
     try {
-      // 获取云数据库实例
-      const db = wx.cloud.database();
+      // 方案A：使用一体化云函数（推荐）
+      const result = await this.searchWithCloudFunction(name, page)
       
-      // 计算跳过的记录数
-      const skipCount = (page - 1) * this.data.pageSize;
+      // 方案B：分步处理（备用）
+      // const result = await this.searchStepByStep(name, page)
       
-      // 执行查询：名称类似（模糊搜索）
-      const result = await db.collection('dishes')
-        .where({
-          name: db.RegExp({
-            regexp: this.escapeRegExp(name),  // 转义特殊字符
-            options: 'i'  // 忽略大小写
-          })
-        })
-        .orderBy('rating', 'desc')  // 按评分降序排序
-        .skip(skipCount)
-        .limit(this.data.pageSize)
-        .get();
-
-      // 获取总数量
-      const countResult = await db.collection('dishes')
-        .where({
-          name: db.RegExp({
-            regexp: this.escapeRegExp(name),
-            options: 'i'
-          })
-        })
-        .count();
-
-      // 处理查询结果
-      let searchResults;
-      if (page === 1) {
-        // 第一页，直接替换
-        searchResults = result.data.map(item => this.formatDishData(item));
-      } else {
-        // 后续页码，追加数据
-        const formattedData = result.data.map(item => this.formatDishData(item));
-        searchResults = [...this.data.searchResults, ...formattedData];
-      }
-
-      // 更新页面数据
-      this.setData({
-        searchResults: searchResults,
-        hasSearched: true,
-        isLoading: false,
-        currentPage: page,
-        totalCount: countResult.total,
-        hasMore: result.data.length === this.data.pageSize
-      });
-
-      wx.hideLoading();  
+      this.handleSearchResult(result, page)
+      
     } catch (error) {
-      console.error('搜索失败:', error);
-      wx.hideLoading();
-      
-      this.setData({
-        isLoading: false
-      });
-
-      // 检查是否为未创建集合的错误
-      if (error.errCode === -501003) {
-        wx.showToast({
-          title: '菜品数据未就绪',
-          icon: 'none',
-          duration: 2000
-        });
-      } else {
-        wx.showToast({
-          title: '搜索失败，请重试',
-          icon: 'none',
-          duration: 2000
-        });
-      }
+      console.error('搜索失败:', error)
+      this.handleSearchError(error)
+    } finally {
+      wx.hideLoading()
+      this.setData({ isLoading: false })
     }
   },
 
   /**
-   * 转义正则表达式特殊字符
-   * 防止用户输入包含 . * + ? ^ $ { } ( ) | [ ] \ 等字符时导致正则错误
+   * 方案A：使用一体化云函数
    */
-  escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  async searchWithCloudFunction(name, page) {
+    try {
+      const result = await wx.cloud.callFunction({
+        name: 'searchDishes',
+        data: {
+          name: name,
+          page: page,
+          pageSize: this.data.pageSize
+        }
+      })
+      
+      return result.result
+    } catch (error) {
+      console.error('云函数调用失败，使用备用方案:', error)
+      // 如果云函数失败，使用分步方案
+      return await this.searchStepByStep(name, page)
+    }
   },
 
   /**
-   * 格式化菜品数据（根据新表结构）
+   * 方案B：分步处理（备用方案）
    */
-  formatDishData(dish) {
-    // 从 images 数组中取第一张图片，如果没有则使用默认图片
-    const imageUrl = (dish.images && dish.images.length > 0) 
-    ? dish.images[0] 
-    : '/images/dish1.jpg';
-    // 处理数据库中的 tags 数组字段
-    const tags = this.formatTagsFromDatabase(dish.tags);
+  async searchStepByStep(name, page) {
+    const db = wx.cloud.database()
+    const skipCount = (page - 1) * this.data.pageSize
+    
+    // 1. 搜索菜品
+    const searchResult = await db.collection('dishes')
+      .where({
+        name: db.RegExp({
+          regexp: this.escapeRegExp(name),
+          options: 'i'
+        })
+      })
+      .orderBy('rating', 'desc')
+      .skip(skipCount)
+      .limit(this.data.pageSize)
+      .get()
+
+    // 2. 获取总数
+    const countResult = await db.collection('dishes')
+      .where({
+        name: db.RegExp({
+          regexp: this.escapeRegExp(name),
+          options: 'i'
+        })
+      })
+      .count()
+
+    // 3. 处理图片（使用图片处理云函数）
+    let processedDishes = []
+    if (searchResult.data && searchResult.data.length > 0) {
+      const imageResult = await wx.cloud.callFunction({
+        name: 'getDishImages',
+        data: {
+          dishes: searchResult.data
+        }
+      })
+      
+      processedDishes = imageResult.result.data || []
+    }
 
     return {
+      success: true,
+      data: processedDishes,
+      total: countResult.total,
+      hasMore: searchResult.data.length === this.data.pageSize
+    }
+  },
+
+  /**
+   * 处理搜索结果
+   */
+  handleSearchResult(result, page) {
+    if (!result.success) {
+      wx.showToast({
+        title: result.error || '搜索失败',
+        icon: 'none',
+        duration: 2000
+      })
+      return
+    }
+
+    // 格式化数据
+    const processedResults = result.data.map(dish => this.formatDishData(dish))
+
+    let searchResults
+    if (page === 1) {
+      searchResults = processedResults
+    } else {
+      searchResults = [...this.data.searchResults, ...processedResults]
+    }
+
+    this.setData({
+      searchResults: searchResults,
+      hasSearched: true,
+      currentPage: page,
+      totalCount: result.total || 0,
+      hasMore: result.hasMore || processedResults.length === this.data.pageSize
+    })
+  },
+
+  /**
+   * 处理搜索错误
+   */
+  handleSearchError(error) {
+    if (error.errCode === -501003) {
+      wx.showToast({
+        title: '菜品数据未就绪',
+        icon: 'none',
+        duration: 2000
+      })
+    } else {
+      wx.showToast({
+        title: '搜索失败，请重试',
+        icon: 'none',
+        duration: 2000
+      })
+    }
+  },
+
+  /**
+   * 格式化菜品数据
+   */
+  formatDishData(dish) {
+    // 注意：dish.imageUrl 已经在云函数中处理过了
+    return {
       id: dish._id,
+      _id: dish._id,
       dishId: dish.dishId || 0,
       name: dish.name || '未知菜品',
       description: dish.description || '暂无描述',
@@ -223,80 +241,78 @@ Page({
       location: dish.canteenName || '未知食堂',
       rating: dish.rating || 4.0,
       ratingCount: dish.ratingCount || 0,
-      imageUrl: imageUrl,
+      imageUrl: dish.imageUrl || '/images/dish1.jpg',
       canteenId: dish.canteenId || 0,
-      tags: tags
-    };
+      tags: this.formatTagsFromDatabase(dish.tags)
+    }
   },
 
-    /**
-   * 格式化数据库中的 tags 数组为前端需要的格式
-   * @param {Array} dbTags - 数据库中的标签数组，如 ['早餐', '午餐', '晚餐']
-   * @returns {Object} - 前端需要的标签对象格式
+  /**
+   * 格式化标签
    */
   formatTagsFromDatabase(dbTags) {
-    // 如果数据库中没有 tags 字段或不是数组，返回空对象
     if (!Array.isArray(dbTags)) {
       return {
         breakfast: false,
         lunch: false,
         dinner: false
-      };
+      }
     }
     
-    // 转换为前端需要的格式
     const tags = {
       breakfast: false,
       lunch: false,
       dinner: false
-    };
+    }
     
-    // 遍历数据库标签，设置对应的属性为 true
     dbTags.forEach(tag => {
-      const tagLower = tag.toLowerCase();
-      
+      const tagLower = tag.toLowerCase()
       if (tagLower.includes('早餐') || tagLower.includes('早饭')) {
-        tags.breakfast = true;
+        tags.breakfast = true
       } else if (tagLower.includes('午餐') || tagLower.includes('午饭')) {
-        tags.lunch = true;
+        tags.lunch = true
       } else if (tagLower.includes('晚餐') || tagLower.includes('晚饭') || tagLower.includes('夜宵')) {
-        tags.dinner = true;
+        tags.dinner = true
       }
-    });
+    })
     
-    return tags;
+    return tags
+  },
+
+  /**
+   * 转义正则特殊字符
+   */
+  escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   },
 
   /**
    * 点击菜品卡片
    */
   onDishTap(e) {
-    const dishId = e.currentTarget.dataset.id;
-    const dish = this.data.searchResults.find(item => item.id === dishId);
+    const dishId = e.currentTarget.dataset.id
+    const dish = this.data.searchResults.find(item => item.id === dishId)
     
     if (dish) {
-      // 跳转到菜品详情页面
       wx.navigateTo({
         url: `/pages/dishDetail/index?id=${dish._id}&dishId=${dish.dishId}`
-      });
+      })
     }
   },
 
   /**
-   * 页面上拉触底事件的处理函数 - 加载更多
+   * 页面上拉触底
    */
   onReachBottom() {
-    // 如果正在加载或没有更多数据，则不执行
     if (this.data.isLoading || !this.data.hasMore || !this.data.hasSearched) {
-      return;
+      return
     }
 
-    // 加载下一页
-    const nextPage = this.data.currentPage + 1;
-    const query = this.data.query;
+    const nextPage = this.data.currentPage + 1
+    const query = this.data.query
     
     if (query) {
-      this.searchDishesByName(query, nextPage);
+      this.searchDishesByName(query, nextPage)
     }
   },
 
@@ -304,36 +320,45 @@ Page({
    * 下拉刷新
    */
   async onPullDownRefresh() {
-    const query = this.data.query;
+    const query = this.data.query
     
     if (query) {
-      // 重置分页数据
       this.setData({
         currentPage: 1,
         totalCount: 0,
         hasMore: true
-      });
+      })
 
-      await this.searchDishesByName(query, 1);
+      await this.searchDishesByName(query, 1)
     }
     
-    wx.stopPullDownRefresh();
+    wx.stopPullDownRefresh()
   },
 
+  /**
+   * 图片加载错误处理
+   */
+  onImageError(e) {
+    const index = e.currentTarget.dataset.index
+    const searchResults = this.data.searchResults
+    
+    if (searchResults[index]) {
+      searchResults[index].imageUrl = '/images/dish1.jpg'
+      this.setData({
+        searchResults: [...searchResults]
+      })
+    }
+  },
 
   /**
    * 点击添加菜品建议
    */
   onAddSuggestion() {
-    // 跳转到添加菜品页面
     wx.navigateTo({
       url: '/pages/user/addDish/index'
-    });
+    })
   },
 
-  /**
-   * 其他生命周期函数
-   */
   onReady() {},
   onHide() {},
   onUnload() {},

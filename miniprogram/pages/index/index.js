@@ -10,7 +10,7 @@ Page({
       },
       {
         id: 2,
-        name: "鱼香肉丝炒",
+        name: "鱼香肉丝",
         price: 12.88,
         image: "/images/dish2.jpg"
       },

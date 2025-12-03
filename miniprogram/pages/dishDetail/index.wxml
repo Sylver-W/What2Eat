@@ -1,0 +1,198 @@
+<!--pages/dishDetail/index.wxml-->
+<view class="page">
+  <!-- 菜品图片 -->
+  <view class="dish-header">
+    <image 
+      class="dish-image" 
+      src="{{dish.imageUrl || '/images/dish1.jpg'}}" 
+      mode="aspectFill"
+      bindtap="previewImage"
+      data-url="{{dish.imageUrl}}"
+      lazy-load="true"
+      binderror="onImageError"
+      data-type="dish"
+      bindload="onImageLoad"
+    ></image>
+    <view class="dish-overlay">
+      <text class="dish-name">{{dish.name || '加载中...'}}</text>
+      <text class="dish-location">{{dish.location || ''}}</text>
+    </view>
+  </view>
+
+  <!-- 菜品信息卡片 -->
+  <view class="info-card">
+    <!-- 价格和评分 -->
+    <view class="price-rating">
+      <view class="price">
+        <text class="label">价格</text>
+        <text class="value">¥{{dish.price || 0}}</text>
+      </view>
+      <view class="rating">
+        <text class="label">评分</text>
+        <view class="stars">
+          <van-rate 
+            value="{{dish.rating || 4.0}}" 
+            readonly 
+            size="16"
+            color="#ffd700"  
+            void-color="#eee"
+          />
+          <text class="rating-text">{{dish.rating || 4.0}}</text>
+          <text class="rating-count">({{dish.ratingCount || 0}}人评价)</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 菜品描述 -->
+    <view class="description">
+      <text class="title">菜品描述</text>
+      <text class="content">{{dish.description || '暂无描述'}}</text>
+    </view>
+
+    <!-- 供应时间标签 -->
+    <view class="tags" wx:if="{{dish.tags && dish.tags.length > 0}}">
+      <text class="title">供应时间</text>
+      <view class="tag-list">
+        <block wx:for="{{dish.tags}}" wx:key="*this">
+          <view class="tag">{{item}}</view>
+        </block>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评论区域 -->
+  <view class="comments-section">
+    <view class="section-header">
+      <text class="title">用户评价</text>
+      <text class="count">{{totalComments}}条</text>
+    </view>
+
+    <!-- 发表评论按钮 -->
+    <view class="add-comment-btn" bindtap="onAddComment">
+      <van-icon name="edit" size="16px" color="#666" />
+      <text class="btn-text">发表评价</text>
+    </view>
+
+    <!-- 评论列表 -->
+    <view class="comments-list" wx:if="{{comments.length > 0}}">
+      <block wx:for="{{comments}}" wx:key="_id" wx:for-index="index">
+        <view class="comment-item">
+          <!-- 用户信息 -->
+          <view class="user-info">
+            <image 
+              class="avatar" 
+              src="{{item.userAvatar || '/images/default-avatar.png'}}" 
+              mode="aspectFill"
+              binderror="onImageError"
+              data-type="comment"
+              data-index="{{index}}"
+            ></image>
+            <view class="user-detail">
+              <text class="name">{{item.userNickname || '用户'}}</text>
+              <view class="meta">
+                <van-rate 
+                  value="{{item.rating}}" 
+                  readonly 
+                  size="12"
+                  color="#ffd700"
+                />
+                <text class="time">{{formatTime(item.createTime)}}</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 评论内容 -->
+          <text class="comment-content">{{item.content}}</text>
+
+          <!-- 评论图片 -->
+          <view class="comment-images" wx:if="{{item.images && item.images.length > 0}}">
+            <block wx:for="{{item.images}}" wx:key="*this">
+              <image 
+                class="comment-img" 
+                src="{{item}}" 
+                mode="aspectFill"
+                bindtap="previewImage"
+                data-url="{{item}}"
+              ></image>
+            </block>
+          </view>
+
+          <!-- 评论操作 -->
+          <view class="comment-actions">
+            <view class="action-item" bindtap="onLikeComment" data-id="{{item._id}}" data-index="{{index}}">
+              <van-icon name="like" size="14px" color="{{item.liked ? '#e93b3d' : '#999'}}" />
+              <text class="action-text">{{item.likeCount || 0}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 暂无评论 -->
+    <view class="no-comments" wx:if="{{comments.length === 0 && !loading}}">
+      <image src="/images/no-data.png" class="no-data-img"></image>
+      <text class="tip">暂无评价，快来发表第一条吧</text>
+    </view>
+
+    <!-- 加载更多 -->
+    <view class="load-more" wx:if="{{hasMoreComments}}" bindtap="loadMoreComments">
+      <text>加载更多</text>
+      <van-icon name="arrow-down" size="14px" />
+    </view>
+  </view>
+
+  <!-- 发表评论弹窗 -->
+  <van-popup 
+    show="{{showCommentPopup}}" 
+    position="bottom" 
+    custom-style="height: 70%;"
+    bind:close="onClosePopup"
+  >
+    <view class="comment-popup">
+      <view class="popup-header">
+        <text class="title">发表评价</text>
+        <van-icon name="close" size="20px" bindtap="onClosePopup" />
+      </view>
+
+      <view class="popup-content">
+        <!-- 评分 -->
+        <view class="rating-input">
+          <text>评分：</text>
+          <van-rate 
+            value="{{newComment.rating}}" 
+            bind:change="onRatingChange"
+            size="24"
+            color="#ffd700"
+          />
+          <text class="rating-value">{{newComment.rating}}星</text>
+        </view>
+
+        <!-- 评论内容 -->
+        <view class="content-input">
+          <van-field
+            value="{{newComment.content}}"
+            type="textarea"
+            placeholder="分享您的用餐体验..."
+            maxlength="500"
+            autosize
+            border="{{false}}"
+            bind:change="onContentChange"
+          />
+          <text class="word-count">{{newComment.content.length}}/500</text>
+        </view>
+
+        <!-- 提交按钮 -->
+        <van-button 
+          type="primary" 
+          size="large" 
+          bindtap="onSubmitComment"
+          loading="{{isSubmitting}}"
+          disabled="{{!newComment.rating || !newComment.content.trim()}}"
+          custom-class="submit-btn"
+        >
+          提交评价
+        </van-button>
+      </view>
+    </view>
+  </van-popup>
+</view>
