@@ -12,7 +12,7 @@ Page({
 
   onLoad() {
     this.loadCollectDishes(true);
-    // 更新“我的”页面收藏数
+    // 更新"我的"页面收藏数
     this.updateUserFavoriteCount();
   },
 
@@ -22,7 +22,6 @@ Page({
       this.refreshCollectList();
     }
   },
-
 
   // 下拉刷新
   onPullDownRefresh() {
@@ -42,15 +41,17 @@ Page({
       });
 
       if (result.result.code === 0) {
+        const dishList = this.processDishList(result.result.data.list || []);
+        
         this.setData({
-          dishList: result.result.data.list || [],
+          dishList: dishList,
           pageIndex: 0,
           hasMore: result.result.data.hasMore,
           totalCount: result.result.data.totalCount || 0,
           isRefreshing: false
         });
         
-        // 更新“我的”页面收藏数
+        // 更新"我的"页面收藏数
         this.updateUserFavoriteCount();
       } else {
         wx.showToast({
@@ -66,6 +67,8 @@ Page({
         title: '网络错误，请重试',
         icon: 'none'
       });
+    } finally {
+      wx.stopPullDownRefresh();
     }
   },
 
@@ -96,8 +99,8 @@ Page({
       if (result.result.code === 0) {
         const newData = result.result.data;
         const newList = isInitial ? 
-          (newData.list || []) : 
-          [...this.data.dishList, ...(newData.list || [])];
+          this.processDishList(newData.list || []) : 
+          [...this.data.dishList, ...this.processDishList(newData.list || [])];
         
         this.setData({
           dishList: newList,
@@ -108,7 +111,7 @@ Page({
           isLoadingMore: false
         });
 
-        // 更新“我的”页面收藏数
+        // 更新"我的"页面收藏数
         this.updateUserFavoriteCount();
       } else {
         wx.showToast({
@@ -134,6 +137,50 @@ Page({
     }
   },
 
+  // 处理菜品列表数据
+  processDishList(dishList) {
+    if (!dishList || !Array.isArray(dishList)) {
+      return [];
+    }
+    
+    return dishList.map(item => {
+      // 计算价格格式化
+      const price = item.dishPrice || item.price || 0;
+      const formattedPrice = price.toFixed(2);
+      
+      // 计算评分格式化
+      const rating = item.dishRating || item.rating || 0;
+      const formattedRating = rating.toFixed(1);
+      
+      // 处理标签
+      const rawTags = item.dishTags || item.tags || [];
+      const displayTags = Array.isArray(rawTags) ? rawTags.slice(0, 3) : [];
+      
+      // 处理描述
+      const description = item.dishDescription || item.description || '';
+      const shortDescription = description.length > 30 ? 
+        description.substring(0, 30) + '...' : description;
+      
+      return {
+        ...item,
+        _id: item._id || item.dishId,
+        dishId: item.dishId || item._id,
+        dishName: item.dishName || item.name || '未知菜品',
+        dishPrice: price,
+        formattedPrice: formattedPrice,
+        dishRating: rating,
+        formattedRating: formattedRating,
+        favourCount: item.favourCount || 0,
+        canteenName: item.canteenName || item.location || '未知食堂',
+        dishImage: item.dishImage || (item.images && item.images[0]) || '',
+        dishDescription: description,
+        shortDescription: shortDescription,
+        dishTags: displayTags, // 只保留前3个标签
+        rawTags: rawTags // 保留原始标签
+      };
+    });
+  },
+
   // 加载更多
   loadMore() {
     if (this.data.hasMore && !this.data.isLoadingMore) {
@@ -149,7 +196,7 @@ Page({
         userInfo.favouriteCount = this.data.totalCount;
         wx.setStorageSync('userInfo', userInfo);
         
-        // 更新本地缓存，确保“我的”页面数据同步
+        // 更新本地缓存，确保"我的"页面数据同步
         wx.setStorageSync('favouriteCount', this.data.totalCount);
       }
     } catch (error) {
@@ -159,33 +206,58 @@ Page({
 
   // 跳转到菜品详情
   goDishDetail(e) {
-    const dishId = e.currentTarget.dataset.dishId;
-    if (!dishId) return;
+    const dish = e.currentTarget.dataset.dish;
+    if (!dish) return;
     
-    wx.navigateTo({
-      url: `/pages/dishDetail/index?dishId=${dishId}`
-    });
+    console.log('跳转到菜品详情:', dish);
+    
+    // 优先使用数据库 _id，如果没有则使用业务 dishId
+    const dishDbId = dish._id;
+    const dishBusinessId = dish.dishId;
+    
+    if (dishDbId && (dishDbId.startsWith('dish') || dishDbId.length > 5)) {
+      // 使用数据库 _id
+      wx.navigateTo({
+        url: `/pages/dishDetail/index?id=${dishDbId}`
+      });
+    } else if (dishBusinessId) {
+      // 使用业务 dishId
+      wx.navigateTo({
+        url: `/pages/dishDetail/index?dishId=${dishBusinessId}`
+      });
+    } else {
+      wx.showToast({
+        title: '菜品信息错误',
+        icon: 'none'
+      });
+    }
   },
 
   // 取消收藏
   cancelCollect(e) {
-    const dishId = e.currentTarget.dataset.dishId;
-    if (!dishId) return;
+    const dish = e.currentTarget.dataset.dish;
+    if (!dish) return;
     
     wx.showModal({
       title: '取消收藏',
-      content: '确定不再收藏这个菜品了吗？',
+      content: `确定不再收藏《${dish.dishName}》了吗？`,
       confirmColor: '#ff4444',
       success: async (res) => {
         if (res.confirm) {
-          await this.removeCollect(dishId);
+          await this.removeCollect(dish);
         }
       }
     });
+    
+    // 阻止事件冒泡，避免触发跳转
+    e.stopPropagation();
   },
 
   // 移除收藏
-  async removeCollect(dishId) {
+  async removeCollect(dish) {
+    const dishId = dish.dishId || dish._id;
+    if (!dishId) return;
+    
     wx.showLoading({ title: '处理中', mask: true });
     
     try {
@@ -198,13 +270,15 @@ Page({
       
       if (result.result.code === 0) {
         // 从列表中移除
-        const newList = this.data.dishList.filter(item => item.dishId !== dishId);
+        const newList = this.data.dishList.filter(item => 
+          (item.dishId !== dishId && item._id !== dishId)
+        );
         this.setData({
           dishList: newList,
           totalCount: Math.max(0, this.data.totalCount - 1)
         });
         
-        // 更新“我的”页面收藏数
+        // 更新"我的"页面收藏数
         this.updateUserFavoriteCount();
         
         wx.showToast({
@@ -229,6 +303,6 @@ Page({
 
   // 去首页
   goToHome() {
-    wx.navigateTo({ url: '/pages/index/index' });
+    wx.switchTab({ url: '/pages/index/index' });
   }
 });
