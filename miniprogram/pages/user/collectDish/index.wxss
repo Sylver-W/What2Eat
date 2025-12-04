@@ -102,7 +102,7 @@
 /* 取消收藏按钮 */
 .cancel-btn {
   position: absolute;
-  top: 20rpx;
+  bottom: 10rpx;
   right: 20rpx;
   width: 50rpx;
   height: 50rpx;

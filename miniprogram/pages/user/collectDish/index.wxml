@@ -34,10 +34,12 @@
           </view>
           
           <!-- 收藏时间 -->
+          <!--
           <view class="favourite-time">
             <van-icon name="clock-o" size="12px" color="#999" />
             <text class="time-text">{{formatTime(item.createTime)}}</text>
           </view>
+          -->
         </view>
         
         <!-- 取消收藏按钮 -->
