@@ -9,18 +9,9 @@
     bindrefresherrefresh="onPullDownRefresh"
     refresher-triggered="{{isRefreshing}}"
   >
-    <!-- 顶部提示 -->
-    <view class="total-count-tip" wx:if="{{commentList.length > 0}}">
-      <text>共{{totalCount}}条评价</text>
-    </view>
-    
     <view class="comment-list">
-      <block wx:for="{{commentList}}" wx:key="_id" wx:for-index="index">
-        <!-- 修改评论卡片部分，确保传递正确的 dishId -->
-        <view class="comment-card" 
-              bindtap="goToDishDetail" 
-              data-dishid="{{item.dishId}}" 
-              data-index="{{index}}">
+      <block wx:for="{{commentList}}" wx:key="commentId">
+        <view class="comment-card">
           <!-- 菜品和评分头部 -->
           <view class="comment-header">
             <view class="dish-info">
@@ -29,9 +20,9 @@
             </view>
             <view class="rating-section">
               <view class="rating-stars">
-                <block wx:for="{{5}}" wx:key="starIndex">
-                  <view class="star {{starIndex < item.rating ? 'star-filled' : ''}}">
-                    <van-icon name="star" size="16" color="{{starIndex < item.rating ? '#ffc107' : '#ddd'}}" />
+                <block wx:for="{{5}}" wx:key="index">
+                  <view class="star {{index < item.rating ? 'star-filled' : ''}}">
+                    <van-icon name="star" size="16" color="{{index < item.rating ? '#ffc107' : '#ddd'}}" />
                   </view>
                 </block>
               </view>
@@ -44,14 +35,14 @@
             <text class="comment-content">{{item.content}}</text>
             <!-- 评价图片 -->
             <view class="comment-images" wx:if="{{item.images && item.images.length > 0}}">
-              <block wx:for="{{item.images}}" wx:key="imgIndex">
+              <block wx:for="{{item.images}}" wx:key="index">
                 <image 
                   class="comment-image" 
                   src="{{item}}" 
                   mode="aspectFill" 
-                  data-index="{{imgIndex}}" 
+                  data-index="{{index}}" 
                   data-images="{{item.images}}"
-                  catchtap="previewImage"
+                  bindtap="previewImage"
                 />
               </block>
             </view>
@@ -60,7 +51,7 @@
           <!-- 底部信息 -->
           <view class="comment-footer">
             <view class="comment-meta">
-              <text class="comment-time">{{item.formattedTime || formatTime(item.createTime)}}</text>
+              <text class="comment-time">{{formatTime(item.createTime)}}</text>
               <view class="like-count" wx:if="{{item.likeCount > 0}}">
                 <van-icon name="like-o" size="14" color="#ff4444" />
                 <text class="like-text">{{item.likeCount}}个赞</text>
@@ -68,10 +59,11 @@
             </view>
             
             <view class="comment-actions">
-              <view class="action-btn delete-btn" 
-                    data-id="{{item._id}}" 
-                    data-index="{{index}}" 
-                    catchtap="deleteComment">
+              <view class="action-btn edit-btn" data-id="{{item.commentId}}" bindtap="editComment">
+                <van-icon name="edit" size="16" color="#666" />
+                <text>编辑</text>
+              </view>
+              <view class="action-btn delete-btn" data-id="{{item.commentId}}" bindtap="deleteComment">
                 <van-icon name="delete" size="16" color="#ff4444" />
                 <text>删除</text>
               </view>

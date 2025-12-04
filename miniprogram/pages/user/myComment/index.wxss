@@ -1,39 +1,36 @@
-/* mycomment.wxss */
+/* 我的评价页面样式 */
 .comment-container {
-  height: 100vh;
-  background-color: #f5f5f5;
+  min-height: 100vh;
+  background: #f8f8f8;
 }
 
+/* 滚动容器 */
 .comment-list-scroll {
-  height: 100%;
+  height: 100vh;
 }
 
-.total-count-tip {
-  padding: 20rpx 30rpx;
-  background: #fff;
-  text-align: center;
-  font-size: 26rpx;
-  color: #666;
-  border-bottom: 1rpx solid #eee;
-}
-
+/* 评价列表 */
 .comment-list {
-  padding: 20rpx;
+  padding: 20rpx 30rpx;
 }
 
+/* 评价卡片 */
 .comment-card {
-  background: #fff;
+  background: white;
   border-radius: 16rpx;
-  padding: 30rpx;
   margin-bottom: 20rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
+  padding: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
 }
 
+/* 头部 */
 .comment-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
 }
 
 .dish-info {
@@ -42,10 +39,10 @@
 
 .dish-name {
   font-size: 32rpx;
-  font-weight: bold;
+  font-weight: 600;
   color: #333;
   display: block;
-  margin-bottom: 10rpx;
+  margin-bottom: 8rpx;
 }
 
 .canteen-name {
@@ -55,21 +52,31 @@
 
 .rating-section {
   display: flex;
-  align-items: center;
-  gap: 10rpx;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .rating-stars {
   display: flex;
+  gap: 4rpx;
+  margin-bottom: 8rpx;
+}
+
+.star {
+  width: 28rpx;
+  height: 28rpx;
+  display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .rating-text {
-  font-size: 26rpx;
-  color: #ff952d;
-  font-weight: bold;
+  font-size: 24rpx;
+  color: #ffc107;
+  font-weight: 500;
 }
 
+/* 评价内容 */
 .comment-content-wrapper {
   margin-bottom: 20rpx;
 }
@@ -77,34 +84,36 @@
 .comment-content {
   font-size: 28rpx;
   color: #333;
-  line-height: 1.5;
+  line-height: 1.6;
+  display: block;
   margin-bottom: 20rpx;
 }
 
 .comment-images {
   display: flex;
-  gap: 15rpx;
   flex-wrap: wrap;
+  gap: 10rpx;
 }
 
 .comment-image {
-  width: 160rpx;
-  height: 160rpx;
+  width: 200rpx;
+  height: 200rpx;
   border-radius: 8rpx;
 }
 
+/* 底部 */
 .comment-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 20rpx;
-  border-top: 1rpx solid #f5f5f5;
+  border-top: 1rpx solid #f0f0f0;
 }
 
 .comment-meta {
   display: flex;
-  align-items: center;
-  gap: 20rpx;
+  flex-direction: column;
+  gap: 10rpx;
 }
 
 .comment-time {
@@ -115,7 +124,7 @@
 .like-count {
   display: flex;
   align-items: center;
-  gap: 5rpx;
+  gap: 6rpx;
 }
 
 .like-text {
@@ -123,66 +132,106 @@
   color: #666;
 }
 
+/* 操作按钮 */
 .comment-actions {
   display: flex;
-  gap: 20rpx;
+  gap: 30rpx;
 }
 
 .action-btn {
   display: flex;
   align-items: center;
   gap: 8rpx;
-  padding: 8rpx 16rpx;
-  background: #f8f9fa;
-  border-radius: 8rpx;
-  font-size: 24rpx;
+  font-size: 26rpx;
   color: #666;
+  padding: 10rpx 20rpx;
+  border-radius: 20rpx;
+  background: #f9f9f9;
 }
 
-.delete-btn {
-  color: #ff4444;
-}
-
-.load-more {
-  text-align: center;
-  padding: 40rpx 0;
-  color: #999;
+.action-btn text {
   font-size: 26rpx;
 }
 
-.load-text {
-  margin-left: 10rpx;
+.delete-btn {
+  color: #ff4444 !important;
+  background: #ffebee !important;
 }
 
+/* 加载更多 */
+.load-more {
+  padding: 40rpx 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.load-text {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 15rpx;
+}
+
+/* 空状态 */
 .empty-state {
-  padding: 100rpx 30rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 40rpx;
   text-align: center;
 }
 
 .empty-icon {
-  width: 180rpx;
-  height: 180rpx;
-  margin-bottom: 30rpx;
-  opacity: 0.5;
+  width: 200rpx;
+  height: 200rpx;
+  margin-bottom: 40rpx;
+  opacity: 0.6;
 }
 
 .empty-text {
   font-size: 32rpx;
-  color: #333;
-  display: block;
-  margin-bottom: 15rpx;
+  color: #666;
+  margin-bottom: 20rpx;
 }
 
 .empty-hint {
   font-size: 26rpx;
   color: #999;
-  display: block;
   margin-bottom: 40rpx;
 }
 
 .empty-btn {
   background: #07c160;
-  color: #fff;
-  border-radius: 8rpx;
-  font-size: 28rpx;
+  color: white;
+  width: 300rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+}
+
+/* 响应式调整 */
+@media (max-width: 375px) {
+  .comment-list {
+    padding: 20rpx;
+  }
+  
+  .comment-card {
+    padding: 20rpx;
+  }
+  
+  .dish-name {
+    font-size: 30rpx;
+  }
+  
+  .comment-content {
+    font-size: 26rpx;
+  }
+  
+  .action-btn {
+    padding: 8rpx 16rpx;
+  }
 }
