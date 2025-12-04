@@ -67,7 +67,7 @@ Page({
 
   onShow() {
     // 页面显示时检查用户收藏状态
-    this.checkUserFavourite();
+    this.checkUserFavourite()
   },
 
   /**
@@ -130,7 +130,7 @@ Page({
       
       try {
         const commentsResult = await db.collection('comments')
-          .where({ dishId: dish.dishId }) // 注意：使用 dishId 而不是 _id
+          .where({ dishId: dish.dishId })
           .orderBy('createTime', 'desc')
           .skip((page - 1) * this.data.pageSize)
           .limit(this.data.pageSize)
@@ -159,9 +159,6 @@ Page({
       const processedData = await this.processImagesWithCloudFunction([dish], commentList);
       const processedDish = processedData.dishes[0] || dish;
       const processedComments = processedData.comments || commentList;
-
-      console.log('菜品处理后的图片URL:', processedDish.imageUrl);
-      console.log('评论处理结果:', processedComments);
 
       // 6. 更新页面数据
       this.setData({
@@ -659,6 +656,226 @@ Page({
   },
 
   /**
+   * 收藏/取消收藏菜品
+   */
+  async onToggleFavourite() {
+    const userInfo = wx.getStorageSync('userInfo');
+    if (!userInfo) {
+      wx.showModal({
+        title: '提示',
+        content: '请先登录后收藏菜品',
+        confirmText: '去登录',
+        success: (res) => {
+          if (res.confirm) {
+            wx.navigateTo({
+              url: '/pages/login/login'
+            })
+          }
+        }
+      })
+      return;
+    }
+    
+    const { isFavourite, dish } = this.data;
+    const userId = userInfo.openid || userInfo._id;
+    
+    try {
+      const db = wx.cloud.database();
+      
+      if (isFavourite) {
+        // 取消收藏
+        await db.collection('favourite')
+          .where({
+            dishId: dish._id,
+            userId: userId
+          })
+          .remove();
+        
+        // 更新菜品收藏数
+        await db.collection('dishes').doc(dish._id).update({
+          data: {
+            favourCount: (dish.favourCount || 1) - 1
+          }
+        });
+        
+        this.setData({
+          isFavourite: false,
+          'dish.favourCount': (dish.favourCount || 1) - 1
+        });
+        
+        wx.showToast({
+          title: '已取消收藏',
+          icon: 'success'
+        });
+      } else {
+        // 添加收藏 - 保存完整的用户和菜品信息
+        await db.collection('favourite').add({
+          data: {
+            dishId: dish._id,
+            dishName: dish.name,
+            dishImage: dish.imageUrl,
+            dishPrice: dish.price,
+            dishRating: dish.rating,
+            dishDescription: dish.description,
+            dishLocation: dish.location,
+            dishTags: dish.tags,
+            
+            userId: userId,
+            userAvatar: userInfo.avatarUrl || '',
+            userNickname: userInfo.nickName || '匿名用户',
+            
+            canteenId: dish.canteenId,
+            canteenName: dish.location,
+            
+            createTime: new Date(),
+            updateTime: new Date()
+          }
+        });
+        
+        // 更新菜品收藏数
+        await db.collection('dishes').doc(dish._id).update({
+          data: {
+            favourCount: (dish.favourCount || 0) + 1
+          }
+        });
+        
+        this.setData({
+          isFavourite: true,
+          'dish.favourCount': (dish.favourCount || 0) + 1
+        });
+        
+        wx.showToast({
+          title: '收藏成功',
+          icon: 'success'
+        });
+      }
+    } catch (error) {
+      console.error('收藏操作失败:', error);
+      wx.showToast({
+        title: '操作失败',
+        icon: 'error'
+      });
+    }
+  },
+
+  /**
+   * 点赞/取消点赞评论
+   */
+  async onToggleLike(e) {
+    const commentId = e.currentTarget.dataset.id;
+    const index = e.currentTarget.dataset.index;
+    const userInfo = wx.getStorageSync('userInfo');
+    
+    if (!userInfo) {
+      wx.showToast({ title: '请先登录', icon: 'none' });
+      return;
+    }
+    
+    const userId = userInfo.openid || userInfo._id;
+    const userLikedComments = this.data.userLikedComments;
+    const isLiked = userLikedComments[commentId];
+    
+    try {
+      const db = wx.cloud.database();
+      const comment = this.data.comments[index];
+      
+      if (isLiked) {
+        // 取消点赞
+        // 1. 删除点赞记录
+        await db.collection('like')
+          .where({
+            commentId: commentId,
+            userId: userId
+          })
+          .remove();
+        
+        // 2. 重新计算该评论的总点赞数
+        const likeCountResult = await db.collection('like')
+          .where({ commentId: commentId })
+          .count();
+        
+        const newLikeCount = likeCountResult.total || 0;
+        
+        // 3. 更新评论的点赞数
+        await db.collection('comments').doc(commentId).update({
+          data: {
+            likeCount: newLikeCount
+          }
+        });
+        
+        // 4. 更新本地数据
+        const comments = this.data.comments;
+        comments[index].likeCount = newLikeCount;
+        
+        // 5. 更新用户点赞记录
+        delete userLikedComments[commentId];
+        
+        this.setData({
+          comments,
+          userLikedComments: { ...userLikedComments }
+        });
+        
+        wx.showToast({
+          title: '已取消点赞',
+          icon: 'success'
+        });
+      } else {
+        // 点赞
+        // 1. 创建点赞记录
+        await db.collection('like').add({
+          data: {
+            commentId: commentId,
+            dishId: comment.dishId,
+            dishName: comment.dishName,
+            userId: userId,
+            userAvatar: userInfo.avatarUrl || '',
+            userNickname: userInfo.nickName || '匿名用户',
+            createTime: new Date()
+          }
+        });
+        
+        // 2. 重新计算该评论的总点赞数
+        const likeCountResult = await db.collection('like')
+          .where({ commentId: commentId })
+          .count();
+        
+        const newLikeCount = likeCountResult.total || 1;
+        
+        // 3. 更新评论的点赞数
+        await db.collection('comments').doc(commentId).update({
+          data: {
+            likeCount: newLikeCount
+          }
+        });
+        
+        // 4. 更新本地数据
+        const comments = this.data.comments;
+        comments[index].likeCount = newLikeCount;
+        
+        // 5. 更新用户点赞记录
+        userLikedComments[commentId] = true;
+        
+        this.setData({
+          comments,
+          userLikedComments: { ...userLikedComments }
+        });
+        
+        wx.showToast({
+          title: '点赞成功',
+          icon: 'success'
+        });
+      }
+      
+    } catch (error) {
+      console.error('点赞操作失败:', error);
+      wx.showToast({
+        title: '操作失败',
+        icon: 'none'
+      });
+    }
+  },
+
+  /**
    * 打开发表评论弹窗
    */
   onAddComment() {
@@ -783,7 +1000,7 @@ Page({
         rating: Number(rating), // 确保是数字
         content: content.trim(),
         images: [],
-        likeCount: 0,
+        likeCount: 0, // 初始点赞数为0
         createTime: now,
         updateTime: now
       };

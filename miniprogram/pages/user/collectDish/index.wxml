@@ -76,10 +76,27 @@
             <van-icon name="star" size="20" color="#ffc107" />
             <text class="collect-text">已收藏</text>
           </view>
+          -->
         </view>
-      </block>
-    </view>
+        
+        <!-- 取消收藏按钮 -->
+        <view class="cancel-btn" bindtap="onCancelFavourite" data-id="{{item.id}}" data-dishid="{{item.dishId}}" data-index="{{index}}" catchtap>
+          <van-icon name="close" size="16px" color="#999" />
+        </view>
+      </view>
+    </block>
+  </view>
 
+<<<<<<< HEAD
+=======
+  <!-- 空状态 -->
+  <view wx:if="{{!loading && favouriteList.length === 0}}" class="empty">
+    <image src="/images/no-data.png" class="empty-img"></image>
+    <text class="empty-text">暂无收藏</text>
+    <text class="empty-tip">去发现更多美食吧</text>
+  </view>
+
+>>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
     <!-- 空状态 -->
     <view class="empty-state" wx:if="{{dishList.length === 0 && !isLoading}}">
       <image class="empty-icon" src="/images/icon/icon-empty-collect.png"></image>
