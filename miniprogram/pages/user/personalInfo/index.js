@@ -1,5 +1,5 @@
 // personalInfo/index.js - 完整修改版
-const { uploadIfNeeded } = require('../../../utils/upload.js')
+const { uploadIfNeeded } = require('/../../../utils/upload.js')
 Page({
   data: {
     userInfo: {
