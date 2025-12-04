@@ -229,8 +229,6 @@ Page({
 
   // 去首页
   goToHome() {
-    wx.switchTab({
-      url: '/pages/index/index'
-    });
+    wx.navigateTo({ url: '/pages/index/index' });
   }
 });

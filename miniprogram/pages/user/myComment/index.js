@@ -320,8 +320,6 @@ Page({
 
   // 去食堂
   goToCanteen() {
-    wx.switchTab({
-      url: '/pages/canteen/canteen'
-    });
+    wx.navigateTo({ url: '/pages/canteen/canteen' });
   }
 });
