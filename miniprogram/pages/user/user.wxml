@@ -1,32 +1,33 @@
 <view class="mine-container">
-    <view class="user-info">
-    <!-- 头像区域：已登录显示头像；未登录显示未登录提示 -->
+  <!-- 用户信息区域 -->
+  <view class="user-info">
     <view class="avatar-wrapper" bindtap="onAvatarTap">
-      <image class="avatar" src="{{isLoggedIn ? userAvatar : defaultAvatar}}"mode="aspectFill"></image>
+      <image class="avatar" src="{{isLoggedIn ? userAvatar : defaultAvatar}}" mode="aspectFill"></image>
     </view>
-
-    <!-- 右侧文字区域 -->
     <view class="user-text">
-      <!-- 昵称显示 -->
       <view class="user-name">
         {{isLoggedIn ? userNickname : "点击头像登录"}}
       </view>
     </view>
   </view>
 
-  <!-- 数据统计（使用动态数据） -->
+  <!-- 数据统计 -->
   <view class="stats">
     <view class="stat-item" bindtap="goCollectDish">
       <view class="stat-num">{{favouriteCount}}</view>
       <view class="stat-label">收藏菜品</view>
     </view>
+    
+    <!-- 评论数显示 -->
     <view class="stat-item" bindtap="goMyComment">
-      <view class="stat-num">{{commentCount}}</view>
+      <view class="stat-num" wx:if="{{!commentLoading && showCommentCount}}">{{commentCount}}</view>
+      <view class="stat-num" wx:if="{{commentLoading}}">...</view>
+      <view class="stat-num" wx:if="{{!commentLoading && !showCommentCount}}">0</view>
       <view class="stat-label">我的评价</view>
     </view>
   </view>
 
-  <!-- 功能列表（保持不变） -->
+  <!-- 功能列表 -->
   <view class="func-item" bindtap="goPersonalInfo">
     <image class="func-icon" src="/images/icon/icon-user.png"></image>
     <text class="func-text">个人资料</text>
@@ -46,6 +47,13 @@
     <image class="func-icon" src="/images/icon/icon-add.png"></image>
     <text class="func-text">菜品补充</text>
     <van-icon name="arrow" class="arrow" />
+  </view>
+  
+  <!-- 调试按钮 -->
+  <view class="debug-buttons" wx:if="{{false}}">
+    <button size="mini" bindtap="refreshData">刷新数据</button>
+    <button size="mini" bindtap="checkCloudFunction">测试云函数</button>
+    <button size="mini" bindtap="checkStorage">检查存储</button>
   </view>
 </view>
 

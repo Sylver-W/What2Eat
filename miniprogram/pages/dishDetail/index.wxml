@@ -1,4 +1,3 @@
-<!--pages/dishDetail/index.wxml-->
 <view class="page">
   <!-- 菜品图片 -->
   <view class="dish-header">
@@ -188,15 +187,18 @@
 
         <!-- 评论内容 -->
         <view class="content-input">
-          <van-field
+          <textarea 
             value="{{newComment.content}}"
-            type="textarea"
             placeholder="分享您的用餐体验..."
             maxlength="500"
-            autosize
-            border="{{false}}"
-            bind:change="onContentChange"
+            auto-height
+            class="comment-textarea"
+            bindinput="onContentChange"
+            bindblur="onContentBlur"
           />
+          <view class="word-count">
+            <text>{{newComment.content ? newComment.content.length : 0}}/500</text>
+          </view>
         </view>
         
         <!-- 提交按钮 -->
@@ -205,10 +207,10 @@
           size="large" 
           bindtap="onSubmitComment"
           loading="{{isSubmitting}}"
-          disabled="{{!newComment.rating || !newComment.content.trim()}}"
+          disabled="{{isSubmitting || !newComment.rating || !newComment.content.trim()}}"
           custom-class="submit-btn"
         >
-          提交评价
+          {{isSubmitting ? '提交中...' : '提交评价'}}
         </van-button>
       </view>
     </view>
