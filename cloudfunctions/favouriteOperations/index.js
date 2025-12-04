@@ -1,4 +1,3 @@
-// cloudfunctions/favouriteOperations/index.js
 const cloud = require('wx-server-sdk')
 
 cloud.init({
@@ -11,6 +10,28 @@ exports.main = async (event, context) => {
   
   try {
     const { operation, dishId, userId } = event
+    
+    // 添加获取收藏数量的操作类型
+    if (operation === 'getCount') {
+      const db = cloud.database()
+      const userOpenId = userId || wxContext.OPENID
+      
+      console.log('获取收藏数量，用户ID:', userOpenId)
+      
+      // 使用正确的表名 'favourites'
+      const countResult = await db.collection('favourites')
+        .where({
+          userId: userOpenId
+        })
+        .count()
+      
+      console.log('收藏数量查询结果:', countResult)
+      
+      return {
+        success: true,
+        count: countResult.total
+      }
+    }
     
     if (!userId) {
       return {
@@ -25,7 +46,7 @@ exports.main = async (event, context) => {
     switch (operation) {
       case 'checkFavourite':
         // 检查用户是否已收藏
-        const checkResult = await db.collection('favourite')
+        const checkResult = await db.collection('favourites')
           .where({
             dishId: dishId,
             userId: userId
@@ -47,7 +68,7 @@ exports.main = async (event, context) => {
           updateTime: new Date()
         }
         
-        const addResult = await db.collection('favourite').add({
+        const addResult = await db.collection('favourites').add({
           data: favouriteData
         })
         
@@ -65,7 +86,7 @@ exports.main = async (event, context) => {
         
       case 'removeFavourite':
         // 删除收藏
-        await db.collection('favourite')
+        await db.collection('favourites')
           .where({
             dishId: dishId,
             userId: userId

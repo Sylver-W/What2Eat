@@ -162,8 +162,8 @@ Page({
 
   // 跳转到菜品详情
   goDishDetail(e) {
-    const dishId = e.currentTarget.dataset.id
-    const favouriteId = e.currentTarget.dataset.favouriteid
+    const dish = e.currentTarget.dataset.dish;
+    if (!dish) return;
     
     console.log('跳转到菜品详情:', dish);
     
@@ -188,48 +188,17 @@ Page({
   },
 
   // 取消收藏
-  async onCancelFavourite(e) {
-    const favouriteId = e.currentTarget.dataset.id
-    const dishId = e.currentTarget.dataset.dishid
-    const index = e.currentTarget.dataset.index
+  cancelCollect(e) {
+    const dish = e.currentTarget.dataset.dish;
+    if (!dish) return;
     
     wx.showModal({
-      title: '提示',
-      content: '确定要取消收藏吗？',
+      title: '取消收藏',
+      content: `确定不再收藏《${dish.dishName}》了吗？`,
+      confirmColor: '#ff4444',
       success: async (res) => {
         if (res.confirm) {
-          try {
-            // 删除收藏记录
-            await db.collection('favourite').doc(favouriteId).remove()
-            
-            // 更新菜品收藏数
-            await db.collection('dishes').doc(dishId).update({
-              data: {
-                favourCount: wx.cloud.database().command.inc(-1)
-              }
-            })
-            
-            // 从列表中移除
-            const favouriteList = this.data.favouriteList
-            favouriteList.splice(index, 1)
-            
-            this.setData({
-              favouriteList: [...favouriteList],
-              totalCount: this.data.totalCount - 1
-            })
-            
-            wx.showToast({
-              title: '已取消收藏',
-              icon: 'success'
-            })
-            
-          } catch (error) {
-            console.error('取消收藏失败:', error)
-            wx.showToast({
-              title: '操作失败',
-              icon: 'error'
-            })
-          }
+          await this.removeCollect(dish);
         }
       }
     });
@@ -280,11 +249,8 @@ Page({
     }
   },
 
-  // 上拉加载更多
-  onReachBottom() {
-    if (!this.data.hasMore || this.data.loading) return
-    
-    const nextPage = this.data.currentPage + 1
-    this.loadFavourites(nextPage)
+  // 去首页
+  goToHome() {
+    wx.switchTab({ url: '/pages/index/index' });
   }
 });
