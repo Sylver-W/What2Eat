@@ -1,42 +1,63 @@
-.page {
-  background-color: #f5f5f5;
+/* 收藏页面样式 */
+.collect-container {
+  background: #f5f5f5;
   min-height: 100vh;
   padding: 20rpx;
 }
 
+/* 头部 */
 .header {
-  display: flex;
-  align-items: center;
+  background: #fff;
+  padding: 30rpx;
+  border-radius: 16rpx;
   margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
 }
 
 .title {
   font-size: 36rpx;
   font-weight: bold;
   color: #333;
+  margin-bottom: 10rpx;
 }
 
 .count {
   font-size: 28rpx;
-  color: #999;
-  margin-left: 10rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.count::before {
+  content: "·";
+  color: #07c160;
+  font-size: 40rpx;
+  margin-right: 10rpx;
 }
 
 /* 收藏列表 */
-.favourite-list {
+.dish-list {
   display: flex;
   flex-direction: column;
   gap: 20rpx;
 }
 
-.favourite-item {
+.dish-card {
   background: #fff;
   border-radius: 16rpx;
-  padding: 20rpx;
+  padding: 30rpx;
   display: flex;
-  align-items: center;
   position: relative;
   box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
+}
+
+.dish-image-wrapper {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+  margin-right: 30rpx;
+  flex-shrink: 0;
 }
 
 .dish-image {
@@ -61,76 +82,101 @@
   font-size: 32rpx;
   font-weight: bold;
   color: #333;
+  flex: 1;
+  margin-right: 20rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .dish-price {
   font-size: 28rpx;
   color: #e93b3d;
   font-weight: bold;
+  color: #e93b3d;
+  flex-shrink: 0;
 }
 
-.dish-location {
+.dish-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
+.dish-canteen {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
   font-size: 26rpx;
   color: #666;
-  margin-bottom: 10rpx;
-  display: block;
 }
 
 .dish-rating {
   display: flex;
   align-items: center;
-  margin-bottom: 10rpx;
-}
-
-.rating-text {
+  gap: 5rpx;
   font-size: 24rpx;
-  color: #ff952d;
-  margin-left: 8rpx;
+  color: #666;
 }
 
-.favourite-time {
+.dish-tags {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  margin-bottom: 15rpx;
 }
 
-.time-text {
+.dish-tag {
+  padding: 4rpx 12rpx;
+  background: #f0f9ff;
+  color: #07c160;
+  border-radius: 6rpx;
   font-size: 22rpx;
-  color: #999;
-  margin-left: 6rpx;
+}
+
+.dish-desc {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* 取消收藏按钮 */
-.cancel-btn {
+.collect-action {
   position: absolute;
-  bottom: 10rpx;
-  right: 20rpx;
-  width: 50rpx;
-  height: 50rpx;
-  border-radius: 50%;
-  background: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 加载中 */
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 400rpx;
-}
-
-/* 空状态 */
-.empty {
+  right: 30rpx;
+  bottom: 30rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  gap: 5rpx;
+}
+
+.collect-text {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 加载更多 */
+.load-more {
+  text-align: center;
+  padding: 30rpx;
+  color: #999;
+  font-size: 26rpx;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
   padding: 100rpx 0;
 }
 
-.empty-img {
+.empty-icon {
   width: 200rpx;
   height: 200rpx;
   opacity: 0.5;
@@ -143,15 +189,28 @@
   margin-bottom: 10rpx;
 }
 
-.empty-tip {
+.empty-hint {
   font-size: 26rpx;
   color: #ccc;
+  margin-bottom: 40rpx;
 }
 
-/* 加载更多 */
-.load-more {
+.empty-btn {
+  background: #07c160;
+  color: #fff;
+  font-size: 28rpx;
+  border-radius: 50rpx;
+  padding: 20rpx 60rpx;
+  border: none;
+}
+
+/* 加载状态 */
+.loading-state {
   text-align: center;
-  padding: 30rpx;
+  padding: 100rpx 0;
+}
+
+.loading-text {
+  font-size: 28rpx;
   color: #999;
-  font-size: 26rpx;
 }

@@ -1,65 +1,85 @@
-<view class="page">
+<view class="collect-container">
   <!-- 顶部标题 -->
   <view class="header">
-    <text class="title">我的收藏</text>
-    <text class="count" wx:if="{{totalCount > 0}}">({{totalCount}})</text>
+    <view class="title">我的收藏</view>
+    <view class="count" wx:if="{{totalCount > 0}}">{{totalCount}}个收藏</view>
   </view>
 
-  <!-- 加载中 -->
-  <view wx:if="{{loading && favouriteList.length === 0}}" class="loading">
-    <van-loading size="24px" vertical>加载中...</van-loading>
-  </view>
+  <!-- 收藏菜品列表 -->
+  <scroll-view 
+    class="dish-list-scroll" 
+    scroll-y 
+    enable-back-to-top
+    refresher-enabled="{{true}}"
+    bindrefresherrefresh="onPullDownRefresh"
+    refresher-triggered="{{isRefreshing}}"
+  >
+    <!-- 加载状态 -->
+    <view class="loading-state" wx:if="{{isLoading}}">
+      <van-loading size="24px" type="spinner" color="#07c160" />
+      <text class="loading-text">正在加载收藏...</text>
+    </view>
 
-  <!-- 收藏列表 -->
-  <view wx:if="{{favouriteList.length > 0}}" class="favourite-list">
-    <block wx:for="{{favouriteList}}" wx:key="id" wx:for-index="index">
-      <view class="favourite-item" bindtap="goDishDetail" data-id="{{item.dishId}}" data-favouriteid="{{item.id}}">
-        <!-- 菜品图片 -->
-        <image class="dish-image" src="{{item.dishImage}}" mode="aspectFill"></image>
-        
-        <view class="dish-info">
-          <!-- 菜品名称和价格 -->
-          <view class="dish-header">
-            <text class="dish-name">{{item.dishName}}</text>
-            <text class="dish-price">¥{{item.dishPrice}}</text>
+    <!-- 菜品列表 -->
+    <view class="dish-list" wx:if="{{!isLoading}}">
+      <block wx:for="{{dishList}}" wx:key="_id">
+        <view class="dish-card" data-dish="{{item}}" bindtap="goDishDetail">
+          <!-- 菜品图片 -->
+          <view class="dish-image-wrapper">
+            <image 
+              class="dish-image" 
+              src="{{item.dishImage}}" 
+              mode="aspectFill"
+            />
           </view>
           
-          <!-- 食堂位置 -->
-          <text class="dish-location">{{item.dishLocation}}</text>
-          
-          <!-- 评分 -->
-          <view class="dish-rating">
-            <van-rate value="{{item.dishRating}}" size="12" readonly allow-half />
-            <text class="rating-text">{{item.dishRating}}</text>
+          <!-- 菜品信息 -->
+          <view class="dish-info">
+            <view class="dish-header">
+              <text class="dish-name">{{item.dishName}}</text>
+              <text class="dish-price">￥{{item.formattedPrice}}</text>
+            </view>
+            
+            <view class="dish-meta">
+              <view class="dish-canteen">
+                <van-icon name="shop-o" size="14" color="#666" />
+                <text class="canteen-text">{{item.canteenName}}</text>
+              </view>
+              
+              <view class="dish-stats">
+                <view class="stat-item">
+                  <van-icon name="star" size="14" color="#ffc107" />
+                  <text class="stat-text">{{item.formattedRating}}</text>
+                </view>
+              </view>
+            </view>
+            
+            <!-- 标签展示 -->
+            <view class="dish-tags" wx:if="{{item.dishTags && item.dishTags.length > 0}}">
+              <block wx:for="{{item.dishTags}}" wx:key="*this">
+                <view class="dish-tag">{{item}}</view>
+              </block>
+            </view>
+            
+            <!-- 菜品描述 -->
+            <text class="dish-desc" wx:if="{{item.dishDescription}}">
+              {{item.dishDescription.length > 30 ? item.dishDescription.substring(0, 30) + '...' : item.dishDescription}}
+            </text>
           </view>
           
-          <!-- 收藏时间 -->
-          <!--
-          <view class="favourite-time">
-            <van-icon name="clock-o" size="12px" color="#999" />
-            <text class="time-text">{{formatTime(item.createTime)}}</text>
+          <!-- 取消收藏按钮 -->
+          <view class="collect-action" data-dish="{{item}}" bindtap="cancelCollect">
+            <van-icon name="star" size="20" color="#ffc107" />
+            <text class="collect-text">已收藏</text>
           </view>
-          -->
         </view>
-        
-        <!-- 取消收藏按钮 -->
-        <view class="cancel-btn" bindtap="onCancelFavourite" data-id="{{item.id}}" data-dishid="{{item.dishId}}" data-index="{{index}}" catchtap>
-          <van-icon name="close" size="16px" color="#999" />
-        </view>
-      </view>
-    </block>
-  </view>
-
-  <!-- 空状态 -->
-  <view wx:if="{{!loading && favouriteList.length === 0}}" class="empty">
-    <image src="/images/no-data.png" class="empty-img"></image>
-    <text class="empty-text">暂无收藏</text>
-    <text class="empty-tip">去发现更多美食吧</text>
-  </view>
+      </block>
+    </view>
 
   <!-- 加载更多 -->
   <view wx:if="{{hasMore && favouriteList.length > 0}}" class="load-more">
     <van-loading size="16px" vertical wx:if="{{loading}}">加载中...</van-loading>
     <text wx:else>上拉加载更多</text>
   </view>
+  </scroll-view> 
 </view>
