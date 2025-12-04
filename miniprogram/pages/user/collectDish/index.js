@@ -1,21 +1,11 @@
-const db = wx.cloud.database()
 Page({
   data: {
-<<<<<<< HEAD
     dishList: [],           // 收藏菜品列表
     isLoading: false,       // 初始加载状态
     isLoadingMore: false,   // 加载更多状态
     isRefreshing: false,    // 下拉刷新状态
     hasMore: true,          // 是否还有更多数据
     totalCount: 0           // 总收藏数
-=======
-    loading: true,
-    favouriteList: [], // 收藏列表
-    totalCount: 0,
-    currentPage: 1,
-    pageSize: 10,
-    hasMore: true
->>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
   },
 
   onLoad() {
@@ -42,12 +32,8 @@ Page({
   },
 
   onShow() {
-<<<<<<< HEAD
     // 页面显示时刷新数据
     this.refreshCollectList();
-=======
-    this.checkLoginAndLoadFavourites()
->>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
   },
 
   // 下拉刷新
@@ -96,12 +82,8 @@ Page({
     } finally {
       wx.stopPullDownRefresh();
     }
-    
-    this.userId = userInfo.openid || userInfo._id
-    this.loadFavourites(1)
   },
 
-<<<<<<< HEAD
   // 加载收藏菜品
   async loadCollectDishes() {
     if (this.data.isLoading || this.data.isLoadingMore) return;
@@ -116,44 +98,6 @@ Page({
           pageSize: 20
         }
       });
-=======
-  // 加载收藏列表
-  async loadFavourites(page = 1) {
-    if (this.data.loading && page !== 1) return
-    
-    this.setData({ loading: true })
-    
-    try {
-      const skipCount = (page - 1) * this.data.pageSize
-      
-      // 查询用户的收藏记录
-      const result = await db.collection('favourite')
-        .where({
-          userId: this.userId
-        })
-        .orderBy('createTime', 'desc')
-        .skip(skipCount)
-        .limit(this.data.pageSize)
-        .get()
-      
-      // 获取总数
-      const countResult = await db.collection('favourite')
-        .where({ userId: this.userId })
-        .count()
-      
-      const favourites = result.data || []
-      
-      // 处理图片URL（如果收藏中没有保存图片URL，需要从菜品表中获取）
-      const processedFavourites = await this.processFavouriteImages(favourites)
-      
-      this.setData({
-        favouriteList: page === 1 ? processedFavourites : [...this.data.favouriteList, ...processedFavourites],
-        totalCount: countResult.total,
-        currentPage: page,
-        hasMore: favourites.length === this.data.pageSize,
-        loading: false
-      })
->>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
       
       console.log('加载收藏菜品结果:', result);
       
@@ -174,21 +118,12 @@ Page({
         this.setData({ isLoading: false });
       }
     } catch (error) {
-<<<<<<< HEAD
       console.error('加载失败:', error);
       this.setData({ isLoading: false });
       wx.showToast({
         title: '加载失败',
         icon: 'none'
       });
-=======
-      console.error('加载收藏失败:', error)
-      this.setData({ loading: false })
-      wx.showToast({
-        title: '加载失败',
-        icon: 'error'
-      })
->>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
     }
   },
 
@@ -221,43 +156,8 @@ Page({
 
   // 加载更多
   loadMore() {
-<<<<<<< HEAD
     // 由于云函数不支持分页，这里不实现加载更多
     // 可以一次性加载所有数据，或者修改云函数支持分页
-=======
-    if (this.data.hasMore && !this.data.isLoadingMore) {
-      this.loadCollectDishes(false);
-    }
-  },
-
-  // 更新用户收藏计数
-  async updateUserFavoriteCount() {
-    try {
-      const userInfo = wx.getStorageSync('userInfo');
-      if (userInfo) {
-        userInfo.favouriteCount = this.data.totalCount;
-        wx.setStorageSync('userInfo', userInfo);
-        
-        // 更新本地缓存，确保"我的"页面数据同步
-        wx.setStorageSync('favouriteCount', this.data.totalCount);
-      }
-      
-      return {
-        id: item._id,
-        dishId: item.dishId,
-        dishName: item.dishName || '未知菜品',
-        dishImage: item.dishImage,
-        dishPrice: item.dishPrice || 0,
-        dishRating: item.dishRating || 4.0,
-        dishLocation: item.dishLocation || '未知食堂',
-        dishDescription: item.dishDescription || '暂无描述',
-        createTime: item.createTime,
-        // 用户信息
-        userNickname: item.userNickname || '用户',
-        userAvatar: item.userAvatar || '/images/default-avatar.png'
-      }
-    })
->>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
   },
 
   // 跳转到菜品详情

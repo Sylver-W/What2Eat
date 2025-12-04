@@ -1,16 +1,10 @@
-<<<<<<< HEAD
 /* 收藏页面样式 */
 .collect-container {
   background: #f5f5f5;
-=======
-.page {
-  background-color: #f5f5f5;
->>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
   min-height: 100vh;
   padding: 20rpx;
 }
 
-<<<<<<< HEAD
 /* 头部 */
 .header {
   background: #fff;
@@ -64,41 +58,6 @@
   overflow: hidden;
   margin-right: 30rpx;
   flex-shrink: 0;
-=======
-.header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 30rpx;
-}
-
-.title {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.count {
-  font-size: 28rpx;
-  color: #999;
-  margin-left: 10rpx;
-}
-
-/* 收藏列表 */
-.favourite-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-}
-
-.favourite-item {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 20rpx;
-  display: flex;
-  align-items: center;
-  position: relative;
-  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.05);
->>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
 }
 
 .dish-image {
@@ -123,21 +82,17 @@
   font-size: 32rpx;
   font-weight: bold;
   color: #333;
-<<<<<<< HEAD
   flex: 1;
   margin-right: 20rpx;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-=======
->>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
 }
 
 .dish-price {
   font-size: 28rpx;
   color: #e93b3d;
   font-weight: bold;
-<<<<<<< HEAD
   color: #e93b3d;
   flex-shrink: 0;
 }
@@ -155,21 +110,11 @@
   gap: 8rpx;
   font-size: 26rpx;
   color: #666;
-=======
-}
-
-.dish-location {
-  font-size: 26rpx;
-  color: #666;
-  margin-bottom: 10rpx;
-  display: block;
->>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
 }
 
 .dish-rating {
   display: flex;
   align-items: center;
-<<<<<<< HEAD
   gap: 5rpx;
   font-size: 24rpx;
   color: #666;
@@ -215,75 +160,6 @@
 .collect-text {
   font-size: 22rpx;
   color: #999;
-=======
-  margin-bottom: 10rpx;
-}
-
-.rating-text {
-  font-size: 24rpx;
-  color: #ff952d;
-  margin-left: 8rpx;
-}
-
-.favourite-time {
-  display: flex;
-  align-items: center;
-}
-
-.time-text {
-  font-size: 22rpx;
-  color: #999;
-  margin-left: 6rpx;
-}
-
-/* 取消收藏按钮 */
-.cancel-btn {
-  position: absolute;
-  bottom: 10rpx;
-  right: 20rpx;
-  width: 50rpx;
-  height: 50rpx;
-  border-radius: 50%;
-  background: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* 加载中 */
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 400rpx;
-}
-
-/* 空状态 */
-.empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 100rpx 0;
-}
-
-.empty-img {
-  width: 200rpx;
-  height: 200rpx;
-  opacity: 0.5;
-  margin-bottom: 30rpx;
-}
-
-.empty-text {
-  font-size: 30rpx;
-  color: #999;
-  margin-bottom: 10rpx;
-}
-
-.empty-tip {
-  font-size: 26rpx;
-  color: #ccc;
->>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
 }
 
 /* 加载更多 */
@@ -291,7 +167,6 @@
   text-align: center;
   padding: 30rpx;
   color: #999;
-<<<<<<< HEAD
   font-size: 26rpx;
 }
 
@@ -338,7 +213,4 @@
 .loading-text {
   font-size: 28rpx;
   color: #999;
-=======
-  font-size: 26rpx;
->>>>>>> 5540f803862a52f8773db1c464097e6c0d166d16
 }
