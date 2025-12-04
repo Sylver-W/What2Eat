@@ -200,7 +200,7 @@
             <text>{{newComment.content ? newComment.content.length : 0}}/500</text>
           </view>
         </view>
-
+        
         <!-- 提交按钮 -->
         <van-button 
           type="primary" 

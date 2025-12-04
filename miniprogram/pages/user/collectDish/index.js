@@ -1,13 +1,12 @@
+const db = wx.cloud.database()
 Page({
   data: {
-    dishList: [],           // 收藏菜品列表
-    isLoading: false,       // 初始加载状态
-    isLoadingMore: false,   // 加载更多状态
-    isRefreshing: false,    // 下拉刷新状态
-    pageSize: 10,           // 每页数量
-    pageIndex: 0,           // 当前页码
-    hasMore: true,          // 是否还有更多数据
-    totalCount: 0           // 总收藏数
+    loading: true,
+    favouriteList: [], // 收藏列表
+    totalCount: 0,
+    currentPage: 1,
+    pageSize: 10,
+    hasMore: true
   },
 
   onLoad() {
@@ -17,10 +16,7 @@ Page({
   },
 
   onShow() {
-    // 页面显示时刷新数据
-    if (this.data.dishList.length > 0) {
-      this.refreshCollectList();
-    }
+    this.checkLoginAndLoadFavourites()
   },
 
   // 下拉刷新
@@ -70,31 +66,47 @@ Page({
     } finally {
       wx.stopPullDownRefresh();
     }
+    
+    this.userId = userInfo.openid || userInfo._id
+    this.loadFavourites(1)
   },
 
-  // 加载收藏菜品
-  async loadCollectDishes(isInitial = false) {
-    if ((isInitial && this.data.isLoading) || (!isInitial && (this.data.isLoadingMore || !this.data.hasMore))) {
-      return;
-    }
-
-    if (isInitial) {
-      wx.showLoading({ title: '加载中', mask: true });
-      this.setData({ isLoading: true });
-    } else {
-      this.setData({ isLoadingMore: true });
-    }
-
+  // 加载收藏列表
+  async loadFavourites(page = 1) {
+    if (this.data.loading && page !== 1) return
+    
+    this.setData({ loading: true })
+    
     try {
-      const result = await wx.cloud.callFunction({
-        name: 'getcollectdishes',
-        data: {
-          pageIndex: this.data.pageIndex,
-          pageSize: this.data.pageSize
-        }
-      });
-
-      wx.hideLoading();
+      const skipCount = (page - 1) * this.data.pageSize
+      
+      // 查询用户的收藏记录
+      const result = await db.collection('favourite')
+        .where({
+          userId: this.userId
+        })
+        .orderBy('createTime', 'desc')
+        .skip(skipCount)
+        .limit(this.data.pageSize)
+        .get()
+      
+      // 获取总数
+      const countResult = await db.collection('favourite')
+        .where({ userId: this.userId })
+        .count()
+      
+      const favourites = result.data || []
+      
+      // 处理图片URL（如果收藏中没有保存图片URL，需要从菜品表中获取）
+      const processedFavourites = await this.processFavouriteImages(favourites)
+      
+      this.setData({
+        favouriteList: page === 1 ? processedFavourites : [...this.data.favouriteList, ...processedFavourites],
+        totalCount: countResult.total,
+        currentPage: page,
+        hasMore: favourites.length === this.data.pageSize,
+        loading: false
+      })
       
       if (result.result.code === 0) {
         const newData = result.result.data;
@@ -124,16 +136,12 @@ Page({
         });
       }
     } catch (error) {
-      console.error('加载收藏菜品失败:', error);
-      wx.hideLoading();
+      console.error('加载收藏失败:', error)
+      this.setData({ loading: false })
       wx.showToast({
-        title: '加载失败，请检查网络',
-        icon: 'none'
-      });
-      this.setData({ 
-        isLoading: false, 
-        isLoadingMore: false 
-      });
+        title: '加载失败',
+        icon: 'error'
+      })
     }
   },
 
@@ -199,9 +207,22 @@ Page({
         // 更新本地缓存，确保"我的"页面数据同步
         wx.setStorageSync('favouriteCount', this.data.totalCount);
       }
-    } catch (error) {
-      console.error('更新用户收藏计数失败:', error);
-    }
+      
+      return {
+        id: item._id,
+        dishId: item.dishId,
+        dishName: item.dishName || '未知菜品',
+        dishImage: item.dishImage,
+        dishPrice: item.dishPrice || 0,
+        dishRating: item.dishRating || 4.0,
+        dishLocation: item.dishLocation || '未知食堂',
+        dishDescription: item.dishDescription || '暂无描述',
+        createTime: item.createTime,
+        // 用户信息
+        userNickname: item.userNickname || '用户',
+        userAvatar: item.userAvatar || '/images/default-avatar.png'
+      }
+    })
   },
 
   // 跳转到菜品详情

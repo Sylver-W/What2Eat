@@ -437,3 +437,31 @@
   font-size: 28rpx;
   color: #999;
 }
+
+/* 收藏按钮 */
+.favourite-btn {
+  position: absolute;
+  top: 30rpx;
+  right: 30rpx;
+  width: 80rpx;
+  height: 80rpx;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+/* 收藏数 */
+.favour-count {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30rpx;
+  font-size: 26rpx;
+  color: #666;
+}
+
+.favour-count .van-icon {
+  margin-right: 8rpx;
+}

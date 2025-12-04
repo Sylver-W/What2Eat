@@ -73,18 +73,23 @@
             <van-icon name="star" size="20" color="#ffc107" />
             <text class="collect-text">已收藏</text>
           </view>
+          -->
         </view>
-      </block>
-    </view>
+        
+        <!-- 取消收藏按钮 -->
+        <view class="cancel-btn" bindtap="onCancelFavourite" data-id="{{item.id}}" data-dishid="{{item.dishId}}" data-index="{{index}}" catchtap>
+          <van-icon name="close" size="16px" color="#999" />
+        </view>
+      </view>
+    </block>
+  </view>
 
-    <!-- 加载更多提示 -->
-    <view class="load-more" wx:if="{{!hasMore && dishList.length > 0}}">
-      <text class="load-text">没有更多收藏了</text>
-    </view>
-    <view class="load-more" wx:if="{{isLoadingMore}}">
-      <van-loading size="20px" type="spinner" color="#07c160" />
-      <text class="load-text">加载中...</text>
-    </view>
+  <!-- 空状态 -->
+  <view wx:if="{{!loading && favouriteList.length === 0}}" class="empty">
+    <image src="/images/no-data.png" class="empty-img"></image>
+    <text class="empty-text">暂无收藏</text>
+    <text class="empty-tip">去发现更多美食吧</text>
+  </view>
 
     <!-- 空状态 -->
     <view class="empty-state" wx:if="{{dishList.length === 0 && !isLoading}}">
