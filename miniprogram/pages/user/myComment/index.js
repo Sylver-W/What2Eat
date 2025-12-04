@@ -1,4 +1,4 @@
-// mycomment/index.js
+// pages/user/myComment/index.js
 Page({
   data: {
     commentList: [],        // 评价列表
@@ -109,8 +109,8 @@ Page({
         
         console.log('刷新成功，共', newData.totalCount, '条评论')
         
-        // 更新本地存储的评论数
-        this.updateCommentCountInStorage(newData.totalCount)
+        // 更新用户评论数
+        this.updateUserCommentCount(newData.totalCount)
         
       } else {
         console.error('刷新失败:', result.result.msg)
@@ -209,8 +209,8 @@ Page({
 
         console.log('加载成功，当前总数:', newData.totalCount, '本次加载:', processedComments.length)
         
-        // 更新本地存储的评论数
-        this.updateCommentCountInStorage(newData.totalCount)
+        // 更新用户评论数
+        this.updateUserCommentCount(newData.totalCount)
         
       } else {
         console.error('加载失败:', result.result.msg)
@@ -242,200 +242,39 @@ Page({
   },
 
   // 处理评论数据
-  // 在 processComments 函数中添加日志
-processComments(comments) {
-  console.log('处理评论数据:', comments.length, '条')
-  
-  return comments.map((comment, index) => {
-    // 调试：查看原始数据结构
-    console.log(`评论 ${index} 原始数据:`, {
-      _id: comment._id,
-      dishId: comment.dishId,
-      dishName: comment.dishName,
-      content: comment.content?.substring(0, 20)
-    })
+  processComments(comments) {
+    console.log('处理评论数据:', comments.length, '条')
     
-    // 处理时间格式
-    comment.formattedTime = this.formatTime(comment.createTime)
-    
-    // **关键：检查并确保 dishId 字段存在**
-    if (!comment.dishId) {
-      console.warn('评论缺少 dishId:', comment._id)
-      // 尝试从其他字段获取 dishId
-      if (comment.dishid) {
-        comment.dishId = comment.dishid
-      } else if (comment.dish_id) {
-        comment.dishId = comment.dish_id
-      }
-    }
-    
-    // 确保必要字段有值
-    comment.dishId = comment.dishId || 0
-    comment.dishName = comment.dishName || '未知菜品'
-    comment.canteenName = comment.canteenName || '未知食堂'
-    comment.content = comment.content || ''
-    comment.rating = comment.rating || 5
-    comment.likeCount = comment.likeCount || 0
-    
-    // 确保images是数组
-    if (!Array.isArray(comment.images)) {
-      comment.images = comment.images ? [comment.images] : []
-    }
-    
-    // 处理用户显示名
-    if (!comment.userNickname || comment.userNickname === '匿名用户') {
-      const userInfo = wx.getStorageSync('userInfo')
-      if (userInfo && userInfo.nickName) {
-        comment.userNickname = userInfo.nickName
-      } else if (userInfo && userInfo.nickname) {
-        comment.userNickname = userInfo.nickname
-      }
-    }
-    
-    console.log(`评论 ${index} 处理后:`, {
-      dishId: comment.dishId,
-      dishName: comment.dishName,
-      hasDishId: !!comment.dishId
-    })
-    
-    return comment
-  })
-},
-
-// 修改 goToDishDetail 函数，添加更多调试
-goToDishDetail(e) {
-  console.log('=== 跳转菜品详情 ===')
-  console.log('点击事件数据:', e.currentTarget.dataset)
-  
-  const dishId = e.currentTarget.dataset.dishid
-  const index = e.currentTarget.dataset.index
-  const comment = this.data.commentList[index]
-  
-  console.log('点击的评论:', {
-    index,
-    dishId,
-    commentDishId: comment?.dishId,
-    commentDishName: comment?.dishName
-  })
-  
-  if (!dishId && comment) {
-    console.log('尝试从评论对象获取 dishId:', comment.dishId)
-    // 如果 dataset 中没有，从评论对象中获取
-    if (comment.dishId) {
-      console.log('从评论对象获取到 dishId:', comment.dishId)
-      this.navigateToDishDetail(comment.dishId, comment)
-      return
-    }
-  }
-  
-  if (dishId && dishId !== '0') {
-    this.navigateToDishDetail(dishId, comment)
-  } else {
-    console.error('菜品ID无效:', dishId)
-    wx.showToast({
-      title: '菜品信息错误，无法查看详情',
-      icon: 'none',
-      duration: 2000
-    })
-  }
-},
-
-// 新增：专门处理跳转的函数
-goToDishDetail(e) {
-  console.log('=== 跳转菜品详情 ===')
-  console.log('点击事件数据:', e.currentTarget.dataset)
-  
-  const dishId = e.currentTarget.dataset.dishid
-  const index = e.currentTarget.dataset.index
-  const comment = this.data.commentList[index]
-  
-  console.log('点击的评论:', {
-    index,
-    dishId,
-    commentDishId: comment?.dishId,
-    commentDishName: comment?.dishName,
-    commentId: comment?._id
-  })
-  
-  if (!comment) {
-    wx.showToast({
-      title: '评论信息错误',
-      icon: 'none'
-    })
-    return
-  }
-  
-  // **关键修改：需要先查询菜品的 _id**
-  this.queryDishAndNavigate(comment)
-},
-
-// 新增函数：查询菜品信息并跳转
-async queryDishAndNavigate(comment) {
-  console.log('查询菜品信息:', comment.dishId, comment.dishName)
-  
-  if (!comment.dishId && !comment.dishName) {
-    wx.showToast({
-      title: '菜品信息缺失',
-      icon: 'none'
-    })
-    return
-  }
-  
-  wx.showLoading({
-    title: '加载中...',
-    mask: true
-  })
-  
-  try {
-    const db = wx.cloud.database()
-    
-    // 尝试根据 dishId 查询菜品的 _id
-    let queryCondition = {}
-    
-    if (comment.dishId) {
-      queryCondition = { dishId: comment.dishId }
-    } else if (comment.dishName) {
-      queryCondition = { name: comment.dishName }
-    }
-    
-    console.log('查询条件:', queryCondition)
-    
-    const dishResult = await db.collection('dishes')
-      .where(queryCondition)
-      .limit(1)
-      .get()
-    
-    wx.hideLoading()
-    
-    if (dishResult.data && dishResult.data.length > 0) {
-      const dish = dishResult.data[0]
-      console.log('查询到菜品:', {
-        _id: dish._id,
-        dishId: dish.dishId,
-        name: dish.name
-      })
+    return comments.map(comment => {
+      // 处理时间格式
+      comment.formattedTime = this.formatTime(comment.createTime)
       
-      // 跳转到菜品详情页，传递菜品的 _id
-      wx.navigateTo({
-        url: `/pages/dishDetail/index?id=${dish._id}&dishId=${dish.dishId}`
-      })
-    } else {
-      console.error('未找到菜品:', queryCondition)
-      wx.showToast({
-        title: '菜品不存在或已下架',
-        icon: 'none'
-      })
-    }
-    
-  } catch (error) {
-    console.error('查询菜品失败:', error)
-    wx.hideLoading()
-    wx.showToast({
-      title: '加载失败，请重试',
-      icon: 'none'
+      // 确保必要字段有值
+      comment.dishId = comment.dishId || 0
+      comment.dishName = comment.dishName || '未知菜品'
+      comment.canteenName = comment.canteenName || '未知食堂'
+      comment.content = comment.content || ''
+      comment.rating = comment.rating || 5
+      comment.likeCount = comment.likeCount || 0
+      
+      // 确保images是数组
+      if (!Array.isArray(comment.images)) {
+        comment.images = comment.images ? [comment.images] : []
+      }
+      
+      // 处理用户显示名
+      if (!comment.userNickname || comment.userNickname === '匿名用户') {
+        const userInfo = wx.getStorageSync('userInfo')
+        if (userInfo && userInfo.nickName) {
+          comment.userNickname = userInfo.nickName
+        } else if (userInfo && userInfo.nickname) {
+          comment.userNickname = userInfo.nickname
+        }
+      }
+      
+      return comment
     })
-  }
-},
+  },
 
   // 格式时间显示
   formatTime(time) {
@@ -494,8 +333,8 @@ async queryDishAndNavigate(comment) {
     }
   },
 
-  // 更新本地存储的评论数
-  updateCommentCountInStorage(count) {
+  // 更新用户评论数（更新本地存储和通知主页）
+  updateUserCommentCount(count) {
     try {
       const userInfo = wx.getStorageSync('userInfo')
       if (userInfo) {
@@ -505,10 +344,41 @@ async queryDishAndNavigate(comment) {
       }
       
       // 存储到独立字段
-      wx.setStorageSync('myCommentCount', count)
+      wx.setStorageSync('commentCount', count)
+      
+      // 通知主页更新
+      this.notifyHomePageUpdate(count)
       
     } catch (error) {
       console.error('更新评论数失败:', error)
+    }
+  },
+  
+  // 通知主页更新评论数
+  notifyHomePageUpdate(count) {
+    try {
+      // 获取当前页面栈
+      const pages = getCurrentPages()
+      
+      // 查找主页实例
+      for (let i = pages.length - 1; i >= 0; i--) {
+        const page = pages[i]
+        // 根据你的主页路由路径修改
+        if (page.route === 'pages/user/index' || 
+            page.route === 'pages/index/index' ||
+            page.__route__ === 'pages/user/index') {
+          
+          // 更新主页的评论数
+          page.setData({
+            commentCount: count
+          })
+          
+          console.log('已通知主页更新评论数:', count)
+          break
+        }
+      }
+    } catch (error) {
+      console.error('通知主页更新失败:', error)
     }
   },
 
@@ -581,8 +451,8 @@ async queryDishAndNavigate(comment) {
           totalCount: newTotalCount
         })
         
-        // 更新本地存储的评论数
-        this.updateCommentCountInStorage(newTotalCount)
+        // 更新用户评论数
+        this.updateUserCommentCount(newTotalCount)
         
         wx.showToast({
           title: '删除成功',
@@ -609,16 +479,34 @@ async queryDishAndNavigate(comment) {
 
   // 查看菜品详情
   goToDishDetail(e) {
-    const dishId = e.currentTarget.dataset.dishid
-    console.log('跳转到菜品详情:', dishId)
+    console.log('=== 跳转菜品详情 ===')
+    console.log('点击事件数据:', e.currentTarget.dataset)
     
-    if (dishId) {
+    const dishId = e.currentTarget.dataset.dishid
+    const index = e.currentTarget.dataset.index
+    const comment = this.data.commentList[index]
+    
+    if (!comment) {
+      wx.showToast({
+        title: '评论信息错误',
+        icon: 'none'
+      })
+      return
+    }
+    
+    console.log('跳转的菜品信息:', {
+      dishId: comment.dishId,
+      dishName: comment.dishName
+    })
+    
+    // 直接传递 dishId（业务ID）
+    if (comment.dishId) {
       wx.navigateTo({
-        url: `/pages/dishDetail/index?dishId=${dishId}`
+        url: `/pages/dishDetail/index?dishId=${comment.dishId}`
       })
     } else {
       wx.showToast({
-        title: '菜品信息错误',
+        title: '菜品信息缺失',
         icon: 'none'
       })
     }
@@ -656,43 +544,11 @@ async queryDishAndNavigate(comment) {
     this.loadMyComments(true)
   },
 
-  // 调试函数（开发完成后可删除）
-  debugInfo() {
-    console.log('=== 调试信息 ===')
-    console.log('用户信息:', wx.getStorageSync('userInfo'))
-    console.log('当前数据状态:', {
-      commentListLength: this.data.commentList.length,
-      totalCount: this.data.totalCount,
-      pageIndex: this.data.pageIndex,
-      hasMore: this.data.hasMore,
-      isLoading: this.data.isLoading,
-      isLoadingMore: this.data.isLoadingMore
-    })
-    
-    // 显示第一条评论的详细信息
-    if (this.data.commentList.length > 0) {
-      const firstComment = this.data.commentList[0]
-      console.log('第一条评论详情:', {
-        _id: firstComment._id,
-        _openid: firstComment._openid,
-        userId: firstComment.userId,
-        dishName: firstComment.dishName,
-        content: firstComment.content.substring(0, 50) + '...'
-      })
-    }
-    
-    wx.showModal({
-      title: '调试信息',
-      content: `共${this.data.totalCount}条评论\n当前显示${this.data.commentList.length}条\n用户ID: ${wx.getStorageSync('userInfo')?.openid?.substring(0, 10) || '无'}...`,
-      showCancel: false
-    })
-  },
-
   // 分享功能
   onShareAppMessage() {
     return {
       title: '我的评价',
-      path: '/pages/mycomment/index'
+      path: '/pages/user/myComment/index'
     }
   },
 
