@@ -1,29 +1,36 @@
 <view class="collect-container">
+  <!-- 顶部标题 -->
+  <view class="header">
+    <view class="title">我的收藏</view>
+    <view class="count" wx:if="{{totalCount > 0}}">{{totalCount}}个收藏</view>
+  </view>
+
   <!-- 收藏菜品列表 -->
   <scroll-view 
     class="dish-list-scroll" 
     scroll-y 
     enable-back-to-top
-    bindscrolltolower="loadMore"
     refresher-enabled="{{true}}"
     bindrefresherrefresh="onPullDownRefresh"
     refresher-triggered="{{isRefreshing}}"
   >
-    <view class="dish-list">
+    <!-- 加载状态 -->
+    <view class="loading-state" wx:if="{{isLoading}}">
+      <van-loading size="24px" type="spinner" color="#07c160" />
+      <text class="loading-text">正在加载收藏...</text>
+    </view>
+
+    <!-- 菜品列表 -->
+    <view class="dish-list" wx:if="{{!isLoading}}">
       <block wx:for="{{dishList}}" wx:key="_id">
-        <view 
-          class="dish-card" 
-          data-dish="{{item}}" 
-          bindtap="goDishDetail"
-        >
+        <view class="dish-card" data-dish="{{item}}" bindtap="goDishDetail">
           <!-- 菜品图片 -->
           <view class="dish-image-wrapper">
             <image 
               class="dish-image" 
-              src="{{item.dishImage || '/images/default-dish.jpg'}}" 
+              src="{{item.dishImage}}" 
               mode="aspectFill"
             />
-            <view class="dish-status" wx:if="{{!item.isAvailable}}">已下架</view>
           </view>
           
           <!-- 菜品信息 -->
@@ -59,31 +66,18 @@
             </view>
             
             <!-- 菜品描述 -->
-            <text class="dish-desc" wx:if="{{item.shortDescription}}">
-              {{item.shortDescription}}
+            <text class="dish-desc" wx:if="{{item.dishDescription}}">
+              {{item.dishDescription.length > 30 ? item.dishDescription.substring(0, 30) + '...' : item.dishDescription}}
             </text>
           </view>
           
           <!-- 取消收藏按钮 -->
-          <view 
-            class="collect-action" 
-            data-dish="{{item}}" 
-            bindtap="cancelCollect"
-          >
+          <view class="collect-action" data-dish="{{item}}" bindtap="cancelCollect">
             <van-icon name="star" size="20" color="#ffc107" />
             <text class="collect-text">已收藏</text>
           </view>
         </view>
       </block>
-    </view>
-
-    <!-- 加载更多提示 -->
-    <view class="load-more" wx:if="{{!hasMore && dishList.length > 0}}">
-      <text class="load-text">没有更多收藏了</text>
-    </view>
-    <view class="load-more" wx:if="{{isLoadingMore}}">
-      <van-loading size="20px" type="spinner" color="#07c160" />
-      <text class="load-text">加载中...</text>
     </view>
 
     <!-- 空状态 -->
