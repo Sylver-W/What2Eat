@@ -168,29 +168,34 @@
         </view>
 
         <!-- 评论内容 -->
-        <view class="content-input">
-          <van-field
-            value="{{newComment.content}}"
-            type="textarea"
-            placeholder="分享您的用餐体验..."
-            maxlength="500"
-            autosize
-            border="{{false}}"
-            bind:change="onContentChange"
-          />
-        </view>
+<!-- 修改 content-input 部分 -->
+<view class="content-input">
+  <textarea 
+    value="{{newComment.content}}"
+    placeholder="分享您的用餐体验..."
+    maxlength="500"
+    auto-height
+    class="comment-textarea"
+    bindinput="onContentChange"
+    bindblur="onContentBlur"
+  />
+  <view class="word-count">
+    <text>{{newComment.content ? newComment.content.length : 0}}/500</text>
+  </view>
+</view>
 
         <!-- 提交按钮 -->
-        <van-button 
-          type="primary" 
-          size="large" 
-          bindtap="onSubmitComment"
-          loading="{{isSubmitting}}"
-          disabled="{{!newComment.rating || !newComment.content.trim()}}"
-          custom-class="submit-btn"
-        >
-          提交评价
-        </van-button>
+<!-- 修改提交按钮部分 -->
+<van-button 
+  type="primary" 
+  size="large" 
+  bindtap="onSubmitComment"
+  loading="{{isSubmitting}}"
+  disabled="{{isSubmitting}}"
+  custom-class="submit-btn"
+>
+  {{isSubmitting ? '提交中...' : '提交评价'}}
+</van-button>
       </view>
     </view>
   </van-popup>
