@@ -17,6 +17,10 @@
       <text class="dish-name">{{dish.name || '加载中...'}}</text>
       <text class="dish-location">{{dish.location || ''}}</text>
     </view>
+    <!-- 新增：收藏按钮 -->
+    <view class="favourite-btn" bindtap="onToggleFavourite">
+      <van-icon name="{{isFavourite ? 'star' : 'star-o'}}" size="40rpx" color="#fff" />
+    </view>
   </view>
 
   <!-- 菜品信息卡片 -->
@@ -41,6 +45,12 @@
           <text class="rating-count">({{dish.ratingCount || 0}}人评价)</text>
         </view>
       </view>
+    </view>
+
+    <!-- 新增：收藏数 -->
+    <view class="favour-count" wx:if="{{dish.favourCount > 0}}">
+      <van-icon name="star" size="14px" color="#ffd700" />
+      <text>{{dish.favourCount}}人收藏</text>
     </view>
 
     <!-- 菜品描述 -->
@@ -119,8 +129,17 @@
 
           <!-- 评论操作 -->
           <view class="comment-actions">
-            <view class="action-item" bindtap="onLikeComment" data-id="{{item._id}}" data-index="{{index}}">
-              <van-icon name="like" size="14px" color="{{item.liked ? '#e93b3d' : '#999'}}" />
+            <view 
+              class="action-item" 
+              bindtap="onToggleLike" 
+              data-id="{{item._id}}" 
+              data-index="{{index}}"
+            >
+              <van-icon 
+                name="like" 
+                size="14px" 
+                color="{{userLikedComments[item._id] ? '#e93b3d' : '#999'}}" 
+              />
               <text class="action-text">{{item.likeCount || 0}}</text>
             </view>
           </view>
@@ -179,7 +198,7 @@
             bind:change="onContentChange"
           />
         </view>
-
+        
         <!-- 提交按钮 -->
         <van-button 
           type="primary" 
