@@ -12,7 +12,8 @@
     "pages/user/myComment/index",
     "pages/user/addDish/index",
     "pages/dish_list/dish_list",
-    "pages/dishDetail/index"
+    "pages/dishDetail/index",
+    "pages/logininfo/logininfo"
   ],
   "usingComponents": {
     "van-tabbar": "@vant/weapp/tabbar/index",

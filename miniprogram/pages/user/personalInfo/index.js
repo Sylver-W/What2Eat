@@ -1,4 +1,5 @@
 // personalInfo/index.js - 完整修改版
+const { uploadIfNeeded } = require('../../../utils/upload.js')
 Page({
   data: {
     userInfo: {
@@ -8,11 +9,10 @@ Page({
       phone: '',
       dormArea: '',
       tastePreferences: '',
-      city: '',
-      province: ''
     },
     genderOptions: ['未知', '男', '女'],
-    isLoading: true
+    isLoading: true,
+    changedavatar:false,
   },
 
   // 页面加载时获取用户信息
@@ -23,7 +23,6 @@ Page({
   // 调用云函数：获取用户当前信息
   getUserProfile() {
     this.setData({ isLoading: true })
-    
     // 先尝试从本地缓存获取
     const cachedUser = wx.getStorageSync('userInfo')
     if (cachedUser) {
@@ -38,12 +37,11 @@ Page({
     wx.cloud.callFunction({
       name: 'getuserinfo'
     }).then(res => {
+      console.log("get")
       this.setData({ isLoading: false })
-      
       if (res.result.success && res.result.data) {
         const userData = res.result.data
         console.log('从云端加载用户信息:', userData)
-        
         // 合并数据，确保所有字段都有值
         const mergedData = {
           nickname: userData.nickname || '',
@@ -52,16 +50,11 @@ Page({
           phone: userData.phone || '',
           dormArea: userData.dormArea || '',
           tastePreferences: userData.tastePreferences || '',
-          city: userData.city || '',
-          province: userData.province || ''
         }
-        
         this.setData({ userInfo: mergedData })
-        
         // 更新本地缓存
         wx.setStorageSync('userInfo', { ...cachedUser, ...mergedData })
-        
-      } else if (!cachedUser) {
+      } else if (!res.result.success) {
         wx.showToast({ 
           title: '获取信息失败，请返回重试', 
           icon: 'none',
@@ -71,7 +64,6 @@ Page({
     }).catch(err => {
       this.setData({ isLoading: false })
       console.error('获取用户信息失败：', err)
-      
       if (!cachedUser) {
         wx.showToast({ 
           title: '网络错误，请检查连接', 
@@ -83,61 +75,10 @@ Page({
   },
 
   // 选择并上传新头像
-  chooseAvatar() {
-    const that = this
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success(res) {
-        wx.showLoading({ title: '上传中' })
-        
-        const tempFilePath = res.tempFilePaths[0]
-        const cloudPath = `avatars/${Date.now()}-${Math.floor(Math.random() * 10000)}.jpg`
-        
-        wx.cloud.uploadFile({
-          cloudPath: cloudPath,
-          filePath: tempFilePath,
-          success(uploadRes) {
-            wx.hideLoading()
-            
-            // 获取临时文件URL（有效期4小时）
-            const fileID = uploadRes.fileID
-            console.log('头像上传成功:', fileID)
-            
-            // 立即更新页面显示
-            that.setData({ 
-              'userInfo.avatarUrl': fileID
-            })
-            
-            // 自动保存到数据库
-            that.updateUserInfoToDB({ avatarUrl: fileID })
-            
-            wx.showToast({ 
-              title: '头像更新成功',
-              icon: 'success',
-              duration: 1500
-            })
-          },
-          fail(uploadErr) {
-            wx.hideLoading()
-            console.error('头像上传失败:', uploadErr)
-            wx.showToast({ 
-              title: '上传失败，请重试', 
-              icon: 'none',
-              duration: 2000
-            })
-          }
-        })
-      },
-      fail() {
-        wx.showToast({ 
-          title: '取消选择', 
-          icon: 'none',
-          duration: 1000
-        })
-      }
-    })
+  onChooseAvatar(e) {
+    const avatar = e.detail.avatarUrl
+    this.setData({ "userInfo.avatarUrl":avatar })
+    this.setData({changedavatar:true})
   },
 
   // 昵称输入绑定
@@ -166,28 +107,9 @@ Page({
   onTasteChange(e) {
     this.setData({ 'userInfo.tastePreferences': e.detail.value })
   },
-  
-  // 辅助方法：更新单个字段到数据库
-  updateUserInfoToDB(updateData) {
-    wx.cloud.callFunction({
-      name: 'updateuserinfo',
-      data: updateData
-    }).then(res => {
-      if (res.result && res.result.success) {
-        console.log('字段更新成功:', updateData)
-        // 更新本地缓存
-        const cachedUser = wx.getStorageSync('userInfo') || {}
-        wx.setStorageSync('userInfo', { ...cachedUser, ...updateData })
-      }
-    }).catch(err => {
-      console.error('字段更新失败:', err)
-    })
-  },
-
   // 保存个人资料（调用云函数更新）
-  saveProfile() {
+  async saveProfile() {
     const { nickname, phone } = this.data.userInfo
-    
     // 简单校验
     if (!nickname || nickname.trim() === '') {
       return wx.showToast({ 
@@ -207,7 +129,10 @@ Page({
         })
       }
     }
-    
+    if(this.data.changedavatar){
+      const finalAvatar = await uploadIfNeeded(this.data.userInfo.avatarUrl, 'avatars')
+      this.setData({"userInfo.avatarUrl":finalAvatar})
+    }
     wx.showLoading({ title: '保存中' })
     
     // 准备要保存的数据
@@ -218,12 +143,9 @@ Page({
       phone: (this.data.userInfo.phone || '').trim(),
       dormArea: (this.data.userInfo.dormArea || '').trim(),
       tastePreferences: (this.data.userInfo.tastePreferences || '').trim(),
-      city: this.data.userInfo.city || '',
-      province: this.data.userInfo.province || ''
     }
     
     console.log('保存的数据:', saveData)
-    
     wx.cloud.callFunction({
       name: 'updateuserinfo',
       data: saveData
@@ -236,13 +158,11 @@ Page({
           icon: 'success',
           duration: 1500
         })
-        
         // 更新本地缓存
         wx.setStorageSync('userInfo', { 
           ...wx.getStorageSync('userInfo'),
           ...saveData
         })
-        
         // 延迟返回，让用户看到保存成功的提示
         setTimeout(() => {
           // 返回上一页并刷新“我的”页面
@@ -273,9 +193,4 @@ Page({
       })
     })
   },
-  
-  // 页面卸载时清理
-  onUnload() {
-    // 可以在这里做一些清理工作
-  }
 })

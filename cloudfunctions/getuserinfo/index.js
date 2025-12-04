@@ -1,12 +1,8 @@
 // getuserinfo/index.js - 确保返回所有字段
+
 const cloud = require('wx-server-sdk')
-
-cloud.init({
-  env: cloud.DYNAMIC_CURRENT_ENV
-})
-
+cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 const db = cloud.database()
-
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID
@@ -15,9 +11,8 @@ exports.main = async (event, context) => {
   
   try {
     const userRes = await db.collection('user')
-      .where({ userId: openid })
+      .where({ _id: openid })
       .get()
-    
     if (userRes.data.length > 0) {
       // 确保所有字段都有默认值
       const userData = {
@@ -27,18 +22,10 @@ exports.main = async (event, context) => {
         nickname: userRes.data[0].nickname || '',
         avatarUrl: userRes.data[0].avatarUrl || '',
         gender: userRes.data[0].gender || 0,
-        city: userRes.data[0].city || '',
-        province: userRes.data[0].province || '',
-        
         // 个人资料字段
         phone: userRes.data[0].phone || '',
         dormArea: userRes.data[0].dormArea || '',
         tastePreferences: userRes.data[0].tastePreferences || '',
-        
-        // 统计字段
-        favouriteCount: userRes.data[0].favouriteCount || 0,
-        commentCount: userRes.data[0].commentCount || 0,
-        
         // 时间字段
         createTime: userRes.data[0].createTime
       }

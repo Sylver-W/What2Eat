@@ -178,7 +178,6 @@
             border="{{false}}"
             bind:change="onContentChange"
           />
-          <text class="word-count">{{newComment.content.length}}/500</text>
         </view>
 
         <!-- 提交按钮 -->

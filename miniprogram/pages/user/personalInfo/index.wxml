@@ -8,14 +8,15 @@
   <!-- 内容区域（非加载状态时显示） -->
   <view wx:else>
     <!-- 头像编辑区域 -->
-    <view class="avatar-wrap" bindtap="chooseAvatar">
-      <image 
-        class="avatar" 
-        src="{{userInfo.avatarUrl || '/images/default-avatar.png'}}" 
-        mode="aspectFill"
-      ></image>
+    <button 
+      class="avatar-button" 
+      open-type="chooseAvatar" 
+      bindchooseavatar="onChooseAvatar"
+    >
+      <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
+
       <view class="edit-avatar">更换头像</view>
-    </view>
+    </button>
 
     <!-- 表单区域 -->
     <view class="form-wrapper">
@@ -26,7 +27,7 @@
           value="{{userInfo.nickname}}" 
           bindinput="onNicknameChange" 
           placeholder="请输入昵称" 
-          maxlength="10"
+          maxlength="30"
         />
       </view>
       <view class="form-item">

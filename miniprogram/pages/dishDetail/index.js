@@ -271,7 +271,7 @@ Page({
         success: (res) => {
           if (res.confirm) {
             wx.navigateTo({
-              url: '/pages/user/login/index'
+              url: '/pages/login/login'
             })
           }
         }

@@ -1,22 +1,16 @@
 <view class="mine-container">
-  <!-- 【修改】顶部用户信息（使用官方推荐的头像昵称填写能力） -->
-  <view class="user-info">
-    <!-- 头像：使用 button 组件包裹，通过 chooseAvatar 事件获取 -->
-    <button class="avatar-button" hover-class="none" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-      <image class="avatar" src="{{userAvatar}}"></image>
-    </button>
-    
+    <view class="user-info">
+    <!-- 头像区域：已登录显示头像；未登录显示未登录提示 -->
+    <view class="avatar-wrapper" bindtap="onAvatarTap">
+      <image class="avatar" src="{{isLoggedIn ? userAvatar : defaultAvatar}}"mode="aspectFill"></image>
+    </view>
+
+    <!-- 右侧文字区域 -->
     <view class="user-text">
-      <!-- 昵称：使用 input 组件，通过 type="nickname" 唤起微信昵称键盘 -->
-      <input 
-        class="user-name-input {{userNickname ? '' : 'placeholder-input'}}" 
-        type="nickname" 
-        value="{{userNickname}}" 
-        placeholder="点击设置昵称"
-        bindblur="onNicknameInput"
-        placeholder-class="placeholder-class"
-      />
-      <view class="user-phone">{{userPhone}}</view>
+      <!-- 昵称显示 -->
+      <view class="user-name">
+        {{isLoggedIn ? userNickname : "点击头像登录"}}
+      </view>
     </view>
   </view>
 

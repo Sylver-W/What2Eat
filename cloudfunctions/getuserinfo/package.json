@@ -1,17 +1,14 @@
 {
   "name": "getuserinfo",
   "version": "1.0.0",
-  "description": "获取用户基本信息（头像、昵称、收藏数等）",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "wx-server-sdk": "^2.28.4"
-  },
   "author": "",
   "license": "ISC",
-  "engines": {
-    "node": ">=12.0.0"
+  "dependencies": {
+    "wx-server-sdk": "latest"
   }
 }

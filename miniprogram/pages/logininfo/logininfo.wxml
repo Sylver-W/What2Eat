@@ -1,0 +1,31 @@
+<view class="container">
+
+<view class="title">完善个人资料</view>
+
+<!-- 官方头像选择组件 -->
+<button 
+  class="avatar-button" 
+  open-type="chooseAvatar" 
+  bindchooseavatar="onChooseAvatar"
+>
+  <image class="avatar" src="{{avatar}}"></image>
+</button>
+
+<view class="avatar-tip">点击头像选择</view>
+
+<!-- 昵称填写：官方昵称键盘 -->
+<view class="nickname-section">
+  <input
+    class="nickname-input"
+    type="nickname"
+    placeholder="请输入昵称"
+    value="{{nickname}}"
+    bindinput="onNicknameInput"
+    placeholder-class="placeholder-class"
+  />
+
+</view>
+
+<button class="save-btn" bindtap="onSubmit">保存</button>
+
+</view>
