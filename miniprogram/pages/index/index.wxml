@@ -1,52 +1,111 @@
-<view class="container">
+<view class="home">
 
-<!-- 顶部大图 Banner -->
-<view class="banner">
-  <image class="banner-img" src="/images/banner.jpg" mode="aspectFill"></image>
-  <view class="banner-title">Huster今天吃什么？</view>
-</view>
-
-<view class="content-box">
-  <!-- 两个入口按钮 --> 
-  <view class="shortcut-card">
-    <view class="shortcut-item" bindtap="goCanteenList">
-      <image class="shortcut-icon" src="/images/canteen.png"></image>
-        <text>食堂列表</text>
-    </view>
-    <van-icon name="arrow" />
-  <view class="divider"></view>
-
-    <view class="shortcut-item" bindtap="goDishSearch">
-      <image class="shortcut-icon" src="/images/canteen.png"></image>
-        <text>菜品查询</text>
-    </view>
-    <van-icon name="arrow" />
+  <!-- 顶部大图 Banner -->
+  <view class="banner">
+    <image class="banner-img" src="/images/banner.jpg" mode="aspectFill"></image>
+    <view class="banner-title">Huster今天吃什么？</view>
   </view>
 
-  <!-- 食堂介绍 -->
-  <view class="intro-card">
-    <view class="intro-title">校园食堂介绍</view>
-    <view class="intro-text">
-      华中科技大学有超过30个食堂，不仅中西餐和地方菜齐全，部分食堂还开放至深夜，是名副其实的集学习、用餐于一体的“美食校园”。
-    </view>
-    <view class="intro-detail" bindtap="goIntroDetail">详情 ></view>
-  </view>
+  <view class="content">
 
-  <!-- 特色菜品标题 -->
-  <view class="section-title">特色菜品</view>
-
-  <!-- 横向滚动区域 -->
-  <scroll-view class="dish-scroll" scroll-x="true">
-    <block wx:for="{{dishes}}" wx:key="id">
-      <view class="dish-card">
-        <image class="dish-img" src="{{item.image}}"></image>
-        <view class="dish-name">{{item.name}}</view>
-        <view class="dish-price">¥ {{item.price}}</view>
+    <!-- 快捷入口 -->
+    <view class="shortcut-card">
+      <view class="shortcut-item" bindtap="goCanteenList">
+        <image class="shortcut-icon" src="/images/canteen.png"></image>
+        <text class="shortcut-text">食堂列表</text>
       </view>
+      <view class="divider"></view>
+      <view class="shortcut-item" bindtap="goDishSearch">
+        <image class="shortcut-icon" src="/images/icon/search.png"></image>
+        <text class="shortcut-text">菜品查询</text>
+      </view>
+    </view>
+
+    <!-- 加载中 -->
+    <view wx:if="{{loading}}" class="state-box">
+      <van-loading size="20px">正在加载菜品…</van-loading>
+    </view>
+
+    <!-- 加载失败 -->
+    <view wx:elif="{{loadFailed}}" class="state-box">
+      <text class="state-text">菜品数据加载失败</text>
+      <view class="retry-btn" bindtap="loadHomeData">重新加载</view>
+    </view>
+
+    <block wx:else>
+
+      <!-- 今日推荐 -->
+      <view class="section-head">
+        <text class="section-title">今日推荐</text>
+        <text class="section-sub">高分菜品 · 每日轮换</text>
+      </view>
+
+      <scroll-view wx:if="{{todayDishes.length}}" class="dish-scroll" scroll-x="{{true}}">
+        <view class="dish-card"
+              wx:for="{{todayDishes}}"
+              wx:key="_id"
+              bindtap="goDishDetail"
+              data-id="{{item._id}}"
+              data-dishid="{{item.dishId}}">
+          <image class="dish-img" src="{{item.imageUrl}}" mode="aspectFill"></image>
+          <view class="dish-name">{{item.name}}</view>
+          <view class="dish-meta">
+            <text class="dish-price">￥{{item.price}}</text>
+            <text class="dish-rate">{{item.metricText}}</text>
+          </view>
+          <view class="dish-canteen">{{item.canteenName}}</view>
+        </view>
+      </scroll-view>
+      <view wx:else class="empty-tip">暂无推荐菜品</view>
+
+      <!-- 榜单 -->
+      <view class="section-head">
+        <text class="section-title">食堂榜单</text>
+      </view>
+
+      <view class="board-tabs">
+        <view class="board-tab {{activeBoard === item.key ? 'active' : ''}}"
+              wx:for="{{boardTabs}}"
+              wx:key="key"
+              data-key="{{item.key}}"
+              bindtap="switchBoard">{{item.label}}</view>
+      </view>
+
+      <view class="board-list">
+        <view class="board-row"
+              wx:for="{{boardDishes}}"
+              wx:key="_id"
+              bindtap="goDishDetail"
+              data-id="{{item._id}}"
+              data-dishid="{{item.dishId}}">
+          <text class="rank {{index < 3 ? 'rank-top' : ''}}">{{index + 1}}</text>
+          <image class="board-img" src="{{item.imageUrl}}" mode="aspectFill"></image>
+          <view class="board-info">
+            <view class="board-name">{{item.name}}</view>
+            <view class="board-sub">{{item.canteenName}} · ￥{{item.price}}</view>
+          </view>
+          <view class="board-value">
+            <text class="board-num">{{item.metricText}}</text>
+            <van-rate value="{{item.rating}}" size="12" readonly allow-half />
+          </view>
+        </view>
+        <view wx:if="{{!boardDishes.length}}" class="empty-tip">该榜单暂无数据</view>
+      </view>
+
+      <!-- 食堂介绍 -->
+      <view class="intro-card">
+        <view class="intro-title">校园食堂介绍</view>
+        <view class="intro-text">
+          华中科技大学有超过30个食堂，不仅中西餐和地方菜齐全，部分食堂还开放至深夜，是名副其实的集学习、用餐于一体的“美食校园”。
+        </view>
+        <view class="intro-detail" bindtap="goIntroDetail">详情 ></view>
+      </view>
+
     </block>
-  </scroll-view>
+
+  </view>
 </view>
-</view>
+
 <van-tabbar active="{{ active }}"
   active-color="#101010"
   inactive-color="#cccccc"

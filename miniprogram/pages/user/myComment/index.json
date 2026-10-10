@@ -1,5 +1,7 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+    "van-loading": "@vant/weapp/loading/index"
+  },
   "navigationBarTitleText": "我的评价",
   "enablePullDownRefresh": true
 }
