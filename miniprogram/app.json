@@ -4,7 +4,6 @@
     "pages/canteen/canteen",
     "pages/user/user",
     "pages/login/login",
-    "pages/home/home",
     "pages/intro/index",
     "pages/search/index",
     "pages/user/personalInfo/index",

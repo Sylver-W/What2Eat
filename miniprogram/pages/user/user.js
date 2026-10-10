@@ -169,7 +169,7 @@ getCommentCount(openid) {
       })
       return
     }
-    wx.navigateTo({ url: "/pages/peisonalInfo/index" })
+    wx.navigateTo({ url: "/pages/user/personalInfo/index" })
   },
   
   goPersonalInfo() {

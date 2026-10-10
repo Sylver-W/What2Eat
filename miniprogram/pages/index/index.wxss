@@ -1,122 +1,271 @@
-.container {
+.home {
+  min-height: 100vh;
   background-color: #f5f2f2;
-  padding-bottom: 100rpx;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
+  /* 底部预留自定义 tabbar 的空间 */
+  padding-bottom: 170rpx;
 }
 
 /* Banner */
 .banner {
-  position: absolute;    
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100%;
   height: 450rpx;
-  z-index: 10;            
 }
 .banner-img {
+  display: block;
   width: 100%;
   height: 100%;
 }
 .banner-title {
   position: absolute;
-  bottom: 250rpx;
   left: 40rpx;
-  color: white;
-  font-size: 36rpx;
+  bottom: 80rpx;
+  color: #ffffff;
+  font-size: 40rpx;
   font-weight: bold;
 }
 
-/* 固定内容块 */
-.content-box {
-  position: absolute;
-  top: 430rpx;
-  left: 0;
-  right: 0;
-
-  height: 850rpx;  /* ←←← 固定高度 */
-  background: #f3f3f3;
+/* 内容区：压在 Banner 下沿，形成圆角卡片感 */
+.content {
+  position: relative;
+  z-index: 1;
+  margin-top: -40rpx;
+  background: #f5f2f2;
   border-radius: 32rpx 32rpx 0 0;
-  z-index: 10;
-  overflow: hidden; /* ←←← 禁止滚动 */
+  padding-top: 24rpx;
 }
 
 /* 快捷入口卡片 */
 .shortcut-card {
-  margin: 40rpx 30rpx 0;
+  margin: 20rpx 30rpx 0;
   background: #ffffff;
   display: flex;
+  align-items: center;
   border-radius: 20rpx;
-  padding: 20rpx 0;
+  padding: 24rpx 0;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.04);
 }
 .shortcut-item {
   flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
 }
 .shortcut-icon {
   width: 60rpx;
   height: 60rpx;
 }
+.shortcut-text {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #333333;
+}
 .divider {
   width: 2rpx;
+  height: 80rpx;
   background: #e5e5e5;
-  height: 100rpx;
 }
 
-/* 简介卡片 */
-.intro-card {
-  background: #ffffff;
+/* 加载 / 空 / 失败状态 */
+.state-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 0;
+}
+.state-text {
+  font-size: 28rpx;
+  color: #999999;
+}
+.retry-btn {
+  margin-top: 24rpx;
+  padding: 12rpx 48rpx;
+  font-size: 26rpx;
+  color: #ffffff;
+  background: #3a7afe;
+  border-radius: 40rpx;
+}
+.empty-tip {
   margin: 30rpx;
-  padding: 20rpx;
+  padding: 40rpx 0;
+  text-align: center;
+  font-size: 26rpx;
+  color: #999999;
+  background: #ffffff;
   border-radius: 20rpx;
 }
-.intro-title {
-  font-size: 32rpx;
-  font-weight: bold;
-}
-.intro-text {
-  margin-top: 20rpx;
-  font-size: 26rpx;
-  color: #666;
-}
-.intro-detail {
-  margin-top: 20rpx;
-  color: #3a7afe;
-  font-size: 26rpx;
-}
 
-/* 特色菜 */
+/* 区块标题 */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  margin: 40rpx 30rpx 20rpx;
+}
 .section-title {
-  margin: 30rpx;
   font-size: 32rpx;
   font-weight: bold;
+  color: #222222;
+}
+.section-sub {
+  margin-left: 16rpx;
+  font-size: 24rpx;
+  color: #999999;
 }
 
-/* 横向滚动 */
+/* 今日推荐：横向滚动 */
 .dish-scroll {
   white-space: nowrap;
   padding-left: 30rpx;
 }
 .dish-card {
-  width: 300rpx;
   display: inline-block;
+  width: 300rpx;
   margin-right: 20rpx;
-  background: white;
+  background: #ffffff;
   border-radius: 20rpx;
+  overflow: hidden;
+  vertical-align: top;
 }
 .dish-img {
   width: 100%;
   height: 200rpx;
+  display: block;
+  background: #eeeeee;
 }
 .dish-name {
   font-size: 28rpx;
-  margin: 16rpx;
+  color: #222222;
+  margin: 16rpx 16rpx 8rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dish-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 16rpx;
 }
 .dish-price {
+  font-size: 26rpx;
+  color: #e5533d;
+}
+.dish-rate {
+  font-size: 22rpx;
+  color: #999999;
+}
+.dish-canteen {
+  margin: 8rpx 16rpx 16rpx;
+  font-size: 22rpx;
+  color: #999999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 榜单切换 */
+.board-tabs {
+  display: flex;
+  margin: 0 30rpx 16rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  padding: 8rpx;
+}
+.board-tab {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  font-size: 26rpx;
+  color: #666666;
+  border-radius: 12rpx;
+}
+.board-tab.active {
+  color: #ffffff;
+  background: #3a7afe;
+  font-weight: bold;
+}
+
+/* 榜单列表 */
+.board-list {
+  margin: 0 30rpx;
+}
+.board-row {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  margin-bottom: 16rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+}
+.rank {
+  width: 48rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #999999;
+  font-weight: bold;
+}
+.rank-top {
+  color: #e5533d;
+}
+.board-img {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 12rpx;
+  margin: 0 20rpx;
+  background: #eeeeee;
+}
+.board-info {
+  flex: 1;
+  overflow: hidden;
+}
+.board-name {
+  font-size: 28rpx;
+  color: #222222;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.board-sub {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: #999999;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.board-value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.board-num {
   font-size: 24rpx;
-  margin: 0 16rpx 16rpx;
-  color: #666;
+  color: #e5533d;
+  margin-bottom: 8rpx;
+}
+
+/* 食堂介绍 */
+.intro-card {
+  background: #ffffff;
+  margin: 40rpx 30rpx 0;
+  padding: 24rpx;
+  border-radius: 20rpx;
+}
+.intro-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #222222;
+}
+.intro-text {
+  margin-top: 20rpx;
+  font-size: 26rpx;
+  color: #666666;
+  line-height: 1.6;
+}
+.intro-detail {
+  margin-top: 20rpx;
+  color: #3a7afe;
+  font-size: 26rpx;
 }
